@@ -1,0 +1,16 @@
+<launch>
+	<arg name="server" default="tams95"/>
+	<node name="heartbeat" pkg="dec_pomdp_client" type="heartbeat_publisher.py">
+		<param name="robot_name" value="$(env TURTLEBOT_NAME)"/>
+	</node>
+
+	<node name="$(anon master_discovery)" pkg="master_discovery_fkie" type="master_discovery" output="log">
+			<rosparam param="robot_hosts" subst_value="True">[$(env TURTLEBOT_NAME),$(arg server)]</rosparam>
+	</node>
+
+	<node name="$(anon master_sync)" pkg="master_sync_fkie" type="master_sync">
+<rosparam param="sync_topics">
+- /heartbeat
+</rosparam>
+	</node>
+</launch>

@@ -1,0 +1,7 @@
+[31m[1mCMake Error[0m at /opt/ros/kinetic/share/genmsg/cmake/genmsg-extras.cmake:94 (message):
+  add_message_files() directory not found:
+  /informatik2/students/home/6tkruege/bachelor/src/messages_dec_pomdp_wlan_localisation/msg
+[36mCall Stack (most recent call first):[0m
+  CMakeLists.txt:52 (add_message_files)
+
+

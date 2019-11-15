@@ -1,0 +1,46 @@
+/opt/ros/kinetic/share/genmsg/cmake/pkg-genmsg.cmake.em:56: error: <class 'genmsg.base.InvalidMsgSpec'>: /informatik2/students/home/6tkruege/bachelor/src/messages_dec_pomdp_wlan_localisation/msg/execution_status.msg: Invalid declaration: geometry_msgs/Pose
+Traceback (most recent call last):
+  File "/usr/bin/empy", line 3302, in <module>
+    if __name__ == '__main__': main()
+  File "/usr/bin/empy", line 3300, in main
+    invoke(sys.argv[1:])
+  File "/usr/bin/empy", line 3283, in invoke
+    interpreter.wrap(interpreter.file, (file, name))
+  File "/usr/bin/empy", line 2295, in wrap
+    self.fail(e)
+  File "/usr/bin/empy", line 2284, in wrap
+    callable(*args)
+  File "/usr/bin/empy", line 2359, in file
+    self.safe(scanner, done, locals)
+  File "/usr/bin/empy", line 2401, in safe
+    self.parse(scanner, locals)
+  File "/usr/bin/empy", line 2421, in parse
+    token.run(self, locals)
+  File "/usr/bin/empy", line 1425, in run
+    interpreter.execute(self.code, locals)
+  File "/usr/bin/empy", line 2595, in execute
+    _exec(statements, self.globals, locals)
+  File "/usr/bin/empy", line 42, in _exec
+    exec("""exec code in globals""")
+  File "<string>", line 1, in <module>
+  File "<string>", line 38, in <module>
+  File "/opt/ros/kinetic/lib/python2.7/dist-packages/genmsg/deps.py", line 45, in find_msg_dependencies_with_type
+    spec = genmsg.msg_loader.load_msg_from_file(msg_context, msg_file, full_type_name)
+  File "/opt/ros/kinetic/lib/python2.7/dist-packages/genmsg/msg_loader.py", line 289, in load_msg_from_file
+    raise InvalidMsgSpec('%s: %s'%(file_path, e))
+genmsg.base.InvalidMsgSpec: /informatik2/students/home/6tkruege/bachelor/src/messages_dec_pomdp_wlan_localisation/msg/execution_status.msg: Invalid declaration: geometry_msgs/Pose
+[31m[1mCMake Error[0m at /opt/ros/kinetic/share/catkin/cmake/safe_execute_process.cmake:11 (message):
+
+  execute_process(/informatik2/students/home/6tkruege/bachelor/build/messages_dec_pomdp_wlan_localisation/catkin_generated/env_cached.sh
+  "/usr/bin/python" "/usr/bin/empy" "--raw-errors" "-F"
+  "/informatik2/students/home/6tkruege/bachelor/build/messages_dec_pomdp_wlan_localisation/cmake/messages_dec_POMDP_WLAN_Localisation-genmsg-context.py"
+  "-o"
+  "/informatik2/students/home/6tkruege/bachelor/build/messages_dec_pomdp_wlan_localisation/cmake/messages_dec_POMDP_WLAN_Localisation-genmsg.cmake"
+  "/opt/ros/kinetic/share/genmsg/cmake/pkg-genmsg.cmake.em") returned error
+  code 1
+[36mCall Stack (most recent call first):[0m
+  /opt/ros/kinetic/share/catkin/cmake/em_expand.cmake:25 (safe_execute_process)
+  /opt/ros/kinetic/share/genmsg/cmake/genmsg-extras.cmake:303 (em_expand)
+  CMakeLists.txt:73 (generate_messages)
+
+

@@ -1,0 +1,4 @@
+<launch>
+	<!-- start the turtlebot -->
+	<include file="$(find tams_turtlebot_bringup)/launch/tams_turtlebot_navigation.launch"/>
+</launch>

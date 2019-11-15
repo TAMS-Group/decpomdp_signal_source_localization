@@ -1,0 +1,6 @@
+1 Refactoring Names of messages and packages	(DONE)
+2 finish heartbeat_publisher					(DONE)
+3 Lizenz bsd, MIT oder GPL						
+4 Use rviz visualmarkers to get robot positions in Rviz
+	- use heartbeat visualization script to gather information from topic /heartbeat
+	- 

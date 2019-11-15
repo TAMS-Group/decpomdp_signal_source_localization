@@ -1,0 +1,12 @@
+[31m[1mCMake Error[0m at /opt/ros/kinetic/share/catkin/cmake/assert.cmake:20 (message):
+
+
+  Assertion failed: file
+  '/informatik2/students/home/6tkruege/bachelor/src/messages_dec_pomdp_wlan_localisation/msg/measurement.msg'
+  does not exist.  Message: message file not found
+
+[36mCall Stack (most recent call first):[0m
+  /opt/ros/kinetic/share/genmsg/cmake/genmsg-extras.cmake:113 (assert_file_exists)
+  CMakeLists.txt:52 (add_message_files)
+
+

@@ -1,0 +1,13 @@
+[31m[1mCMake Error[0m at /informatik2/students/home/6tkruege/bachelor/build/messages_dec_pomdp_wlan_localisation/cmake/messages_dec_POMDP_WLAN_Localisation-genmsg.cmake:3 (message):
+  Could not find messages which
+  '/informatik2/students/home/6tkruege/bachelor/src/messages_dec_pomdp_wlan_localisation/msg/execution_status.msg'
+  depends on.  Did you forget to specify generate_messages(DEPENDENCIES ...)?
+
+  Cannot locate message [PoseStamped] in package
+  [messages_dec_POMDP_WLAN_Localisation] with paths
+  [['/informatik2/students/home/6tkruege/bachelor/src/messages_dec_pomdp_wlan_localisation/msg']]
+[36mCall Stack (most recent call first):[0m
+  /opt/ros/kinetic/share/genmsg/cmake/genmsg-extras.cmake:307 (include)
+  CMakeLists.txt:73 (generate_messages)
+
+
