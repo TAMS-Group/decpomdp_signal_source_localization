@@ -2,3 +2,4 @@
 *.stderr
 devel/
 build/
+.catkin_tools/
