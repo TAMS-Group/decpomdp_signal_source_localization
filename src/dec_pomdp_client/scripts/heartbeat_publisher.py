@@ -1,19 +1,28 @@
 #!/usr/bin/env python
 
 import rospy
+import tf
 from dec_pomdp_msgs.msg import ExecutionState
+from geometry_msgs.msg import PoseStamped
+
 
 def main():
 	rospy.init_node('heartbeat')
+	transformer = tf.TransformListener()
+	base_footprint_msg = PoseStamped()
+	base_footprint_msg.header.frame_id = 'base_footprint'
+	base_footprint_msg.pose.orientation.w = 1
+	base_footprint_msg.header.stamp = rospy.Time(0)
+	transformer.waitForTransform('map', 'base_footprint', rospy.Time(0), rospy.Duration(3.0))
 	pub = rospy.Publisher('heartbeat', ExecutionState, queue_size=1)
 	rate = rospy.Rate(1)
 	msg = ExecutionState()
 	msg.robot_name = rospy.get_param('~robot_name')
 	while not rospy.is_shutdown():
-		msg.pose.header.stamp = rospy.get_rostime()
+		# msg.pose.header.stamp = rospy.get_rostime()
 		msg.status = ExecutionState.IDLE
-		msg.pose.header.frame_id = 'map'
-		msg.pose.pose.orientation.w = 1
+		# msg.pose.header.frame_id = 'map'
+		msg.pose = transformer.transformPose('map', base_footprint_msg)
 		pub.publish(msg)
 		rate.sleep()
 
