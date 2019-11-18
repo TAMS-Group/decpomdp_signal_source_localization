@@ -2,26 +2,35 @@
 import rospy
 from dec_pomdp_msgs.msg import ExecutionState
 from visualization_msgs.msg import Marker
+from geometry_msgs.msg import Vector3
 
-#marker = Marker(
- #               type=Marker.TEXT_VIEW_FACING,
-  #              id=0,
-   #             lifetime=rospy.Duration(1.5),
-    #            scale=Vector3(0, 0, 0.06),
-     #           header=Header(frame_id='map'),
-      #          color=ColorRGBA(0.0, 1.0, 0.0, 0.8)
-       #     )
+class Visualizer:
+	marker = Marker(
+			type= Marker.TEXT_VIEW_FACING,
+			id=0,
+			lifetime=rospy.Duration(1.5),
+			scale=Vector3(0, 0, 0.06),
+		)
 
-def visualize(state):
-	rospy.loginfo("%s has state %s and is currently at x = %d, y = %d, z=%d" % (state.robot_name, state.status, state.pose.pose.position.x,state.pose.pose.position.y,state.pose.pose.position.z))
-	# marker.pose = state.pose.pose
-	# marker.text = state.robot_name + 
+	def visualize(self, state):
+		# rospy.loginfo("%s has state %s and is currently at x = %d, y = %d, z=%d" % (state.robot_name, state.status, state.pose.pose.position.x,state.pose.pose.position.y,state.pose.pose.position.z))
+		self.marker.header.stamp = rospy.get_rostime()
+		self.marker.pose = state.pose.pose
+		self.marker.text = 'Name: ' + state.robot_name + ' State: ' + state.status
+		self.markerPublisher.publish(self.marker)
 
-def main():
-	rospy.init_node('heartbeat_visualization')
-	rospy.Subscriber('heartbeat', ExecutionState, visualize)
+	def __init__(self, frame_id):
+		self.marker.header.frame_id = frame_id
+		self.marker.color.r = 1.0
+		self.marker.color.g = 1.0
+		self.marker.color.b = 1.0
+		self.marker.color.a = 1.0
+		rospy.init_node('heartbeat_visualization')
+		self.markerPublisher= rospy.Publisher('robotState', Marker, queue_size=1)
+		rospy.Subscriber('heartbeat', ExecutionState, self.visualize)
 
-	rospy.spin()
 
 if __name__ == '__main__':
-	main()
+	x = Visualizer('map')
+	rospy.spin()
+	
