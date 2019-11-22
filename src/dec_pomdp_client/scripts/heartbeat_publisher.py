@@ -4,6 +4,8 @@ import rospy
 import tf
 from dec_pomdp_msgs.msg import ExecutionState
 from geometry_msgs.msg import PoseStamped
+from signal_strength_measurer import SignalStrengthMeasurer
+
 
 
 def main():

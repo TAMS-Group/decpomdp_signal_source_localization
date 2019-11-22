@@ -13,6 +13,10 @@ add_message_files(
   Measurement.msg
 	ExecutionState.msg
   Measurements.msg
+  Edge.msg
+  NodeAction.msg
+  NodeTransition.msg
+  Policy.msg
 )
 
 ## Generate added messages and services with any dependencies listed here
@@ -24,6 +28,6 @@ generate_messages(
 
 
 catkin_package(
-	CATKIN_DEPENDS 
+	CATKIN_DEPENDS
 	# message_runtime
 )
