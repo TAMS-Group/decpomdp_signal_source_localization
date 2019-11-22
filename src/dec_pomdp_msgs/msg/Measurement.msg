@@ -1,3 +1,3 @@
 Header header
 geometry_msgs/Point position
-int16 signal_strength
+int64 signal_strength
