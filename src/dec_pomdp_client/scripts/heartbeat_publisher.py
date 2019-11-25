@@ -2,6 +2,7 @@
 
 import rospy
 import tf
+import sys
 from dec_pomdp_msgs.msg import ExecutionState
 from geometry_msgs.msg import PoseStamped
 from signal_strength_measurer import SignalStrengthMeasurer
@@ -24,8 +25,15 @@ def main():
 		# msg.pose.header.stamp = rospy.get_rostime()
 		msg.status = ExecutionState.IDLE
 		# msg.pose.header.frame_id = 'map'
-		msg.pose = transformer.transformPose('map', base_footprint_msg)
-		pub.publish(msg)
+		try:
+			now = rospy.Time.now()
+			transformer.waitForTransform('map', 'base_footprint', now, rospy.Duration(3.0))
+			base_footprint_msg.header.stamp = now
+			msg.pose = transformer.transformPose('map', base_footprint_msg)
+			pub.publish(msg)
+		except:
+			e = sys.exc_info()[0]
+			rospy.logwarn(str(e))
 		rate.sleep()
 
 if __name__ == '__main__':

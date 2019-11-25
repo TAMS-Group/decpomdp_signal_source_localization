@@ -8,6 +8,7 @@
 	<node name="$(anon master_sync)" pkg="master_sync_fkie" type="master_sync">
 <rosparam param="sync_topics">
 - /heartbeat
+- /measurements
 - /map
 - /tf
 </rosparam>
