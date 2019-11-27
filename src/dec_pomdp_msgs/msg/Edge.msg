@@ -1,2 +1,2 @@
-int64 threshhold
+Interval measurement_interval
 uint64 node_number
