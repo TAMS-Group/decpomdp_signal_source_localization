@@ -17,6 +17,7 @@ add_message_files(
   NodeAction.msg
   NodeTransition.msg
   Policy.msg
+  Interval.msg
 )
 
 ## Generate added messages and services with any dependencies listed here
