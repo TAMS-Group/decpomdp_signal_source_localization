@@ -13,3 +13,18 @@ NEXT Up
 4. use rss rician to generate probabilities
 5. feed the probabilities to the particle filter
 6. use the particle filter values to generate markers in rviz
+
+
+
+Map Border Coordinates
+
+top right 		-7,158 3,4
+top left			-2,597 -4,727
+bottom left		24,578 4,098
+bottom right	23,986 5,591
+
+inner Room
+top right 		-2,537 5,096
+top left			-0,600 -1,645
+bottom right 	6,467 -2,387
+bottom left 	8,613 1,343

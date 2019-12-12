@@ -7,16 +7,16 @@ from tools import compute_distance
 
 
 # Defines the source localization measurement model as first described in
-# Atanasov, Le Ny, Pappas: "Distributed algorithms for stochastic source seeking 
+# Atanasov, Le Ny, Pappas: "Distributed algorithms for stochastic source seeking
 # with mobile robot networks"
 # Journal of Dynamic Systems, Measurement, and Control 137 (3)
-# 
+#
 # and used in
 #
-# Lauri, Pajarinen, Peters: "Information Gathering in Discrete and 
+# Lauri, Pajarinen, Peters: "Information Gathering in Discrete and
 # Continuous-state Decentralized POMDPs by Policy Graph Improvement"
 class SourceSeekingRSS(Problem):
-	def __init__(self, locations, neighbours, Ptx=18.0, Gtx=1.5, Ltx=0.0, 
+	def __init__(self, locations, neighbours, Ptx=18.0, Gtx=1.5, Ltx=0.0,
 					Grx=1.5, Lrx=0.0, v=2.4e6, mu=4.0, sigma=20.0):
 		super(SourceSeekingRSS, self).__init__(locations, neighbours)
 		self.RSS_base = Ptx + Gtx - Ltx + Grx - Lrx + 27.55 - 20*np.log10(v)
@@ -30,6 +30,7 @@ class SourceSeekingRSS(Problem):
 		d = compute_distance(source_locations.reshape(-1,2), self.locations[l].reshape(-1,2))
 		rss = self.rss_noiseless(d)
 		fading = rss-z
+		print("l is: " + str(l)+" z is: " + str(z) + " Location is: " + str(self.locations[l]) + " D is: " + str(d) + " rss is: " + str(rss) + " fading is: " + str(fading) )
 		if np.all(fading < 0):
 			# ALL source locations have neg. fading, ignore this measurement
 			p = np.ones(fading.shape)
@@ -50,7 +51,7 @@ class SourceSeekingRSS(Problem):
 	def sample_joint_observation(self, source_locations, l0, l1):
 		return self.sample(source_locations, l0), self.sample(source_locations, l1)
 
-# Visualize the model	
+# Visualize the model
 def main():
 	Ptx = 18.0 # dBm
 	Gtx = 1.5 # dBi

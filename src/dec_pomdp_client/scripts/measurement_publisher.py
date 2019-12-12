@@ -11,11 +11,15 @@ class MeasurementPublisher:
         self.publisher = rospy.Publisher("measurements", Measurements, queue_size=1)
         self.previous_measurements = Measurements()
         self.transformer = tf.TransformListener()
-        self.transformer.waitForTransform('map',
+        try:
+            self.transformer.waitForTransform('map',
                                     'base_footprint',
                                     rospy.Time(0),
                                     rospy.Duration(3.0)
-        )
+                                    )
+        except:
+            e = sys.exc_info()[0]
+            rospy.logwarn(str(e))
         self.base_footprint_msg = PoseStamped()
         self.base_footprint_msg.header.frame_id = 'base_footprint'
         self.base_footprint_msg.pose.orientation.w = 1

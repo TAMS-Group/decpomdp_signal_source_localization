@@ -1,9 +1,11 @@
 <launch>
-	<node name="heartbeat_visualization" pkg="dec_pomdp_server" type="heartbeat_visualization.py"/>
-	<node name="measurement_visualization" pkg="dec_pomdp_server" type="measurement_visualization.py"/>
+  <node name="heartbeat_visualization" pkg="dec_pomdp_server" type="heartbeat_visualization.py"/>
+  <node name="measurement_visualization" pkg="dec_pomdp_server" type="measurement_visualization.py"/>
+  <node name="measurements_evaluation" pkg="dec_pomdp_server" type="measurement_evaluation.py"/>
+	#<node name="measurement_collector" pkg="dec_pomdp_server" type="measurement_collector.py"/>
 
 	<node name="$(anon master_discovery)" pkg="master_discovery_fkie" type="master_discovery" output="log">
-			<rosparam param="robot_hosts">[donny,mikey,leo,raph,tams95]</rosparam>
+			<rosparam param="robot_hosts">[donny,mikey,leo,raph,tams92]</rosparam>
 	</node>
 
 	<node name="$(anon master_sync)" pkg="master_sync_fkie" type="master_sync">
