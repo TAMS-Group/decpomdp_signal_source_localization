@@ -5,6 +5,8 @@ import rosbag
 from dec_pomdp_msgs.msg import Measurement, Measurements
 from geometry_msgs.msg import PoseStamped
 
+# Can be used to 
+
 if __name__ == '__main__':
     rospy.init_node('measurements')
     rate = rospy.Rate(0.1) # to be removed later
