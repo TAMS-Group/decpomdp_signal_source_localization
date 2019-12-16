@@ -28,3 +28,6 @@ top right 		-2,537 5,096
 top left			-0,600 -1,645
 bottom right 	6,467 -2,387
 bottom left 	8,613 1,343
+
+if ssh host doesn't resolve
+cat /etc/resolv.conf
