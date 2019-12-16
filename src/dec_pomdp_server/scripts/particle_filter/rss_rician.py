@@ -36,6 +36,7 @@ class SourceSeekingRSS(Problem):
 			p = np.ones(fading.shape)
 		else:
 			p = rice.pdf(fading, self.rice_b, scale=self.sigma)
+		print("probabilities: " + str(p))
 		return p
 
 	def sample(self, source_locations, l):
@@ -67,7 +68,7 @@ def main():
 
 	# Rice distr.
 	mu = 4.0 # dB
-	sigma = 20.0 # dB
+	sigma = 30.0 # dB
 	b = mu / sigma # shape parameter for SciPy Rice
 
 	# Plot the RSS mean and noise Rice PDF

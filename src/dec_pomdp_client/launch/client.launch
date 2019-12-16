@@ -13,6 +13,8 @@
 <rosparam param="sync_topics">
 - /heartbeat
 - /measurements
+- /map
+- /tf
 </rosparam>
 	</node>
 </launch>

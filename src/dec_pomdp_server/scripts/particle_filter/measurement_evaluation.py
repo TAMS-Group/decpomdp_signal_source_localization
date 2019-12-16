@@ -29,16 +29,19 @@ def run_measurement_evaluation(subscriber, problem, num_particles, visualize):
 	while not rospy.is_shutdown():
 		observations = subscriber.get_measurements()
 		if (len(observations) > 0):
-			latest_observations = observations[len(observations) - 1]
+			latest_observations = observations[len(observations) - 1].measurements
 			rospy.logwarn(latest_observations)
-			for measurement in latest_observations.measurements:
+			#Later it is supposed to work like this:
+			#for measurement in latest_observations.measurements:
+			if(len(latest_observations) > 0):
+				measurement = latest_observations[len(latest_observations) -1]
 				position = [measurement.position.x, measurement.position.y]
 				rospy.logwarn("position is: " + str(position) + " measurement is: " + str([measurement.signal_strength]))
 				l = problem.likelihood(x, position, [measurement.signal_strength])
-				rospy.logwarn("probablity is: " + str(l))
+				rospy.logwarn("probablity is: " + str(sum(l)))
 				x, weights = SIR_step(x, weights, l)
 				rospy.logwarn("Particles are at: " +  str(x))
-				rospy.logwarn("particle weights are: " + str(weights))
+				rospy.logwarn("particle weight 1 is: " + str(sum(weights)))
 				visualizer.visualize(x, weights)
 		rate.sleep()
 

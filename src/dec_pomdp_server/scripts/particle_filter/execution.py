@@ -29,9 +29,9 @@ def run_policy(x, weights, problem, num_steps, source_xy, policy0, policy1, visu
 			print('Agent 0 at location {:d} on graph and agent 1 at location {:d} on graph'.format(l0, l1))
 			print('Source at (x,y) = ({:f}, {:f})'.format(source_xy[0], source_xy[1]))
 			quit()
-
+		print("weights before: {}".format(max(weights)))
 		x, weights = SIR_step(x, weights, l)
-
+		print("weights after step: {}".format(max(weights)))
 		# update nodes in the policy
 		policy0.next_node(z0)
 		policy1.next_node(z1)
@@ -52,11 +52,11 @@ def run_policy(x, weights, problem, num_steps, source_xy, policy0, policy1, visu
 			ax.scatter(x[:,0], x[:,1], c=weights, s=36)
 			ax.plot(source_xy[0], source_xy[1], 'bo', markersize=12, label='Source')
 			ax.grid()
-			
+
 			# indiacte active locations
 			color0, color1 = 'g', 'c'
 			for agentidx, (l, c) in enumerate(zip((l0, l1), (color0, color1))):
-				ax.plot(problem.locations[l,0], problem.locations[l,1], color=c, linestyle='none', marker='o', markersize=12, 
+				ax.plot(problem.locations[l,0], problem.locations[l,1], color=c, linestyle='none', marker='o', markersize=12,
 					markeredgecolor='k', label='Agent {:d}'.format(agentidx))
 
 			ax.scatter(x[:,0], x[:,1], c=weights)
@@ -66,5 +66,5 @@ def run_policy(x, weights, problem, num_steps, source_xy, policy0, policy1, visu
 			ax.legend(loc='center right')
 			plt.show()
 
-		
+
 	return average_distances

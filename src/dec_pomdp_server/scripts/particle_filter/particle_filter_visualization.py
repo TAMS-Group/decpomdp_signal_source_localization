@@ -10,7 +10,7 @@ class ParticleFilterVisualizer:
 	marker = Marker(
 			type= Marker.POINTS,
 			id=1,
-			lifetime=rospy.Duration(10),
+			lifetime=rospy.Duration(9),
 			scale=Vector3(0.1, 0.1, 0.06),
 		)
 
@@ -20,14 +20,16 @@ class ParticleFilterVisualizer:
 			self.marker.header.stamp = rospy.get_rostime()
 			position = Point(particle[0], particle[1], 0.0)
 			self.marker.points.append(position)
-			self.marker.colors.append(self.get_color(weights[i]))
+			self.marker.colors.append(self.get_color(weights[i], weights))
 
 		self.markerPublisher.publish(self.marker)
 
-	def get_color(self, weight):
+	def get_color(self, weight, weights):
 		color = ColorRGBA(0, 0, 0, 1)
-		color.r = 1 - weight
-		color.g = weight
+		normalized_weight = (weight - min(weights)) / (max(weights) - min(weights))
+		color.r = 1 - normalized_weight
+		color.g = normalized_weight
+		#rospy.logwarn("normalized_weight is:{} - {} / {} - {} = {}".format(weight, min(weights), max(weights), min(weights), normalized_weight))
 		return color
 
 	def __init__(self, frame_id):
