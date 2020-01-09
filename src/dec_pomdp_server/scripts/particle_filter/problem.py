@@ -5,5 +5,5 @@ class Problem(object):
 		self.neighbours = neighbours
 	def sample_joint_observation(self, source_xy, l0, l1):
 		pass
-	def likelihood(self, x, l0, l1, z0, z1):
+	def likelihood(self, x, l0, z0):
 		pass
