@@ -36,12 +36,12 @@ def run_measurement_evaluation(subscriber, problem, num_particles, visualize):
 			if(len(latest_observations) > 0):
 				measurement = latest_observations[len(latest_observations) -1]
 				position = [measurement.position.x, measurement.position.y]
-				rospy.logwarn("position is: " + str(position) + " measurement is: " + str([measurement.signal_strength]))
+				#DEBUG rospy.logwarn("position is: " + str(position) + " measurement is: " + str([measurement.signal_strength]))
 				l = problem.likelihood(x, position, [measurement.signal_strength])
-				rospy.logwarn("probablity is: " + str(sum(l)))
+				#DEBUG rospy.logwarn("probablity is: " + str(sum(l)))
 				x, weights = SIR_step(x, weights, l)
-				rospy.logwarn("Particles are at: " +  str(x))
-				rospy.logwarn("particle weight 1 is: " + str(sum(weights)))
+				#DEBUG rospy.logwarn("Particles are at: " +  str(x))
+				#DEBUG rospy.logwarn("particle weight 1 is: " + str(sum(weights)))
 				visualizer.visualize(x, weights)
 		rate.sleep()
 

@@ -11,9 +11,12 @@ class Visualizer:
 			lifetime=rospy.Duration(1.5),
 			scale=Vector3(0, 0, 0.06),
 		)
-
+	robots = []
+	# visualizes a single robot state in RVIZ
 	def visualize(self, state):
-		# rospy.loginfo("%s has state %s and is currently at x = %d, y = %d, z=%d" % (state.robot_name, state.status, state.pose.pose.position.x,state.pose.pose.position.y,state.pose.pose.position.z))
+		if(not(state.robot_name in self.robots)):
+			self.robots.append(state.robot_name)
+		self.marker.id = self.robots.index(state.robot_name)
 		self.marker.header.stamp = rospy.get_rostime()
 		self.marker.pose = state.pose.pose
 		self.marker.text = 'Name: ' + state.robot_name + ' State: ' + state.status
@@ -33,4 +36,3 @@ class Visualizer:
 if __name__ == '__main__':
 	x = Visualizer('map')
 	rospy.spin()
-	
