@@ -30,7 +30,7 @@ def run_measurement_evaluation(subscriber, problem, num_particles, visualize):
 		observations = subscriber.get_measurements()
 		if (len(observations) > 0):
 			latest_observations = observations[len(observations) - 1].measurements
-			rospy.logwarn(latest_observations)
+			#DEBUG rospy.logwarn(latest_observations)
 			#Later it is supposed to work like this:
 			#for measurement in latest_observations.measurements:
 			if(len(latest_observations) > 0):
