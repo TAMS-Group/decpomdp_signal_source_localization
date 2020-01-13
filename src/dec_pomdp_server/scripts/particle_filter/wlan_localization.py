@@ -20,13 +20,13 @@ class WLANLocalization(Problem):
         d = compute_distance(source_locations.reshape(-1,2), l.reshape(-1,2))
         rss = self.rss_noiseless(d)
         fading = rss-z
-        rospy.logwarn("l, z: {0}, {1} d = {2} rss: {3}  fading: {4}".format(str(l), str(z), str(d), str(rss), str(fading)))
+        #rospy.logwarn("l, z: {0}, {1} d = {2} rss: {3}  fading: {4}".format(str(l), str(z), str(d), str(rss), str(fading)))
         if np.all(fading < 0):
             # ALL source locations have neg. fading, ignore this measurement
             p = np.ones(fading.shape)
         else:
             p = rice.pdf(fading, self.rice_b, scale=self.sigma)
-        rospy.logwarn("p = " + str(p))
+        #rospy.logwarn("p = " + str(p))
         return p
 
     def likelihood(self, source_locations, position1, observation1):
