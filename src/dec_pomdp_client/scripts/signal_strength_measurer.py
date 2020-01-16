@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 import subprocess
+import numpy as np
+import re
 
 class SignalStrengthMeasurer:
     def __init__(self):
@@ -8,20 +10,21 @@ class SignalStrengthMeasurer:
         self.last_signal_level = 0
 
     def takeMeasurement(self, ESSID):
-        measurements = getAllSignalStrengths()
+        measurements = self.getAllSignalStrengths()
         essid_string = 'ESSID:"' + ESSID + '"'
         measurements_for_essid = filter(lambda x: essid_string in x, measurements)
-        #TODO continue here       
-        link_quality = output[output.index(b"Link") + 1].decode("utf-8")
-        signal_level = output[output.index(b"Signal") + 1].decode("utf-8")
-        link_quality = link_quality.split('=')[1]
-        link_quality = link_quality.split('/')
-        self.last_link_quality_min = link_quality[0]
-        self.last_link_quality_max = link_quality[1]
-        self.last_signal_level = int(signal_level.split('=')[1])
-        return link_quality[0], link_quality[1], signal_level.split('=')[1]
+        dBms = []
+        for measurement in measurements_for_essid:
+            dBm = int(measurement[0].split('=')[1])
+            dBms.append(dBm)
+        #TODO continue here
+        sorted_dBms = np.sort(np.array(dBms))
+        if len(sorted_dBms) > 0:
+            return sorted_dBms[0]
+        else:
+            return False
 
-    def getAllSignalStrengths():
+    def getAllSignalStrengths(self):
         cmd = ["iwlist", "scanning"]
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         points = proc.stdout.read()
@@ -35,3 +38,11 @@ class SignalStrengthMeasurer:
             ))
             Output.append(cellinfo)
         return Output
+
+
+if __name__ == '__main__':
+    measurer = SignalStrengthMeasurer()
+    ESSID = input("ESSID = ?")
+    print(measurer.takeMeasurement(ESSID))
+    result = input("Continue ? ")
+    print(result)
