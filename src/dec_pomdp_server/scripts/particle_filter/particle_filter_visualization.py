@@ -10,12 +10,11 @@ class ParticleFilterVisualizer:
 	marker = Marker(
 			type= Marker.POINTS,
 			id=1,
-			lifetime=rospy.Duration(9),
+			lifetime=rospy.Duration(0),
 			scale=Vector3(0.1, 0.1, 0.06),
 		)
 
 	def visualize(self, particles, weights):
-		self.marker.id = 1
 		for i, particle in enumerate(particles):
 			self.marker.header.stamp = rospy.get_rostime()
 			position = Point(particle[0], particle[1], 0.0)

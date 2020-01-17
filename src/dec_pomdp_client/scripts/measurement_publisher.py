@@ -45,8 +45,7 @@ class MeasurementPublisher:
     def publish_measurements(self):
         self.previous_measurements.measurements.append(self.getMeasurement())
         self.publisher.publish(self.previous_measurements)
-        rospy.logwarn('got measurements: ')
-        rospy.logwarn(self.previous_measurements)
+        rospy.logwarn('got measurements! ')
 
 
 if __name__ == '__main__':
