@@ -28,7 +28,7 @@ class MeasurementPublisher:
 
     def getMeasurement(self):
         measurement_msg = Measurement()
-        link_quality, max_link_quality, signal_level = self.measurer.takeMeasurement()
+        signal_level = self.measurer.takeMeasurement('TurtleTest')
         try:
             now = rospy.Time.now()
             self.transformer.waitForTransform('map', 'base_footprint', now, rospy.Duration(3.0))
@@ -45,12 +45,15 @@ class MeasurementPublisher:
     def publish_measurements(self):
         self.previous_measurements.measurements.append(self.getMeasurement())
         self.publisher.publish(self.previous_measurements)
+        rospy.logwarn('got measurements: ')
+        rospy.logwarn(self.previous_measurements)
 
 
 if __name__ == '__main__':
     rospy.init_node('measurements')
-    rate = rospy.Rate(0.2) # to be removed later
+    rate = rospy.Rate(0.05) # to be removed later
     measurement_node = MeasurementPublisher()
     while not rospy.is_shutdown():
         measurement_node.publish_measurements()
+        rospy.logwarn('sleeping')
         rate.sleep()

@@ -2,27 +2,38 @@
 import subprocess
 import numpy as np
 import re
+import rospy
 
 class SignalStrengthMeasurer:
+    MAX_ATTEMPTS = 10
+
     def __init__(self):
         self.last_link_quality_min = 0
         self.last_link_quality_max = 0
         self.last_signal_level = 0
+        self.rate = rospy.Rate(0.5)
 
     def takeMeasurement(self, ESSID):
-        measurements = self.getAllSignalStrengths()
-        essid_string = 'ESSID:"' + ESSID + '"'
-        measurements_for_essid = filter(lambda x: essid_string in x, measurements)
-        dBms = []
-        for measurement in measurements_for_essid:
-            dBm = int(measurement[0].split('=')[1])
-            dBms.append(dBm)
-        #TODO continue here
-        sorted_dBms = np.sort(np.array(dBms))
-        if len(sorted_dBms) > 0:
-            return sorted_dBms[0]
-        else:
-            return False
+        tries = 0
+        while not rospy.is_shutdown():
+            measurements = self.getAllSignalStrengths()
+            essid_string = 'ESSID:"' + ESSID + '"'
+            measurements_for_essid = filter(lambda x: essid_string in x, measurements)
+            dBms = []
+            for measurement in measurements_for_essid:
+                dBm = int(measurement[0].split('=')[1])
+                dBms.append(dBm)
+                #TODO continue here
+            sorted_dBms = np.sort(np.array(dBms))
+            if len(sorted_dBms) > 0:
+                return sorted_dBms[0]
+            elif(tries > self.MAX_ATTEMPTS):
+                rospy.logwarn('Attempt unsuccessful. Maximum number of attempts reached')
+                return 0
+            else:
+                tries += 1
+                rospy.logwarn('Attempt to get measurement failed. retrying...')
+                self.rate.sleep()
 
     def getAllSignalStrengths(self):
         cmd = ["iwlist", "scanning"]
