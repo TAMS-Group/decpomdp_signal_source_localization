@@ -7,7 +7,7 @@ from scipy.special import jv as besseli
 from tools import compute_distance
 
 class WLANLocalization(Problem):
-    def __init__(self, locations, neighbours, Ptx=18.0, Gtx=1.5, Ltx=0.0, Grx=1.5, Lrx=0.0, v=2.4e9, mu=4.0, sigma=20.0):
+    def __init__(self, locations, neighbours, Ptx=16.0, Gtx=1.5, Ltx=0.0, Grx=1.5, Lrx=0.0, v=2.4e9, mu=4.0, sigma=20.0):
         super(WLANLocalization, self).__init__(locations, neighbours)
         self.RSS_base = Ptx + Gtx - Ltx + Grx - Lrx + 147.55 - 20*np.log10(v)
         self.sigma = sigma
