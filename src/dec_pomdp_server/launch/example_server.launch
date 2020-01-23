@@ -1,4 +1,5 @@
 <launch>
 	<node name="example_measurements" pkg="dec_pomdp_server" type="example_measurement_publisher.py"/>
 	<node name="measurements_evaluation" pkg="dec_pomdp_server" type="measurement_evaluation.py"/>
+	<node name="heartbeat_visualization" pkg="dec_pomdp_server" type="heartbeat_visualization.py"/>
 </launch>

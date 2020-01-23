@@ -9,7 +9,7 @@ class Visualizer:
 			type= Marker.TEXT_VIEW_FACING,
 			id=0,
 			lifetime=rospy.Duration(1.5),
-			scale=Vector3(0, 0, 0.06),
+			scale=Vector3(0, 0, 0.1),
 		)
 	robots = []
 	# visualizes a single robot state in RVIZ
@@ -24,9 +24,9 @@ class Visualizer:
 
 	def __init__(self, frame_id):
 		self.marker.header.frame_id = frame_id
-		self.marker.color.r = 1.0
-		self.marker.color.g = 1.0
-		self.marker.color.b = 1.0
+		self.marker.color.r = 0.0
+		self.marker.color.g = 0.0
+		self.marker.color.b = 0.0
 		self.marker.color.a = 1.0
 		rospy.init_node('heartbeat_visualization')
 		self.markerPublisher= rospy.Publisher('robotState', Marker, queue_size=1)
