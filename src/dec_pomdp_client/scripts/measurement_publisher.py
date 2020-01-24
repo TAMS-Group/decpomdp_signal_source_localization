@@ -5,6 +5,8 @@ import sys
 from dec_pomdp_msgs.msg import Measurement, Measurements
 from geometry_msgs.msg import PoseStamped
 from signal_strength_measurer import SignalStrengthMeasurer
+from dec_pomdp_msgs.srv import GetMeasurement
+
 
 class MeasurementPublisher:
     def __init__(self):
@@ -25,8 +27,9 @@ class MeasurementPublisher:
         self.base_footprint_msg.pose.orientation.w = 1
         self.base_footprint_msg.header.stamp = rospy.Time(0)
         self.measurer = SignalStrengthMeasurer()
+        self.service = rospy.Service('collect_measurements', GetMeasurement, self.handleGetMeasurment)
 
-    def getMeasurement(self):
+    def takeMeasurement(self):
         measurement_msg = Measurement()
         signal_level = self.measurer.takeMeasurement('TurtleTest')
         try:
@@ -42,17 +45,34 @@ class MeasurementPublisher:
             rospy.logwarn(str(e))
         return measurement_msg
 
-    def publish_measurements(self):
-        self.previous_measurements.measurements.append(self.getMeasurement())
-        self.publisher.publish(self.previous_measurements)
+    def collectMeasurement(self):
+        self.previous_measurements.measurements.append(self.takeMeasurement())
+
+    def handleGetMeasurment(self, srv_msg):
+        rospy.logwarn('GetsCalled')
+        rospy.logwarn(srv_msg.number)
+        starting_len = len(self.previous_measurements.measurements)
+        rospy.logwarn('starting_len')
+        rospy.logwarn(len(self.previous_measurements.measurements) < starting_len + srv_msg.number)
+        while ((len(self.previous_measurements.measurements) < (starting_len + srv_msg.number)) & (not rospy.is_shutdown())):
+            rospy.logwarn(len(self.previous_measurements.measurements))
+            rospy.sleep(1.)
+        result = Measurements()
+        result.measurements = self.previous_measurements.measurements[starting_len : starting_len + srv_msg.number]
+        self.publish_measurements(result)
+        return result
+
+
+    def publish_measurements(self, measurements):
+        self.publisher.publish(measurements)
         rospy.logwarn('got measurements! ')
 
 
 if __name__ == '__main__':
     rospy.init_node('measurements')
-    rate = rospy.Rate(0.05) # to be removed later
+    rate = rospy.Rate(1) # to be removed later
     measurement_node = MeasurementPublisher()
     while not rospy.is_shutdown():
-        measurement_node.publish_measurements()
+        measurement_node.collectMeasurement()
         rospy.logwarn('sleeping')
         rate.sleep()

@@ -20,6 +20,11 @@ add_message_files(
   Interval.msg
 )
 
+add_service_files(
+  FILES
+  GetMeasurement.srv
+)
+
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
   	DEPENDENCIES
