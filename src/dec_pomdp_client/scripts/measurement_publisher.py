@@ -70,7 +70,7 @@ class MeasurementPublisher:
 
 if __name__ == '__main__':
     rospy.init_node('measurements')
-    rate = rospy.Rate(1) # to be removed later
+    rate = rospy.Rate(2) # to be removed later
     measurement_node = MeasurementPublisher()
     while not rospy.is_shutdown():
         measurement_node.collectMeasurement()

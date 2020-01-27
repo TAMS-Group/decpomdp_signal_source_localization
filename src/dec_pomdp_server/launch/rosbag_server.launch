@@ -1,3 +1,3 @@
 <launch>
-	<node name="example_measurements" pkg="dec_pomdp_server" type="rosbag_player.py"/>
+	<node name="model_fitting_collector" pkg="dec_pomdp_server" type="model_fitting_collector.py"/>
 </launch>
