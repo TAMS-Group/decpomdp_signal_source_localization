@@ -153,6 +153,7 @@ add_library(NPGIParticles
 
 add_executable(${PROJECT_NAME}
 				src/main.cpp
+				src/DecPOMDPPublisher.cpp
 				)
 
 add_executable(solve_graphsensing
