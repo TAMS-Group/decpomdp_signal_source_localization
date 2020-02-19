@@ -36,6 +36,7 @@ endif()
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+	dec_pomdp_msgs
 )
 
 catkin_package(
@@ -152,7 +153,6 @@ add_library(NPGIParticles
 				src/ParticleUtilities.cpp)
 
 add_executable(${PROJECT_NAME}
-				src/main.cpp
 				src/DecPOMDPPublisher.cpp
 				)
 
@@ -161,7 +161,7 @@ add_executable(solve_graphsensing
 				src/GraphSensingProblem.cpp
 				)
 
-target_link_libraries(${PROJECT_NAME} MADPWrapper Base NPGIPlanner ${Boost_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} MADPWrapper Base NPGIPlanner ${Boost_LIBRARIES})
 target_link_libraries(solve_graphsensing Base NPGIParticles ${Boost_LIBRARIES})
 
 

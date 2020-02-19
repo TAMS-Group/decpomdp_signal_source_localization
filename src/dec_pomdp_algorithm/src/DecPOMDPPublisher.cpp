@@ -1,6 +1,6 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
-
+#include "dec_pomdp_msgs/Policy.h"
 #include <sstream>
 
 /**
@@ -19,7 +19,7 @@ int main(int argc, char **argv)
    * You must call one of the versions of ros::init() before using any other
    * part of the ROS system.
    */
-  ros::init(argc, argv, "babbler");
+  ros::init(argc, argv, "dec_pomdp_publisher");
 
   /**
    * NodeHandle is the main access point to communications with the ROS system.
@@ -45,7 +45,7 @@ int main(int argc, char **argv)
    * than we can send them, the number here specifies how many messages to
    * buffer up before throwing some away.
    */
-  ros::Publisher pub = n.advertise<std_msgs::String>("babble", 1000);
+  ros::Publisher decPomdpPub = n.advertise<dec_pomdp_msgs::Policy>("dec_pomdp", 10);
 
   /**
    * A count of how many messages we have sent. This is used to create
@@ -58,12 +58,7 @@ int main(int argc, char **argv)
     /**
      * This is a message object. You stuff it with data, and then publish it.
      */
-    std_msgs::String msg;
-
-    std::stringstream ss;
-    ss << "hello world " << count;
-    ROS_INFO("%s", ss.str().c_str());
-    msg.data = ss.str();
+    dec_pomdp_msgs::Policy policy;
 
     /**
      * The publish() function is how you send messages. The parameter
@@ -71,7 +66,7 @@ int main(int argc, char **argv)
      * given as a template parameter to the advertise<>() call, as was done
      * in the constructor above.
      */
-    pub.publish(msg);
+    decPomdpPub.publish(policy);
     ++count;
 
     ros::spinOnce();
