@@ -154,6 +154,7 @@ add_library(NPGIParticles
 
 add_executable(${PROJECT_NAME}
 				src/DecPOMDPPublisher.cpp
+				src/GraphSensingProblem.cpp
 				)
 
 add_executable(solve_graphsensing
@@ -161,7 +162,7 @@ add_executable(solve_graphsensing
 				src/GraphSensingProblem.cpp
 				)
 
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} MADPWrapper Base NPGIPlanner ${Boost_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} MADPWrapper Base NPGIPlanner NPGIParticles ${Boost_LIBRARIES})
 target_link_libraries(solve_graphsensing Base NPGIParticles ${Boost_LIBRARIES})
 
 
