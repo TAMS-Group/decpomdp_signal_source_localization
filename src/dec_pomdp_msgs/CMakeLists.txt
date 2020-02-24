@@ -20,9 +20,11 @@ add_message_files(
   Interval.msg
 )
 
+## Generate services in the 'srv' folder
 add_service_files(
   FILES
   GetMeasurement.srv
+  PublishPolicies.srv
 )
 
 ## Generate added messages and services with any dependencies listed here

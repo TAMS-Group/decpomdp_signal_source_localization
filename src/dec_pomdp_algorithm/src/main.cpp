@@ -58,35 +58,33 @@ int main(int argc, char** argv) {
   po::options_description config("NPGI planner for (Dec)POMDPs \nUsage: " +
                                  std::string(argv[0]) +
                                  " [OPTION]... [DPOMDP-FILE]\nOptions");
-  config.add_options()("help", "produce help message")(
-      "verbose,v", po::bool_switch()->default_value(false),
-      "toggle for verbose output")(
-      "horizon,h", po::value<unsigned int>(&horizon)->default_value(3),
-      "problem horizon")("policy-width,w",
-                         po::value<unsigned int>(&width)->default_value(3),
-                         "policy width")(
-      "policy-initialization,p",
+  config.add_options()
+  ("help", "produce help message")
+  ("verbose,v", po::bool_switch()->default_value(false),
+      "toggle for verbose output")
+  ("horizon,h", po::value<unsigned int>(&horizon)->default_value(3), "problem horizon")
+  ("policy-width,w", po::value<unsigned int>(&width)->default_value(3), "policy width")
+  ("policy-initialization,p",
       po::value<pgi::PolicyInitialization>(&policy_initialization)
           ->default_value(pgi::PolicyInitialization::random),
-      "policy initialization type: (random | greedy | blind)")(
-      "blind-action,b",
+      "policy initialization type: (random | greedy | blind)")
+  ("blind-action,b",
       po::value<std::size_t>(&blind_policy_initial_joint_action)
           ->default_value(0),
-      "action for blind policy initialization")(
-      "improvement-steps,i",
+      "action for blind policy initialization")
+  ("improvement-steps,i",
       po::value<int>(&improvement_steps)->default_value(9),
-      "number of policy improvement steps")(
-      "use-lower-bound,l", po::bool_switch()->default_value(false),
-      "toggle to use lower bound")(
-      "use-entropy-reward,e", po::bool_switch()->default_value(false),
-      "toggle to use expected posterior entropy as final step reward")(
-      "use-sparse,t", po::bool_switch()->default_value(false),
-      "toggle to use sparse")(
-      "seed,s", po::value<unsigned int>(&rng_seed)->default_value(1234567890),
-      "random number seed")("output-prefix,o",
-                            po::value<std::string>()->default_value("./"),
-                            "output prefix")(
-      "max-cache-size,m",
+      "number of policy improvement steps")
+  ("use-lower-bound,l", po::bool_switch()->default_value(false),
+      "toggle to use lower bound")
+  ("use-entropy-reward,e", po::bool_switch()->default_value(false),
+      "toggle to use expected posterior entropy as final step reward")
+  ("use-sparse,t", po::bool_switch()->default_value(false),
+      "toggle to use sparse")
+  ("seed,s", po::value<unsigned int>(&rng_seed)->default_value(1234567890),
+      "random number seed")
+  ("output-prefix,o", po::value<std::string>()->default_value("./"), "output prefix")
+  ("max-cache-size,m",
       po::value<std::size_t>(&max_history_cache_size)->default_value(5e7),
       "maximum history cache size");
 

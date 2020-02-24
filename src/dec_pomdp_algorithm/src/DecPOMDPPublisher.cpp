@@ -1,5 +1,40 @@
+/*ROS related Imports*/
 #include "ros/ros.h"
 #include "dec_pomdp_msgs/Policy.h"
+#include "dec_pomdp_msgs/PublishPolicies.h"
+/*Dec POMDP Algorithm imports*/
+#include "BackwardPass.h"
+#include "Belief.hpp"
+#include "DecPOMDPDiscrete.h"
+#include "HistoryCache.hpp"
+#include "JointPolicy.h"
+#include "JointPolicyUtilities.h"
+#include "MADPWrapper.h"
+#include "MADPWrapperUtils.h"
+#include "PRNG.h"
+#include "PolicyInitialization.h"
+#include "ValueFunction.h"
+
+#include <boost/program_options.hpp>
+#include <chrono>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+
+/* Global Variables */
+unsigned int RNG_SEED = 1234567890;
+unsigned int HORIZON = 10;
+unsigned int WIDTH = 3;
+int IMPROVEMENT_STEPS = 9;
+
+bool publishPolicies(dec_pomdp_msgs::PublishPolicies::Request &req,
+                dec_pomdp_msgs::PublishPolicies::Response &res)
+{
+  res.successful = false;
+  ROS_INFO("Request: number = %ld", (long int)req.number_of_agents);
+  return true;
+}
 
 int main(int argc, char **argv)
 {
@@ -21,6 +56,9 @@ int main(int argc, char **argv)
    * NodeHandle destructed will close down the node.
    */
   ros::NodeHandle n;
+  ros::ServiceServer policy_service = n.advertiseService("publish_policies", publishPolicies);
+  ROS_INFO("Policy service ready to go");
+  ros::spin();
 
   /**
    * The advertise() function is how you tell ROS that you want to
@@ -39,33 +77,33 @@ int main(int argc, char **argv)
    * than we can send them, the number here specifies how many messages to
    * buffer up before throwing some away.
    */
-  ros::Publisher decPomdpPub = n.advertise<dec_pomdp_msgs::Policy>("dec_pomdp", 10);
-
-  /**
-   * A count of how many messages we have sent. This is used to create
-   * a unique string for each message.
-   */
-  int count = 0;
-  ros::Rate r(10);
-  while (n.ok())
-  {
-    /**
-     * This is a message object. You stuff it with data, and then publish it.
-     */
-    dec_pomdp_msgs::Policy policy;
-
-    /**
-     * The publish() function is how you send messages. The parameter
-     * is the message object. The type of this object must agree with the type
-     * given as a template parameter to the advertise<>() call, as was done
-     * in the constructor above.
-     */
-    decPomdpPub.publish(policy);
-    ++count;
-
-    ros::spinOnce();
-    r.sleep();
-  }
+  // ros::Publisher decPomdpPub = n.advertise<dec_pomdp_msgs::Policy>("dec_pomdp", 10);
+  //
+  // /**
+  //  * A count of how many messages we have sent. This is used to create
+  //  * a unique string for each message.
+  //  */
+  // int count = 0;
+  // ros::Rate r(10);
+  // while (n.ok())
+  // {
+  //   /**
+  //    * This is a message object. You stuff it with data, and then publish it.
+  //    */
+  //   dec_pomdp_msgs::Policy policy;
+  //
+  //   /**
+  //    * The publish() function is how you send messages. The parameter
+  //    * is the message object. The type of this object must agree with the type
+  //    * given as a template parameter to the advertise<>() call, as was done
+  //    * in the constructor above.
+  //    */
+  //   decPomdpPub.publish(policy);
+  //   ++count;
+  //
+  //   ros::spinOnce();
+  //   r.sleep();
+  // }
 
 
   return 0;
