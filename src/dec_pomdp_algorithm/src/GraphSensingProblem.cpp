@@ -42,6 +42,8 @@ void sample_initial_states(std::vector<state_t>& states, int num, PRNG& rng) {
     states[i] = sample_initial_state(rng);
 }
 
+// TODO For this sampling of the initial state i need more input parameters,
+// to specifiy the size of the map and the given starting positions of the robots
 state_t sample_initial_state(PRNG& rng)
 {
   state_t s;

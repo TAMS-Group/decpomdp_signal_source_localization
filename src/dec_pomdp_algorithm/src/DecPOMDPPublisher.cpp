@@ -1,5 +1,11 @@
+/**
+* Disclaimer:
+* This code is partially supplied/copied from https://github.com/laurimi/npgi
+*/
+
 /*ROS related Imports*/
 #include "ros/ros.h"
+#include <ros/console.h>
 #include "dec_pomdp_msgs/Policy.h"
 #include "dec_pomdp_msgs/GeneratePolicies.h"
 /*Dec POMDP Algorithm imports*/
@@ -39,6 +45,7 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
   double sy
 )
 {
+  ROS_INFO("Generating Policies...");
   pgi::PRNG rng(rng_seed);
 
   // Create the GraphSensing Dec-POMDP problem
@@ -51,7 +58,7 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
       pgi::GraphSensing::rss_joint_observation_space;
   pgi::GraphSensing::RSSObservationModel o;
 
-  // Initialize policy
+  // Initialize localy policy graphs
   std::vector<pgi::PolicyGraph> local_policy_graphs;
   for (std::size_t agent = 0; agent < jas.num_local_spaces(); ++agent) {
     local_policy_graphs.emplace_back(pgi::fixed_width(
@@ -59,17 +66,21 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
         jos.num_local_indices(agent)));
   }
 
+  // Determine the way the policies are supposed to be initialized
   if (policy_initialization == pgi::PolicyInitialization::random) {
+    ROS_INFO("Random policy Initialization");
     pgi::set_random(local_policy_graphs, rng);
   } else if (policy_initialization == pgi::PolicyInitialization::greedy) {
     throw std::runtime_error(
         "Greedy open loop initialization not implemented for continuous-state "
         "problems!");
   } else if (policy_initialization == pgi::PolicyInitialization::blind) {
+    ROS_INFO("Blind policy Initialization");
     pgi::set_random(local_policy_graphs,
                     rng);  // to randomize the edges in the policy
     pgi::set_blind(local_policy_graphs, blind_policy_initial_joint_action, jas);
   }
+  // Create JointPolicy using the local policy graphs
   pgi::JointPolicy jp(local_policy_graphs);
 
   // Create initial belief
@@ -78,48 +89,55 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
     pgi::GraphSensing::sample_initial_states_gaussian(
         init_particles.states_, num_particles_fwd,
         pgi::GraphSensing::location_t{mx, my}, sx, sy, rng);
+    ROS_INFO("Particle Filter initialized with gaussian distributed particles");
   } else {
+    // creates an initial state for two agents and certain bounds
     pgi::GraphSensing::sample_initial_states(init_particles.states_,
                                              num_particles_fwd, rng);
+    ROS_INFO("Particle Filter initialized with random particle locations");
   }
   init_particles.nodes_ =
       std::vector<pgi::JointPolicy::joint_vertex_t>(num_particles_fwd, jp.root());
   init_particles.weights_ = std::vector<double>(
       num_particles_fwd, 1.0 / static_cast<double>(num_particles_fwd));
 
-  // TODO Where to go with this output
-  std::string output_prefix = "~/Documents/Bachelor/tmp_test_results/";
-  std::ofstream fvalue(output_prefix +
-                       "policy_values.txt");
-  std::ofstream ftime(output_prefix +
-                      "duration_microseconds.txt");
+  //D// TODO Where to go with this output
+  //D// std::string output_prefix = "~/Documents/Bachelor/tmp_test_results/";
+  //D// std::ofstream fvalue(output_prefix +
+  //D//                      "policy_values.txt");
+  //D// std::ofstream ftime(output_prefix +
+  //D//                     "duration_microseconds.txt");
 
-  // Get value of initial policy
+  // Get value of initial policy and write it to a log Document (The logging part could potentially be replaced by ROS Logging)
+  // Also keep it to compare later created policies to this.
   double best_value = estimate_value(num_rollouts, init_particles.states_,
                                      init_particles.weights_, jp, jp.root(), t,
                                      o, r, jas, jos, rng);
 
-  fvalue << best_value << std::endl;
-  std::cout << "Policy value: " << best_value << std::endl;
+  //D// fvalue << best_value << std::endl;
+  ROS_INFO_STREAM("Policy value: " << best_value);
+  //D// std::cout << "Policy value: " << best_value << std::endl;
 
   // TODO Where should the initial best policy and value be written to
-  for (std::size_t agent = 0; agent < jas.num_local_spaces(); ++agent) {
-    std::ofstream fs(output_prefix +
-                     "best_policy_agent" + std::to_string(agent) + ".dot");
-    print(fs, jp.local_policy(agent), pgi::element_names(jas.get(agent)),
-          pgi::element_names(jos.get(agent)));
-  }
+  // Should problaby be unnecessary....
+  //D//for (std::size_t agent = 0; agent < jas.num_local_spaces(); ++agent) {
+  //D//  std::ofstream fs(output_prefix +
+  //D//                   "best_policy_agent" + std::to_string(agent) + ".dot");
+  //D//  print(fs, jp.local_policy(agent), pgi::element_names(jas.get(agent)),
+  //D//        pgi::element_names(jos.get(agent)));
+  //D//}
 
-  std::ofstream fs(output_prefix + "best_value.txt");
-  fs << best_value << std::endl;
+  //D//std::ofstream fs(output_prefix + "best_value.txt");
+  //D//  fs << best_value << std::endl;
 
   // Backward pass setup
   pgi::backpass::BackPassProperties props;
   props.prob_random_history_in_heuristic_improvement = 0.05;
 
+  ROS_INFO_STREAM("Improving the Policies over " << improvement_steps << " Improvement Steps");
   for (int i = 1; i <= improvement_steps; ++i) {
-
     // sample new set of particles for improvement
+    ROS_INFO_STREAM("Step "<< i << ": Resampling particles");
     if (gaussian) {
       pgi::GraphSensing::sample_initial_states_gaussian(
           init_particles.states_, num_particles_fwd,
@@ -141,46 +159,37 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
         std::chrono::high_resolution_clock::now();
     auto duration =
         std::chrono::duration_cast<std::chrono::microseconds>(t3 - t1).count();
-    // ftime << duration << std::endl;
+    ROS_INFO_STREAM("Step "<< i << ": Improved particles in " << duration << " microseconds");
 
-    // check
+    // check the new policies value
     double improved_policy_value = estimate_value(
         num_rollouts, init_particles.states_, init_particles.weights_, bp.improved_policy,
         bp.improved_policy.root(), t, o, r, jas, jos, rng);
-
-    // fvalue << improved_policy_value << std::endl;
+    ROS_INFO_STREAM("Step "<< i << ": Value of improved policy= "<< improved_policy_value);
 
     if (improved_policy_value > best_value) {
       best_value = improved_policy_value;
       jp = bp.improved_policy;
-
+      ROS_INFO_STREAM("Step "<< i << ": The new joint policy is better then the old one.");
       // TODO Again where to put this information
       // Update best value and policy!
-      for (std::size_t agent = 0; agent < jas.num_local_spaces(); ++agent) {
-        std::ofstream fs(output_prefix +
-                         "best_policy_agent" + std::to_string(agent) + ".dot");
-        print(fs, jp.local_policy(agent), pgi::element_names(jas.get(agent)),
-              pgi::element_names(jos.get(agent)));
-      }
-
-      std::ofstream fs(output_prefix + "best_value.txt");
-      fs << best_value << std::endl;
+      // for (std::size_t agent = 0; agent < jas.num_local_spaces(); ++agent) {
+      //   std::ofstream fs(output_prefix +
+      //                    "best_policy_agent" + std::to_string(agent) + ".dot");
+      //   print(fs, jp.local_policy(agent), pgi::element_names(jas.get(agent)),
+      //         pgi::element_names(jos.get(agent)));
+      // }
+      //
+      // std::ofstream fs(output_prefix + "best_value.txt");
+      // fs << best_value << std::endl;
     }
-    // TODO where schould this be written to ???
-    std::cout << "Step " << i << " of " << improvement_steps << ": "
-              << improved_policy_value << " (best: " << best_value << ")"
-              << ", " << duration << " microseconds" << std::endl;
 
-    std::ostringstream ss;
-    ss << output_prefix << "/step" << std::setw(3)
-       << std::setfill('0') << i << "_";
-
-    for (std::size_t agent = 0; agent < jas.num_local_spaces(); ++agent) {
-      std::ofstream fs(ss.str() + "agent" + std::to_string(agent) + ".dot");
-      print(fs, bp.improved_policy.local_policy(agent),
-            pgi::element_names(jas.get(agent)),
-            pgi::element_names(jos.get(agent)));
-    }
+    // for (std::size_t agent = 0; agent < jas.num_local_spaces(); ++agent) {
+    //   std::ofstream fs(ss.str() + "agent" + std::to_string(agent) + ".dot");
+    //   print(fs, bp.improved_policy.local_policy(agent),
+    //         pgi::element_names(jas.get(agent)),
+    //         pgi::element_names(jos.get(agent)));
+    // }
   }
 
   pgi::ForwardPassParticle<pgi::GraphSensing::state_t> fwd(init_particles, jp,
@@ -197,8 +206,7 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
       std::cout << ": " << p.weights_.size() << " particles\n";
     }
   }
-
-  return local_policy_graphs;
+  return jp.local_policies();
 }
 
 bool generatePolicies(dec_pomdp_msgs::GeneratePolicies::Request &req,
