@@ -209,20 +209,33 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
   return jp.local_policies();
 }
 
+dec_pomdp_msgs::Policy policyToMsg(pgi::PolicyGraph policy, std::string robot_name, int agent_start){
+  dec_pomdp_msgs::Policy result;
+  result.robot_name = robot_name;
+  result.starting_node = agent_start;
+  std::pair<boost::adjacency_list<>::vertex_iterator,
+            boost::adjacency_list<>::vertex_iterator> vertices = boost::vertices(policy);
+  for (boost::vertex vert = vertices.first; vert < vertices.second; vert++){
+    ROS_INFO_STREAM("This variable is: " << typeid(x).name());
+  }
+  return result;
+}
+
 bool generatePolicies(dec_pomdp_msgs::GeneratePolicies::Request &req,
                 dec_pomdp_msgs::GeneratePolicies::Response &res)
 {
-  dec_pomdp_msgs::Policy policy;
 
   /* Insert Code to generate policy and transform it to fit policy msg */
   std::vector<pgi::PolicyGraph> policyGraphs = generatePolicies(1234567890, 3, 3, 9, 1000, 100, 100, 0, pgi::PolicyInitialization::random, false, 0.1, 0.1, 0.1, 0.1);
   /* Finish publishing policies and give response to service request */
+
   std::vector<dec_pomdp_msgs::Policy> result;
-  result.push_back(policy);
-  decPomdpPub.publish(policy);
 
   res.policies = result;
-  for (auto i = policyGraphs.begin(); i != policyGraphs.end(); ++i){
+  for (pgi::PolicyGraph policy: policyGraphs){
+    dec_pomdp_msgs::Policy policyMsg = policyToMsg(policy, "Test Name", 0);
+    result.push_back(policyMsg);
+    decPomdpPub.publish(policyMsg);
     ROS_WARN("Done");
   }
   return true;
