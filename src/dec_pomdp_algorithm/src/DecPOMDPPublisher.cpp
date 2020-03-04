@@ -114,9 +114,8 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
                                      init_particles.weights_, jp, jp.root(), t,
                                      o, r, jas, jos, rng);
 
-  //D// fvalue << best_value << std::endl;
   ROS_INFO_STREAM("Policy value: " << best_value);
-  //D// std::cout << "Policy value: " << best_value << std::endl;
+
 
   // TODO Where should the initial best policy and value be written to
   // Should problaby be unnecessary....
@@ -173,7 +172,7 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
       ROS_INFO_STREAM("Step "<< i << ": The new joint policy is better then the old one.");
       // TODO Again where to put this information
       // Update best value and policy!
-      // for (std::size_t agent = 0; agent < jas.num_local_spaces(); ++agent) {
+      //for (std::size_t agent = 0; agent < jas.num_local_spaces(); ++agent) {
       //   std::ofstream fs(output_prefix +
       //                    "best_policy_agent" + std::to_string(agent) + ".dot");
       //   print(fs, jp.local_policy(agent), pgi::element_names(jas.get(agent)),
@@ -212,32 +211,54 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
 dec_pomdp_msgs::Policy policyToMsg(pgi::PolicyGraph policy, std::string robot_name, int agent_start){
   dec_pomdp_msgs::Policy result;
   result.robot_name = robot_name;
+  pgi::vertex_t start = pgi::find_root(policy);
+  ROS_INFO_STREAM("Starting node: " << start);
   result.starting_node = agent_start;
-  std::pair<boost::adjacency_list<>::vertex_iterator,
-            boost::adjacency_list<>::vertex_iterator> vertices = boost::vertices(policy);
-  for (boost::vertex vert = vertices.first; vert < vertices.second; vert++){
-    ROS_INFO_STREAM("This variable is: " << typeid(x).name());
+  // Log the action space
+  pgi::JointActionSpace jas = pgi::GraphSensing::joint_action_space;
+  std::vector<std::string> actions = pgi::element_names(jas.get(0));
+  for (auto const& action : actions){
+    ROS_INFO_STREAM("Action: "<< action);
   }
+  // log the joint observation space
+  pgi::JointObservationSpace jos = pgi::GraphSensing::rss_joint_observation_space;
+  std::vector<std::string> observations = pgi::element_names(jos.get(0));
+  for (auto const& observation : observations){
+    ROS_INFO_STREAM("Observation: "<< observation);
+  }
+
+  // iterate over all vertices of the policy graphs
+  pgi::PolicyGraph::vertex_iterator vstart, vend;
+  for (boost::tie(vstart, vend) = vertices(policy); vstart != vend; ++vstart){
+    ROS_INFO_STREAM("This variable is: " << *vstart);
+  }
+
+  std::pair<pgi::edge_t, pgi::edge_t> ei = edges(policy);
+
+  for (pgi::edge_t it = ei.first; it != ei.second; ++it )
+  {
+      ROS_INFO_STREAM("Edge: "<< *it);
+  }
+
+
   return result;
 }
 
 bool generatePolicies(dec_pomdp_msgs::GeneratePolicies::Request &req,
                 dec_pomdp_msgs::GeneratePolicies::Response &res)
 {
-
   /* Insert Code to generate policy and transform it to fit policy msg */
-  std::vector<pgi::PolicyGraph> policyGraphs = generatePolicies(1234567890, 3, 3, 9, 1000, 100, 100, 0, pgi::PolicyInitialization::random, false, 0.1, 0.1, 0.1, 0.1);
+  std::vector<pgi::PolicyGraph> policyGraphs = generatePolicies(1234567890, 3, 3, 2, 1000, 100, 100, 0, pgi::PolicyInitialization::random, false, 0.1, 0.1, 0.1, 0.1);
   /* Finish publishing policies and give response to service request */
-
   std::vector<dec_pomdp_msgs::Policy> result;
-
-  res.policies = result;
+  // for (std::size_t agent = 0; agent < jas.num_local_spaces(); ++agent)
   for (pgi::PolicyGraph policy: policyGraphs){
     dec_pomdp_msgs::Policy policyMsg = policyToMsg(policy, "Test Name", 0);
     result.push_back(policyMsg);
     decPomdpPub.publish(policyMsg);
-    ROS_WARN("Done");
+    ROS_WARN_STREAM("Done: " << policyMsg.robot_name);
   }
+  res.policies = result;
   return true;
 }
 
