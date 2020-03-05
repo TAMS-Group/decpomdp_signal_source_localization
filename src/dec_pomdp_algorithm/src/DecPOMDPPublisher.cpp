@@ -228,8 +228,6 @@ dec_pomdp_msgs::Policy policyToMsg(pgi::PolicyGraph policy, std::string robot_na
   }
 
   // iterate over all vertices of the policy graphs
-  // pgi::PolicyGraph::vertex_iterator vstart, vend;
-  // for (boost::tie(vstart, vend) = vertices(policy); vstart != vend; ++vstart){
   for (pgi::vertex_t vert : boost::make_iterator_range(boost::vertices(policy))){
     ROS_INFO_STREAM("For Vert: "<< vert << " the following out edges exist:");
     result.nodes.push_back(vert);
