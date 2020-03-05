@@ -228,18 +228,23 @@ dec_pomdp_msgs::Policy policyToMsg(pgi::PolicyGraph policy, std::string robot_na
   }
 
   // iterate over all vertices of the policy graphs
-  pgi::PolicyGraph::vertex_iterator vstart, vend;
-  for (boost::tie(vstart, vend) = vertices(policy); vstart != vend; ++vstart){
-    ROS_INFO_STREAM("This variable is: " << *vstart);
+  // pgi::PolicyGraph::vertex_iterator vstart, vend;
+  // for (boost::tie(vstart, vend) = vertices(policy); vstart != vend; ++vstart){
+  for (pgi::vertex_t vert : boost::make_iterator_range(boost::vertices(policy))){
+    ROS_INFO_STREAM("For Vert: "<< vert << " the following out edges exist:");
+    result.nodes.push_back(vert);
+    dec_pomdp_msgs::NodeTransition transition;
+    transition.node_number = vert;
+    for (pgi::edge_t out : boost::make_iterator_range(boost::out_edges(vert, policy))){
+      ROS_INFO_STREAM("Vert: " << vert << " and Edge: " << out);
+      dec_pomdp_msgs::Edge edge;
+      edge.node_number = boost::target(out, policy);
+      // TODO insert interval for edge
+      transition.edges.push_back(edge);
+    }
+    // TODO Insert NodeAction for node !!!
+    result.transitions.push_back(transition);
   }
-
-  std::pair<pgi::edge_t, pgi::edge_t> ei = edges(policy);
-
-  for (pgi::edge_t it = ei.first; it != ei.second; ++it )
-  {
-      ROS_INFO_STREAM("Edge: "<< *it);
-  }
-
 
   return result;
 }
