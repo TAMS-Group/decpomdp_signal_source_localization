@@ -250,12 +250,16 @@ bool generatePolicies(dec_pomdp_msgs::GeneratePolicies::Request &req,
                 dec_pomdp_msgs::GeneratePolicies::Response &res)
 {
   /* Insert Code to generate policy and transform it to fit policy msg */
-  std::vector<pgi::PolicyGraph> policyGraphs = generatePolicies(1234567890, 3, 3, 2, 1000, 100, 100, 0, pgi::PolicyInitialization::random, false, 0.1, 0.1, 0.1, 0.1);
+  std::vector<pgi::PolicyGraph> policyGraphs = generatePolicies(req.seed, req.horizon, req.width, req.improvement_steps, req.num_particles, req.num_rollouts, req.num_particles_rollout, 0, pgi::PolicyInitialization::random, req.gaussian, req.mx, req.my, req.sx, req.sy);
   /* Finish publishing policies and give response to service request */
   std::vector<dec_pomdp_msgs::Policy> result;
-  // for (std::size_t agent = 0; agent < jas.num_local_spaces(); ++agent)
-  for (pgi::PolicyGraph policy: policyGraphs){
-    dec_pomdp_msgs::Policy policyMsg = policyToMsg(policy, "Test Name", 0);
+  for (uint i = 0; i < policyGraphs.size(); i++){
+    pgi::PolicyGraph policy = policyGraphs[i];
+    std::string robot_name = "TestName";
+    if(i < req.agents.size()){
+      robot_name = req.agents[i];
+    }
+    dec_pomdp_msgs::Policy policyMsg = policyToMsg(policy, robot_name, 0);
     result.push_back(policyMsg);
     decPomdpPub.publish(policyMsg);
     ROS_WARN_STREAM("Done: " << policyMsg.robot_name);
