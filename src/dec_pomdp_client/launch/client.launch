@@ -15,6 +15,7 @@
 - /measurements
 - /map
 - /tf
+- $(env TURTLEBOT_NAME)/policy
 </rosparam>
 	</node>
 </launch>

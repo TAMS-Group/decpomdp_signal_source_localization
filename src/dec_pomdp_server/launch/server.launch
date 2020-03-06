@@ -15,6 +15,7 @@
 - /measurements
 - /map
 - /tf
+- /leo/policy
 </rosparam>
 	</node>
 </launch>
