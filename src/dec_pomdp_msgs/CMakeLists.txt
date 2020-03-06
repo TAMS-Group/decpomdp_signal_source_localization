@@ -25,6 +25,7 @@ add_service_files(
   FILES
   GetMeasurement.srv
   GeneratePolicies.srv
+  StartExperiment.srv
 )
 
 ## Generate added messages and services with any dependencies listed here

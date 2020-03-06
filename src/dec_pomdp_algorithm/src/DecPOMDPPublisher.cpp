@@ -101,12 +101,12 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
   init_particles.weights_ = std::vector<double>(
       num_particles_fwd, 1.0 / static_cast<double>(num_particles_fwd));
 
-  //D// TODO Where to go with this output
-  //D// std::string output_prefix = "~/Documents/Bachelor/tmp_test_results/";
-  //D// std::ofstream fvalue(output_prefix +
-  //D//                      "policy_values.txt");
-  //D// std::ofstream ftime(output_prefix +
-  //D//                     "duration_microseconds.txt");
+  // TODO Where to go with this output
+  // std::string output_prefix = "~/Documents/Bachelor/tmp_test_results/";
+  // std::ofstream fvalue(output_prefix +
+  //                      "policy_values.txt");
+  // std::ofstream ftime(output_prefix +
+  //                     "duration_microseconds.txt");
 
   // Get value of initial policy and write it to a log Document (The logging part could potentially be replaced by ROS Logging)
   // Also keep it to compare later created policies to this.
@@ -118,16 +118,15 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
 
 
   // TODO Where should the initial best policy and value be written to
-  // Should problaby be unnecessary....
-  //D//for (std::size_t agent = 0; agent < jas.num_local_spaces(); ++agent) {
-  //D//  std::ofstream fs(output_prefix +
-  //D//                   "best_policy_agent" + std::to_string(agent) + ".dot");
-  //D//  print(fs, jp.local_policy(agent), pgi::element_names(jas.get(agent)),
-  //D//        pgi::element_names(jos.get(agent)));
-  //D//}
+  //for (std::size_t agent = 0; agent < jas.num_local_spaces(); ++agent) {
+  //  std::ofstream fs(output_prefix +
+  //                   "best_policy_agent" + std::to_string(agent) + ".dot");
+  //  print(fs, jp.local_policy(agent), pgi::element_names(jas.get(agent)),
+  //        pgi::element_names(jos.get(agent)));
+  //}
 
-  //D//std::ofstream fs(output_prefix + "best_value.txt");
-  //D//  fs << best_value << std::endl;
+  //std::ofstream fs(output_prefix + "best_value.txt");
+  //  fs << best_value << std::endl;
 
   // Backward pass setup
   pgi::backpass::BackPassProperties props;
@@ -170,7 +169,7 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
       best_value = improved_policy_value;
       jp = bp.improved_policy;
       ROS_INFO_STREAM("Step "<< i << ": The new joint policy is better then the old one.");
-      // TODO Again where to put this information
+      // TODO Again how do i log this information to a File
       // Update best value and policy!
       //for (std::size_t agent = 0; agent < jas.num_local_spaces(); ++agent) {
       //   std::ofstream fs(output_prefix +
@@ -270,7 +269,7 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "dec_pomdp_publisher");
   ros::NodeHandle n;
   decPomdpPub = n.advertise<dec_pomdp_msgs::Policy>("dec_pomdp", 10);
-  ros::ServiceServer policy_service = n.advertiseService("publish_policies", generatePolicies);
+  ros::ServiceServer policy_service = n.advertiseService("generate_policies", generatePolicies);
   ROS_WARN("Policy service ready to go");
   ros::spin();
 

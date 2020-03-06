@@ -1,3 +1,15 @@
+uint32 seed
+uint32 horizon
+uint32 width
+int32 improvement_steps
+int32 num_particles
+int32 num_rollouts
+int32 num_particles_rollout
+bool gaussian
+float64 mx
+float64 my
+float64 sx
+float64 sy
 string[] agents
 ---
 Policy[] policies
