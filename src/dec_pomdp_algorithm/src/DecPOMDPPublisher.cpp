@@ -49,6 +49,11 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
   pgi::PRNG rng(rng_seed);
 
   // Create the GraphSensing Dec-POMDP problem
+  // The code below should technically work :S
+  // std::map<std::string, std::map<std::string, float>> locations;
+  // std::map<std::string, std::vector<int>> allowed_moves;
+  // ros::param::get("planner/locations", locations);
+  // ros::param::get("planner/allowed_moves", allowed_moves);
   pgi::JointActionSpace jas = pgi::GraphSensing::joint_action_space;
   pgi::GraphSensing::StateTransitionModel t;
   pgi::GraphSensing::RewardModel r;
