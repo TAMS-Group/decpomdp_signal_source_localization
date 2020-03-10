@@ -46,10 +46,14 @@ state_t sample_initial_state(PRNG& rng);
 void sample_initial_states_gaussian(std::vector<state_t>& states, int num,
                                     const location_t& source_mean_location,
                                     double stdev_x, double stdev_y, PRNG& rng);
-
 // Star formation
-static const std::map<int, location_t> index_to_loc{{0, {-16.0, 16.0}}, {1, {16.0, 16.0}}};
-static const std::map<int, std::vector<int>> allowed_moves{{0, {0, 1}}, {1, {0, 1}}};
+static const std::map<int, location_t> index_to_loc{};
+void add_location(int index, double x, double y){
+  const location_t location = {.x = x, .y = y};
+  const std::pair<int, location_t> element(index, location);
+  index_to_loc.insert(std::make_pair(index, location));
+}
+static const std::map<int, std::vector<int>> allowed_moves{};
 
 static const JointActionSpace joint_action_space = []() {
   std::vector<DiscreteAction> local_actions;
