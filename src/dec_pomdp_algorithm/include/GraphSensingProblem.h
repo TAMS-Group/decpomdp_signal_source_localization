@@ -48,8 +48,8 @@ void sample_initial_states_gaussian(std::vector<state_t>& states, int num,
                                     double stdev_x, double stdev_y, PRNG& rng);
 
 // Star formation
-static const std::map<int, location_t> index_to_loc{{0, {-16.0, 16.0}}, {1, {16.0, 16.0}}, {2, {16.0, -16.0}}, {3, {-16.0, -16.0}}, {4, {-8.0, 0.0}}, {5, {0.0, 8.0}}, {6, {8.0, 0.0}}, {7, {0.0, -8.0}}, {8, {0.0, 0.0}}};
-static const std::map<int, std::vector<int>> allowed_moves{{0, {0, 1, 3, 4, 5}}, {1, {0, 1, 2, 5, 6}}, {2, {1, 2, 3, 6, 7}}, {3, {0, 2, 3, 4, 7}}, {4, {0, 3, 4, 5, 7, 8}}, {5, {0, 1, 4, 5, 6, 8}}, {6, {1, 2, 5, 6, 7, 8}}, {7, {2, 3, 4, 7, 6, 8}}, {8, {4, 5, 6, 7, 8}}};
+static const std::map<int, location_t> index_to_loc{{0, {-16.0, 16.0}}, {1, {16.0, 16.0}}};
+static const std::map<int, std::vector<int>> allowed_moves{{0, {0, 1}}, {1, {0, 1}}};
 
 static const JointActionSpace joint_action_space = []() {
   std::vector<DiscreteAction> local_actions;
@@ -102,7 +102,7 @@ class RSSObservationModel : public pgi::ObservationModel<state_t> {
   std::size_t sample_observation(const state_t& new_state, std::size_t j_act,
                                  PRNG& rng) const;
 
- 
+
   double rss_noise_free(const location_t& source, const location_t& agent) const;
   static double rice_cdf(double loss);
   std::array<double, 3> get_observation_prob(const location_t& source,
@@ -111,16 +111,16 @@ private:
   const std::map<int, location_t> index_to_xy_loc_;
 
   // Signal model parameters
-  const double Ptx = 18.0;
-  const double Gtx = 1.5;
-  const double Ltx = 0.0;
-  const double Grx = 1.5;
-  const double Lrx = 0.0;
-  const double v = 2.4e6;
+  // const double Ptx = 18.0;
+  // const double Gtx = 1.5;
+  // const double Ltx = 0.0;
+  // const double Grx = 1.5;
+  // const double Lrx = 0.0;
+  const double v = 2.4e9;
 
   // Partition model
-  const double high_threshold = -110.0;
-  const double low_threshold = -125.0;
+  const double high_threshold = -55.0;
+  const double low_threshold = -65.0;
 };
 
 class RewardModel : public pgi::RewardModel<state_t> {
