@@ -12,6 +12,7 @@ class LocalizationManager:
 
 	def handle_heartbeat(self, state):
 		if state.robot_name not in self.robots.keys():
+			rospy.logwarn("Registered new Robot: " + state.robot_name)
 			self.robots[state.robot_name] = rospy.Publisher(state.robot_name + '/policy', Policy, queue_size=1)
 
 	def handle_start(self, start_msg):
