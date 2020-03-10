@@ -228,25 +228,30 @@ dec_pomdp_msgs::Policy policyToMsg(pgi::PolicyGraph policy, std::string robot_na
 
   // iterate over all vertices of the policy graphs
   for (pgi::vertex_t vert : boost::make_iterator_range(boost::vertices(policy))){
-    ROS_INFO_STREAM("For Vert: "<< vert << " the following out edges exist:");
+    ROS_INFO_STREAM("For Vert: "<< vert << " with pose " << policy[vert] <<" the following out edges exist:");
     result.nodes.push_back(vert);
     dec_pomdp_msgs::NodeTransition transition;
+    dec_pomdp_msgs::NodeAction action;
     transition.node_number = vert;
+    action.node_number = vert;
+    action.pose.position.x = 0; // enter real value here
+    action.pose.position.y = 0; // enter real value here
+    action.pose.orientation.w = 1; // This is important for some reason ... TODO
     for (pgi::edge_t out : boost::make_iterator_range(boost::out_edges(vert, policy))){
-      ROS_INFO_STREAM("Vert: " << vert << " and Edge: " << out);
+      ROS_INFO_STREAM("Vert: " << vert << " and Edge: " << out << " with Label: "<< observations[policy[out]]);
       dec_pomdp_msgs::Edge edge;
       edge.node_number = boost::target(out, policy);
       // TODO insert interval for edge
       transition.edges.push_back(edge);
     }
-    // TODO Insert NodeAction for node !!!
     result.transitions.push_back(transition);
+    result.actions.push_back(action);
   }
 
   return result;
 }
 
-bool generatePolicies(dec_pomdp_msgs::GeneratePolicies::Request &req,
+bool hanleGeneratePolicies(dec_pomdp_msgs::GeneratePolicies::Request &req,
                 dec_pomdp_msgs::GeneratePolicies::Response &res)
 {
   /* Insert Code to generate policy and transform it to fit policy msg */
@@ -273,7 +278,7 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "dec_pomdp_publisher");
   ros::NodeHandle n;
   decPomdpPub = n.advertise<dec_pomdp_msgs::Policy>("dec_pomdp", 10);
-  ros::ServiceServer policy_service = n.advertiseService("generate_policies", generatePolicies);
+  ros::ServiceServer policy_service = n.advertiseService("generate_policies", hanleGeneratePolicies);
   ROS_WARN("Policy service ready to go");
   ros::spin();
 
