@@ -1,6 +1,4 @@
 <launch>
-  <node name="location_reader" pkg="dec_pomdp_algorithm" type="location_reader.py" output="screen">
-    <param name="file-path" value="$(find dec_pomdp_algorithm)/scripts/locations/locations.json" type="str"/>
-  </node>
+  <rosparam file="$(find dec_pomdp_algorithm)/config/location.yaml" />
   <node name="policy_generator" pkg="dec_pomdp_algorithm" type="dec_pomdp_algorithm" output="screen"/>
 </launch>

@@ -27,9 +27,9 @@ class LocalizationManager:
 				if policy.robot_name in self.robots.keys():
 					self.robots[policy.robot_name].publish(policy)
 				else:
-					rospy.logwarn("The following robot is not online anymore " + policy.robot_name)
+					rospy.logwarn("The following robot is not online anymore %s", policy.robot_name)
 		except rospy.ServiceException, e:
-			rospy.logerr("Service call to generate Policies failed: ", e)
+			rospy.logerr("Service call to generate Policies failed: %s", e)
 			return False
 		return True
 

@@ -8,6 +8,8 @@
 #include <ros/console.h>
 #include "dec_pomdp_msgs/Policy.h"
 #include "dec_pomdp_msgs/GeneratePolicies.h"
+#include <XmlRpcValue.h>
+#include <string>
 /*Dec POMDP Algorithm imports*/
 #include <boost/program_options.hpp>
 #include <chrono>
@@ -29,6 +31,40 @@ int IMPROVEMENT_STEPS = 9;
 
 ros::Publisher decPomdpPub;
 
+std::map<int, pgi::GraphSensing::location_t> getLocationsFromParameterServer(){
+  std::map<int, pgi::GraphSensing::location_t> result;
+  XmlRpc::XmlRpcValue tmp_locations;
+  ros::param::get("locations", tmp_locations);
+  ROS_ASSERT(tmp_locations.getType() == XmlRpc::XmlRpcValue::TypeArray);
+  for(int i = 0; i < tmp_locations.size(); i++){
+    ROS_ASSERT(tmp_locations[i].getType() == XmlRpc::XmlRpcValue::TypeStruct);
+    auto tmp_location = tmp_locations[i];
+    pgi::GraphSensing::location_t location;
+    location.x = static_cast<double>(tmp_location["x"]);
+    location.y = static_cast<double>(tmp_location["y"]);
+    result[i] = location;
+    ROS_INFO_STREAM("Location number " << i << " is at x= " << result[i].x << " and y = " << result[i].y);
+  }
+  return result;
+}
+
+std::map<int, std::vector<int>> getAllowedMovesFromParameterServer(){
+  std::map<int, std::vector<int>> result;
+  XmlRpc::XmlRpcValue tmp_allowed_moves;
+  ros::param::get("allowed_moves", tmp_allowed_moves);
+  ROS_ASSERT(tmp_allowed_moves.getType() == XmlRpc::XmlRpcValue::TypeArray)
+  for(int i = 0; i < tmp_allowed_moves.size(); i++){
+    XmlRpc::XmlRpcValue tmp_allowed_destinations = tmp_allowed_moves[i];
+    ROS_ASSERT(tmp_allowed_destinations.getType() == XmlRpc::XmlRpcValue::TypeArray);
+    std::vector<int> allowed_destinations;
+    for(int idx = 0; idx < tmp_allowed_destinations.size(); idx++){
+      allowed_destinations.push_back(static_cast<int>(tmp_allowed_destinations[idx]));
+    }
+    result[i] = allowed_destinations;
+  }
+  return result;
+}
+
 std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
   unsigned int horizon,
   unsigned int width,
@@ -49,11 +85,12 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
   pgi::PRNG rng(rng_seed);
 
   // Create the GraphSensing Dec-POMDP problem
-  // The code below should technically work :S
-  // std::map<std::string, std::map<std::string, float>> locations;
-  // std::map<std::string, std::vector<int>> allowed_moves;
-  // ros::param::get("planner/locations", locations);
-  // ros::param::get("planner/allowed_moves", allowed_moves);
+  // Get all locations and allowed_moves from Parameter Server
+  static const std::map<int, pgi::GraphSensing::location_t> locations = getLocationsFromParameterServer();
+  static const std::map<int, std::vector<int>> allowed_moves = getAllowedMovesFromParameterServer();
+
+
+
   pgi::JointActionSpace jas = pgi::GraphSensing::joint_action_space;
   pgi::GraphSensing::StateTransitionModel t;
   pgi::GraphSensing::RewardModel r;
@@ -86,8 +123,10 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
     pgi::set_blind(local_policy_graphs, blind_policy_initial_joint_action, jas);
   }
   // Create JointPolicy using the local policy graphs
+  ROS_INFO("Creating Joint Policy");
   pgi::JointPolicy jp(local_policy_graphs);
 
+  ROS_INFO("Creating Particles");
   // Create initial belief
   pgi::ParticleSet<pgi::GraphSensing::state_t> init_particles;
   if (gaussian) {
@@ -211,6 +250,8 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
   }
   return jp.local_policies();
 }
+
+
 
 dec_pomdp_msgs::Policy policyToMsg(pgi::PolicyGraph policy, std::string robot_name, int agent_start){
   dec_pomdp_msgs::Policy result;
