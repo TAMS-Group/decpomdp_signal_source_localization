@@ -3,6 +3,7 @@ import subprocess
 import numpy as np
 import re
 import rospy
+from scipy.stats import rice
 
 class SignalStrengthMeasurer:
     MAX_ATTEMPTS = 10
@@ -23,7 +24,6 @@ class SignalStrengthMeasurer:
             for measurement in measurements_for_essid:
                 dBm = int(measurement[0].split('=')[1])
                 dBms.append(dBm)
-                #TODO continue here
             sorted_dBms = np.sort(np.array(dBms))
             if len(sorted_dBms) > 0:
                 return sorted_dBms[0]
@@ -34,6 +34,11 @@ class SignalStrengthMeasurer:
                 tries += 1
                 rospy.logwarn('Attempt to get measurement failed. retrying...')
                 self.rate.sleep()
+
+    def takeSimulatedMeasurement(self, ESSID, distance, v=2.4e9, b=0.009, loc=-7.001, scale=12.551):
+        rss_base = 147.55 - 20.0 * np.log10(v) - 20.0 * np.log10(distance) 
+        rss = rss_base - rice.mean(b, loc=loc, scale=scale) # alternatively use rice.rvs(b, loc=loc, scale=scale)[0] 
+        return rss
 
     def getAllSignalStrengths(self):
         cmd = ["iwlist", "scanning"]

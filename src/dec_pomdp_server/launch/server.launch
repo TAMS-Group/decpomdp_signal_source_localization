@@ -3,7 +3,7 @@
   <node name="measurement_visualization" pkg="dec_pomdp_server" type="measurement_visualization.py"/>
   <node name="measurements_evaluation" pkg="dec_pomdp_server" type="measurement_evaluation.py"/>
   <node name="localization_manager" pkg="dec_pomdp_server" type="localization_manager.py"/>
-	#<node name="measurement_collector" pkg="dec_pomdp_server" type="measurement_collector.py"/>
+	<!--<node name="measurement_collector" pkg="dec_pomdp_server" type="measurement_collector.py"/>-->
 
 	<node name="$(anon master_discovery)" pkg="master_discovery_fkie" type="master_discovery" output="log">
 			<rosparam param="robot_hosts">[donny,mikey,leo,raph,tams92]</rosparam>
