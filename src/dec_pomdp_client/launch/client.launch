@@ -5,21 +5,24 @@
 		<param name="robot_name" value="TestTurtleBot"/> 
 	</node>
 	<node name="measurement" pkg="dec_pomdp_client" type="measurement_publisher.py"></node>
-
-<!--
-	<include file="$(find tams_turtlebot_navigation)/launch/navigation_tams_floor.launch">
-    	<arg name="initial_pose_x" value="0.0"/>
-    	<arg name="initial_pose_y" value="0.0"/>
-    	<arg name="initial_pose_a" value="0.0"/>
-  	</include>
--->
+	
+	<!--Only relevant for simulation-->
+	<arg name="map" value="$(find tams_turtlebot_navigation)/maps/tams_localization.yaml" />
+    <arg name="map_navigation" value="$(find tams_turtlebot_navigation)/maps/tams_navigation.yaml" />
+	<node name="map_localization" pkg="map_server" type="map_server" args="$(arg map)" />
+ 	<node name="map_navigation" pkg="map_server" type="map_server" args="$(arg map_navigation)" >
+    	<remap from="map" to="map_navigation"/>
+  	</node>
 
 	<param name="robot_description" command="$(find xacro)/xacro '$(find turtlebot_description)/robots/kobuki_hexagons_kinect.urdf.xacro'"/>
 	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
 	<node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
 		<param name="publish_frequency" type="double" value="10.0"/>
 	</node>
-<!--
+
+	<node name="move_base_simulation" pkg="move_base_stub" type="move_base_stub.py"/>
+	
+<!-- Only relevant for production
 	<node name="$(anon master_discovery)" pkg="master_discovery_fkie" type="master_discovery" output="log">
 			<rosparam param="robot_hosts" subst_value="True">[$(env TURTLEBOT_NAME),$(arg server)]</rosparam>
 	</node>
