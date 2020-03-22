@@ -67,30 +67,24 @@ class MeasurementPublisher:
         self.previous_measurements.measurements.append(self.takeMeasurement(simulation=self.SIMULATE_MEASUREMENT))
 
     def handleGetMeasurment(self, srv_msg):
-        rospy.logwarn('GetsCalled')
-        rospy.logwarn(srv_msg.number)
+        rospy.loginfo('Getting %d measurements'% srv_msg.number)
         starting_len = len(self.previous_measurements.measurements)
-        rospy.logwarn('starting_len')
-        rospy.logwarn(len(self.previous_measurements.measurements) < starting_len + srv_msg.number)
+        rospy.logwarn('starting with %d measurements stored' % starting_len)
         while ((len(self.previous_measurements.measurements) < (starting_len + srv_msg.number)) & (not rospy.is_shutdown())):
-            rospy.logwarn(len(self.previous_measurements.measurements))
-            rospy.sleep(1.)
+            measurement_node.collectMeasurement()
+            rospy.logwarn("currently got (%d / %d)" % (len(self.previous_measurements.measurements)- starting_len, starting_len + srv_msg.number))
         result = Measurements()
         result.measurements = self.previous_measurements.measurements[starting_len : starting_len + srv_msg.number]
-        self.publish_measurements(result)
+        self.publish_measurements(self.previous_measurements)
         return result
 
 
     def publish_measurements(self, measurements):
         self.publisher.publish(measurements)
-        rospy.logwarn('got measurements! ')
+        rospy.logwarn('Published Measurements!')
 
 
 if __name__ == '__main__':
     rospy.init_node('measurements')
-    rate = rospy.Rate(1) # to be removed later
     measurement_node = MeasurementPublisher()
-    while not rospy.is_shutdown():
-        measurement_node.collectMeasurement()
-        rospy.logwarn('sleeping')
-        rate.sleep()
+    rospy.spin()
