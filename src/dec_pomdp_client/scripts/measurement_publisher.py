@@ -46,7 +46,11 @@ class MeasurementPublisher:
             rospy.logwarn(str(e))
         if(simulation):
             router_location = rospy.get_param("/access_point_location")
-            distance = np.sqrt((router_location['x'] - measurement_msg.position.x)**2 + (router_location['y'] - measurement_msg.position.y)**2)
+            distance = np.sqrt(
+                (router_location['x'] - measurement_msg.position.x)**2 + 
+                (router_location['y'] - measurement_msg.position.y)**2 + 
+                (router_location['z'] - measurement_msg.position.z)**2
+            )
             rospy.logwarn('Distance is %f', distance)
             signal_level = self.measurer.takeSimulatedMeasurement('TurtleTest', distance)
             measurement_msg.signal_strength = int(signal_level)
