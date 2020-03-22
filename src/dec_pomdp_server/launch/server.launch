@@ -1,10 +1,20 @@
 <launch>
-  <node name="heartbeat_visualization" pkg="dec_pomdp_server" type="heartbeat_visualization.py"/>
-  <node name="measurement_visualization" pkg="dec_pomdp_server" type="measurement_visualization.py"/>
-  <node name="measurements_evaluation" pkg="dec_pomdp_server" type="measurement_evaluation.py"/>
-  <node name="localization_manager" pkg="dec_pomdp_server" type="localization_manager.py"/>
+	<rosparam file="$(find dec_pomdp_server)/config/simulation.yaml" />
+	<node name="source_location_visualization" pkg="dec_pomdp_server" type="source_location_visualization.py" />
+  	<node name="heartbeat_visualization" pkg="dec_pomdp_server" type="heartbeat_visualization.py"/>
+  	<node name="measurement_visualization" pkg="dec_pomdp_server" type="measurement_visualization.py"/>
+  	<node name="measurements_evaluation" pkg="dec_pomdp_server" type="measurement_evaluation.py"/>
+  	<node name="localization_manager" pkg="dec_pomdp_server" type="localization_manager.py"/>
 	<!--<node name="measurement_collector" pkg="dec_pomdp_server" type="measurement_collector.py"/>-->
 
+	<!--Only relevant for simulation-->
+	<arg name="map" value="$(find tams_turtlebot_navigation)/maps/tams_localization.yaml" />
+    <arg name="map_navigation" value="$(find tams_turtlebot_navigation)/maps/tams_navigation.yaml" />
+	<node name="map_localization" pkg="map_server" type="map_server" args="$(arg map)" />
+ 	<node name="map_navigation" pkg="map_server" type="map_server" args="$(arg map_navigation)" >
+    	<remap from="map" to="map_navigation"/>
+  	</node>
+<!-- Only relevant for production use
 	<node name="$(anon master_discovery)" pkg="master_discovery_fkie" type="master_discovery" output="log">
 			<rosparam param="robot_hosts">[donny,mikey,leo,raph,tams92]</rosparam>
 	</node>
@@ -18,4 +28,6 @@
 - /leo/policy
 </rosparam>
 	</node>
+
+-->
 </launch>

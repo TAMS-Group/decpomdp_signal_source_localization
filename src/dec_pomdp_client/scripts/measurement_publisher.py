@@ -10,6 +10,7 @@ from dec_pomdp_msgs.srv import GetMeasurement
 
 
 class MeasurementPublisher:
+    SIMULATE_MEASUREMENT = True
     def __init__(self):
         self.publisher = rospy.Publisher("measurements", Measurements, queue_size=1)
         self.previous_measurements = Measurements()
@@ -30,35 +31,36 @@ class MeasurementPublisher:
         self.measurer = SignalStrengthMeasurer()
         self.service = rospy.Service('collect_measurements', GetMeasurement, self.handleGetMeasurment)
 
-    def takeMeasurement(self, position=None):
+    def takeMeasurement(self, simulation=False):
         measurement_msg = Measurement()
         signal_level = None
         now = rospy.Time.now()
-        if(position is None):
-            signal_level = self.measurer.takeMeasurement('TurtleTest')
-            try:
-                self.transformer.waitForTransform('map', 'base_footprint', now, rospy.Duration(3.0))
-                self.base_footprint_msg.header.stamp = now
-                pose = self.transformer.transformPose('map', self.base_footprint_msg)
-                measurement_msg.header = pose.header
-                measurement_msg.position = pose.pose.position
-                measurement_msg.signal_strength = int(signal_level)
-            except: # (tf.LookupException, tf.ConnectivityException,tf.ExtrapolationException, tf.TransformException) as ex
-                e = sys.exc_info()[0]
-                rospy.logwarn(str(e))
-        else:
+        try:
+            self.transformer.waitForTransform('map', 'base_footprint', now, rospy.Duration(3.0))
+            self.base_footprint_msg.header.stamp = now
+            pose = self.transformer.transformPose('map', self.base_footprint_msg)
+            measurement_msg.header = pose.header
+            measurement_msg.position = pose.pose.position
+        except: # (tf.LookupException, tf.ConnectivityException,tf.ExtrapolationException, tf.TransformException) as ex
+            e = sys.exc_info()[0]
+            rospy.logwarn(str(e))
+        if(simulation):
             router_location = rospy.get_param("/access_point_location")
-            distance = np.sqrt(router_location['x']**2 + position.x**2)
+            distance = np.sqrt((router_location['x'] - measurement_msg.position.x)**2 + (router_location['y'] - measurement_msg.position.y)**2)
             rospy.logwarn('Distance is %f', distance)
             signal_level = self.measurer.takeSimulatedMeasurement('TurtleTest', distance)
             measurement_msg.signal_strength = int(signal_level)
+        else:
+            signal_level = self.measurer.takeMeasurement('TurtleTest')
+            measurement_msg.signal_strength = int(signal_level)
+
         return measurement_msg
 
     def collectMeasurement(self):
         position = Point()
         position.x = 0.0
         position.y = 0.0
-        self.previous_measurements.measurements.append(self.takeMeasurement(position=position))
+        self.previous_measurements.measurements.append(self.takeMeasurement(simulation=self.SIMULATE_MEASUREMENT))
 
     def handleGetMeasurment(self, srv_msg):
         rospy.logwarn('GetsCalled')

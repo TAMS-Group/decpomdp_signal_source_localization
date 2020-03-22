@@ -1,5 +1,5 @@
 <launch>
-	<rosparam file="$(find dec_pomdp_client)/config/simulation.yaml" />
+	<rosparam file="$(find dec_pomdp_server)/config/simulation.yaml" />
 	<!-- <arg name="server" default="tams95"/> -->
 	<node name="heartbeat" pkg="dec_pomdp_client" type="heartbeat_publisher.py">
 		<param name="robot_name" value="TestTurtleBot"/> 

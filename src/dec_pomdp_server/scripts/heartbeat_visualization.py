@@ -7,6 +7,7 @@ from geometry_msgs.msg import Vector3
 class Visualizer:
 	marker = Marker(
 			type= Marker.TEXT_VIEW_FACING,
+			ns="heartbeat"
 			id=0,
 			lifetime=rospy.Duration(1.5),
 			scale=Vector3(0, 0, 0.1),
