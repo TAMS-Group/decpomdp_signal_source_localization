@@ -7,14 +7,14 @@ from std_msgs.msg import ColorRGBA
 
 class MeasurementVisualizer:
 	marker = Marker(
-			type= Marker.POINTS,
+			type= Marker.SPHERE_LIST,
+			ns="MeasurmentVisualization",
 			id=1,
-			lifetime=rospy.Duration(10),
+			lifetime=rospy.Duration(0),
 			scale=Vector3(0.1, 0.1, 0.06),
 		)
 
 	def visualize(self, measurements):
-		self.marker.id = 1
 		for measurement in measurements.measurements:
 			self.marker.header.stamp = rospy.get_rostime()
 			self.marker.points.append(measurement.position)
