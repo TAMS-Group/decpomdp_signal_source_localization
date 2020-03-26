@@ -86,9 +86,10 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
 
   // Create the GraphSensing Dec-POMDP problem
   // Get all locations and allowed_moves from Parameter Server
-  static const std::map<int, pgi::GraphSensing::location_t> locations = getLocationsFromParameterServer();
-  static const std::map<int, std::vector<int>> allowed_moves = getAllowedMovesFromParameterServer();
-
+  std::map<int, pgi::GraphSensing::location_t> locations = getLocationsFromParameterServer();
+  std::map<int, std::vector<int>> moves = getAllowedMovesFromParameterServer();
+  pgi::GraphSensing::set_locations(locations);
+  pgi::GraphSensing::set_allowed_moves(moves);
 
 
   pgi::JointActionSpace jas = pgi::GraphSensing::joint_action_space;
@@ -280,14 +281,15 @@ dec_pomdp_msgs::Policy policyToMsg(pgi::PolicyGraph policy, std::string robot_na
     dec_pomdp_msgs::NodeAction action;
     transition.node_number = vert;
     action.node_number = vert;
-    action.pose.position.x = 0; // enter real value here
-    action.pose.position.y = 0; // enter real value here
+    pgi::GraphSensing::location_t vert_action = pgi::GraphSensing::index_to_loc.at(policy[vert]);
+    action.pose.position.x = vert_action.x;
+    action.pose.position.y = vert_action.y;
     action.pose.orientation.w = 1; // This is important for some reason ... TODO
     for (pgi::edge_t out : boost::make_iterator_range(boost::out_edges(vert, policy))){
       ROS_INFO_STREAM("Vert: " << vert << " and Edge: " << out << " with Label: "<< observations[policy[out]]);
       dec_pomdp_msgs::Edge edge;
       edge.node_number = boost::target(out, policy);
-      // TODO insert interval for edge
+      edge.measurement_interval = pgi::GraphSensing::RSSObservationModel::getIntervalForObservation(observations[policy[out]]);
       transition.edges.push_back(edge);
     }
     result.transitions.push_back(transition);

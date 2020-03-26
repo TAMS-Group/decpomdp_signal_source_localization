@@ -24,6 +24,10 @@
 #include "RewardModel.hpp"
 #include "StateTransitionModel.hpp"
 
+#include <ros/console.h>
+#include "dec_pomdp_msgs/Interval.h"
+
+
 namespace pgi {
 namespace GraphSensing {
 struct location_t {
@@ -46,14 +50,19 @@ state_t sample_initial_state(PRNG& rng);
 void sample_initial_states_gaussian(std::vector<state_t>& states, int num,
                                     const location_t& source_mean_location,
                                     double stdev_x, double stdev_y, PRNG& rng);
-// Star formation
-static const std::map<int, location_t> index_to_loc{{0, {-16.0, 16.0}}, {1, {16.0, 16.0}}};
-static const std::map<int, std::vector<int>> allowed_moves{{0, {0, 1}}, {1, {0, 1}}};
-// void add_location(int index, double x, double y){
-//   const location_t location = {.x = x, .y = y};
-//   const std::pair<int, location_t> element(index, location);
-//   index_to_loc.insert(std::make_pair(index, location));
-// }
+
+//Default locations and allowed moves. Should be replaced during execution time
+static std::map<int, location_t> index_to_loc{{0, {-16.0, 16.0}}, {1, {16.0, 16.0}}};
+static std::map<int, std::vector<int>> allowed_moves{{0, {0, 1}}, {1, {0, 1}}};
+
+static void set_locations(std::map<int, location_t> locations){
+  index_to_loc = locations;
+  ROS_INFO_STREAM("locations have been set with location 0 beeing x= " << index_to_loc.at(0).x << " And y= " << index_to_loc.at(0).y);
+}
+
+static void set_allowed_moves(std::map<int, std::vector<int>> moves){
+  allowed_moves = moves;
+}
 
 static const JointActionSpace joint_action_space = []() {
   std::vector<DiscreteAction> local_actions;
@@ -111,6 +120,21 @@ class RSSObservationModel : public pgi::ObservationModel<state_t> {
   static double rice_cdf(double loss);
   std::array<double, 3> get_observation_prob(const location_t& source,
                                              const location_t& agent) const;
+  static dec_pomdp_msgs::Interval getIntervalForObservation(std::string observation) {
+    dec_pomdp_msgs::Interval result; 
+    std::vector<std::string> observations = pgi::element_names(rss_joint_observation_space.get(0));
+    if(observation == observations[0]){
+      result.upper_bound = top_threshold;
+      result.lower_bound = high_threshold;
+    } else if(observation == observations[1]){
+      result.upper_bound = high_threshold;
+      result.lower_bound = low_threshold;
+    } else if(observation == observations[2]){
+      result.upper_bound = low_threshold;
+      result.lower_bound = bottom_threshold;
+    }
+    return result;
+  }
 private:
   const std::map<int, location_t> index_to_xy_loc_;
 
@@ -121,10 +145,11 @@ private:
   // const double Grx = 1.5;
   // const double Lrx = 0.0;
   const double v = 2.4e9;
-
   // Partition model
-  const double high_threshold = -55.0;
-  const double low_threshold = -65.0;
+  static constexpr double top_threshold = 0.0;
+  static constexpr double high_threshold = -55.0;
+  static constexpr double low_threshold = -65.0;
+  static constexpr double bottom_threshold = -160.0;
 };
 
 class RewardModel : public pgi::RewardModel<state_t> {
