@@ -36,7 +36,7 @@ class PolicyExecutioner:
             for edge in node_transition.edges:
                 if (measurement_value > edge.measurement_interval.lower_bound and measurement_value <= edge.measurement_interval.upper_bound):
                     current_node = edge.node_number
-                    rospy.logwarn('next node has been foundaddde')
+                    rospy.logwarn('next node has been found')
                     break
 
 
