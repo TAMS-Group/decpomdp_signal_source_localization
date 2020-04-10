@@ -21,7 +21,7 @@ class LocalizationManager:
 		try:
 			generate_policies = rospy.ServiceProxy('generate_policies', GeneratePolicies)
 			rospy.logwarn("Waiting for algorithm to generate policies")
-			result = generate_policies(1234567890, 3, 3, 2, 1000, 100, 100, False, 0.1, 0.1, 0.1, 0.1, self.robots.keys())
+			result = generate_policies(987654321, 3, 3, 9, 1000, 100, 100, False, 0.1, 0.1, 0.1, 0.1, self.robots.keys())
 			rospy.logwarn("Generation succcessful")
 			for policy in result.policies:
 				if policy.robot_name in self.robots.keys():

@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 import actionlib
 import rospy
+import numpy as np 
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from dec_pomdp_msgs.msg import Policy
 from actionlib_msgs.msg import GoalStatus
+from dec_pomdp_msgs.msg import Measurements
+from dec_pomdp_msgs.srv import GetMeasurement
 
 
 
@@ -42,7 +45,15 @@ class PolicyExecutioner:
 
 
     def take_measurement(self):
-        return -50
+        try:
+            result = self.take_measurements(self.measurements_per_step)
+            signal_strengths = []
+            for measurement in result.measurements.measurements:
+                self.measurements.measurements.append(measurement)
+                signal_strengths.append(measurement.signal_strength)
+            return np.mean(signal_strengths)
+        except rospy.ServiceException, e:
+            rospy.logerr("Service failed to take measurements")
 
     def move_to_goal(self, goal):
         rospy.logwarn('Moving to goal')
@@ -63,6 +74,13 @@ class PolicyExecutioner:
                 return item
 
     def __init__(self):
+        self.measurements_per_step = rospy.get_param("/measurements_per_step")
+        self.measurements = Measurements()
+        rospy.wait_for_service('collect_measurements')
+        try:
+            self.take_measurements = rospy.ServiceProxy('collect_measurements', GetMeasurement)
+        except rospy.ServiceException, e:
+            rospy.logerr("The collect measurements service couldn't be initialised properly")
         self.move_base_client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
         self.move_base_client.wait_for_server()
         
