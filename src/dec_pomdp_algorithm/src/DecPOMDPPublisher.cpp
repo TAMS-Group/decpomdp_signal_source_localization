@@ -90,9 +90,9 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
   std::map<int, std::vector<int>> moves = getAllowedMovesFromParameterServer();
   pgi::GraphSensing::set_locations(locations);
   pgi::GraphSensing::set_allowed_moves(moves);
-
-
-  pgi::JointActionSpace jas = pgi::GraphSensing::joint_action_space;
+  ROS_INFO_STREAM("Graphsensing locations and moves initialised");
+  pgi::JointActionSpace jas = pgi::GraphSensing::get_joint_action_space(locations);
+  ROS_INFO_STREAM("Graphsensing action space set");
   pgi::GraphSensing::StateTransitionModel t;
   pgi::GraphSensing::RewardModel r;
 

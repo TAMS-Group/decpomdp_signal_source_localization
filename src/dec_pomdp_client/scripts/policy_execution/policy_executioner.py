@@ -25,8 +25,8 @@ class PolicyExecutioner:
         goal.target_pose.header.frame_id = "map"
         current_node = policy.starting_node
         while not rospy.is_shutdown():
-            rospy.logwarn('Current node number is %d' % current_node)
             node_action = self.find(lambda node_action: node_action.node_number == current_node, policy.actions)
+            rospy.logwarn('Current node number is %d and node action is x = %f and y = %f' % (current_node, node_action.pose.position.x, node_action.pose.position.y))
             goal.target_pose.pose = node_action.pose
             goal.target_pose.header.stamp = rospy.get_rostime()
             self.move_to_goal(goal)

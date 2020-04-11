@@ -52,31 +52,45 @@ void sample_initial_states_gaussian(std::vector<state_t>& states, int num,
                                     double stdev_x, double stdev_y, PRNG& rng);
 
 //Default locations and allowed moves. Should be replaced during execution time
-static std::map<int, location_t> index_to_loc{{0, {-16.0, 16.0}}, {1, {16.0, 16.0}}};
+static std::map<int, location_t> index_to_loc{};
 static std::map<int, std::vector<int>> allowed_moves{{0, {0, 1}}, {1, {0, 1}}};
 
 static void set_locations(std::map<int, location_t> locations){
   index_to_loc = locations;
-  ROS_INFO_STREAM("locations have been set with location 0 beeing x= " << index_to_loc.at(0).x << " And y= " << index_to_loc.at(0).y);
+  ROS_INFO_STREAM("locations have been set with location 5 beeing x= " << index_to_loc.at(5).x << " And y= " << index_to_loc.at(5).y);
 }
 
 static void set_allowed_moves(std::map<int, std::vector<int>> moves){
   allowed_moves = moves;
 }
 
-static const JointActionSpace joint_action_space = []() {
+//static JointActionSpace joint_action_space = []() {
+//  std::vector<DiscreteAction> local_actions;
+//  for (std::size_t i = 0; i < index_to_loc.size(); ++i) {
+//    local_actions.emplace_back(DiscreteAction("goto" + std::to_string(i)));
+//   }
+
+//   std::vector<ActionSpace> a;
+//   a.emplace_back(ActionSpace(local_actions));
+//   a.emplace_back(ActionSpace(local_actions));
+
+//   return JointActionSpace(a);
+// }();
+
+static JointActionSpace get_joint_action_space(std::map<int, location_t> index_to_loc_map){
   std::vector<DiscreteAction> local_actions;
-  for (std::size_t i = 0; i < index_to_loc.size(); ++i) {
+  ROS_INFO_STREAM("Gets Called");
+  for (std::size_t i = 0; i < index_to_loc_map.size(); ++i) {
+    ROS_INFO_STREAM("Do shit for " << i );
     local_actions.emplace_back(DiscreteAction("goto" + std::to_string(i)));
   }
-
+  ROS_INFO_STREAM("Get action space vector");
   std::vector<ActionSpace> a;
   a.emplace_back(ActionSpace(local_actions));
   a.emplace_back(ActionSpace(local_actions));
-
+  ROS_INFO_STREAM("created Actionspace vector");
   return JointActionSpace(a);
-}();
-
+}
 
 static const JointObservationSpace rss_joint_observation_space = []() {
   std::vector<DiscreteObservation> local_observations{
