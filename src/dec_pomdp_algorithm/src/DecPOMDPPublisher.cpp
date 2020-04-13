@@ -91,8 +91,9 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
   pgi::GraphSensing::set_locations(locations);
   pgi::GraphSensing::set_allowed_moves(moves);
   ROS_INFO_STREAM("Graphsensing locations and moves initialised");
-  pgi::JointActionSpace jas = pgi::GraphSensing::get_joint_action_space(locations);
-  ROS_INFO_STREAM("Graphsensing action space set");
+  pgi::GraphSensing::set_joint_action_space(locations);
+  pgi::JointActionSpace jas = pgi::GraphSensing::joint_action_space;
+  ROS_INFO_STREAM("Graphsensing action space set with len " << jas.num_local_spaces());
   pgi::GraphSensing::StateTransitionModel t;
   pgi::GraphSensing::RewardModel r;
 
@@ -154,7 +155,8 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
   //                     "duration_microseconds.txt");
 
   // Get value of initial policy and write it to a log Document (The logging part could potentially be replaced by ROS Logging)
-  // Also keep it to compare later created policies to this.
+  // Also keep it to compare later created policies to this.<
+  ROS_INFO_STREAM("Estimating value");
   double best_value = estimate_value(num_rollouts, init_particles.states_,
                                      init_particles.weights_, jp, jp.root(), t,
                                      o, r, jas, jos, rng);

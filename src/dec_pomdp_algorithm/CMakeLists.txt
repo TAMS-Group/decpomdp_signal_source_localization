@@ -157,13 +157,7 @@ add_executable(${PROJECT_NAME}
 				src/GraphSensingProblem.cpp
 				)
 
-add_executable(solve_graphsensing
-				src/solve_graphsensing.cpp
-				src/GraphSensingProblem.cpp
-				)
-
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} MADPWrapper Base NPGIPlanner NPGIParticles ${Boost_LIBRARIES})
-target_link_libraries(solve_graphsensing Base NPGIParticles ${Boost_LIBRARIES})
 
 
 ## Add cmake target dependencies of the library

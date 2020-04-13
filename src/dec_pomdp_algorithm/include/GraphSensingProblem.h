@@ -52,8 +52,8 @@ void sample_initial_states_gaussian(std::vector<state_t>& states, int num,
                                     double stdev_x, double stdev_y, PRNG& rng);
 
 //Default locations and allowed moves. Should be replaced during execution time
-static std::map<int, location_t> index_to_loc{};
-static std::map<int, std::vector<int>> allowed_moves{{0, {0, 1}}, {1, {0, 1}}};
+std::map<int, location_t> index_to_loc{};
+std::map<int, std::vector<int>> allowed_moves{{0, {0, 1}}, {1, {0, 1}}};
 
 static void set_locations(std::map<int, location_t> locations){
   index_to_loc = locations;
@@ -64,20 +64,13 @@ static void set_allowed_moves(std::map<int, std::vector<int>> moves){
   allowed_moves = moves;
 }
 
-//static JointActionSpace joint_action_space = []() {
-//  std::vector<DiscreteAction> local_actions;
-//  for (std::size_t i = 0; i < index_to_loc.size(); ++i) {
-//    local_actions.emplace_back(DiscreteAction("goto" + std::to_string(i)));
-//   }
+//initialize Joint action space as empty
+static JointActionSpace joint_action_space = []() {
+  std::vector<ActionSpace> a;
+  return JointActionSpace(a);
+}();
 
-//   std::vector<ActionSpace> a;
-//   a.emplace_back(ActionSpace(local_actions));
-//   a.emplace_back(ActionSpace(local_actions));
-
-//   return JointActionSpace(a);
-// }();
-
-static JointActionSpace get_joint_action_space(std::map<int, location_t> index_to_loc_map){
+static void set_joint_action_space(std::map<int, location_t> index_to_loc_map){
   std::vector<DiscreteAction> local_actions;
   ROS_INFO_STREAM("Gets Called");
   for (std::size_t i = 0; i < index_to_loc_map.size(); ++i) {
@@ -89,7 +82,7 @@ static JointActionSpace get_joint_action_space(std::map<int, location_t> index_t
   a.emplace_back(ActionSpace(local_actions));
   a.emplace_back(ActionSpace(local_actions));
   ROS_INFO_STREAM("created Actionspace vector");
-  return JointActionSpace(a);
+  joint_action_space = JointActionSpace(a);
 }
 
 static const JointObservationSpace rss_joint_observation_space = []() {

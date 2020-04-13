@@ -18,6 +18,9 @@
 #include <boost/random/uniform_01.hpp>
 #include "EigenUtils.hpp"
 #include "common.hpp"
+/*ROS related Imports*/
+#include "ros/ros.h"
+#include <ros/console.h>
 
 namespace pgi {
 namespace GraphSensing {
@@ -211,12 +214,15 @@ std::array<double, 3> RSSObservationModel::get_observation_prob(
 double RewardModel::get(const std::vector<state_t>& states,
                         const std::vector<double>& weights,
                         std::size_t j_act) const {
+  ROS_INFO_STREAM("Reward model.get gets called");
+  ROS_INFO_STREAM("jas length is " << joint_action_space.num_local_spaces());
   const auto agent0_act = joint_action_space.local_index(j_act, 0);
   const auto agent1_act = joint_action_space.local_index(j_act, 1);
 
   double reward(0.0);
   for (std::size_t i = 0; i < states.size(); ++i) {
     const state_t& s = states[i];
+    ROS_INFO_STREAM("Current state a0 loc = "<< s.agent_0_location_ << " a1 loc =" << s.agent_1_location_ << " source loc x: " << s.source_location_.x << " y: " << s.source_location_.y);
     if (!moves_.action_allowed_in(s.agent_0_location_, agent0_act))
       reward += weights[i] * (-INVALID_MOVE_PENALTY);
     if (!moves_.action_allowed_in(s.agent_1_location_, agent1_act))
