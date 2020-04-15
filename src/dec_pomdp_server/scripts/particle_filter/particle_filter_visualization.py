@@ -15,6 +15,8 @@ class ParticleFilterVisualizer:
 		)
 
 	def visualize(self, particles, weights):
+		self.marker.points = []
+		self.marker.colors = []
 		for i, particle in enumerate(particles):
 			self.marker.header.stamp = rospy.get_rostime()
 			position = Point(particle[0], particle[1], 0.0)

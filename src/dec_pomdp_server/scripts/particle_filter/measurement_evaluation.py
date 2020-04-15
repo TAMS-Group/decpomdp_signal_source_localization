@@ -38,29 +38,27 @@ class MeasurementEvaluator:
 
 
 	def initialize_measurement_evaluation(self):
-		self.particles = -8.0 + 24.0 * np.random.uniform(size=(self.num_particles,2))
+		self.particles = -1.5 + 9.5 * np.random.uniform(size=(self.num_particles,2))
 		self.weights = np.repeat(1.0/float(self.num_particles), self.num_particles)
 
 	def run_measurement_evaluation(self, observations):
-		rospy.logwarn("Next Iteration of Particle filter")
+		rospy.logwarn("=======================Next Iteration of Particle filter===============================")
 		if (len(observations) > 0):
 			latest_observations = observations[len(observations) - 1].measurements
-			rospy.logwarn(latest_observations)
 			#Later it is supposed to work like this:
-			#for measurement in latest_observations.measurements:
-			if(len(latest_observations) > 0):
-				measurement = latest_observations[len(latest_observations) -1]
+			for measurement in latest_observations:
+			#if(len(latest_observations) > 0):
+				#measurement = latest_observations[len(latest_observations) -1]
 				if (measurement.signal_strength == 0):
 					rospy.logerr("Skipping invalid measurement")
 					return
 				position = [measurement.position.x, measurement.position.y]
-				rospy.logwarn("position is: " + str(position) + " measurement is: " + str([measurement.signal_strength]))
+				#rospy.logwarn("position is: " + str(position) + " measurement is: " + str([measurement.signal_strength]))
 				l = problem.likelihood(self.particles, position, [measurement.signal_strength])
-				rospy.logwarn("probablity is: " + str(sum(l)))
+				#rospy.logwarn("probablity is: " + str(sum(l)))
 				self.particles, self.weights = SIR_step(self.particles, self.weights, l)
-				rospy.logwarn("Particles are at: " +  str(self.particles))
-				rospy.logwarn("particle weight 1 is: " + str(sum(self.weights)))
 				self.visualizer.visualize(self.particles, self.weights)
+				#rospy.logwarn("Number of particles is %d" % len(self.particles)) 
 
 if __name__ == '__main__':
 	problem = WLANLocalization([],[])
