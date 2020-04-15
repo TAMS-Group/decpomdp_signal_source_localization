@@ -88,10 +88,10 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
   // Get all locations and allowed_moves from Parameter Server
   std::map<int, pgi::GraphSensing::location_t> locations = getLocationsFromParameterServer();
   std::map<int, std::vector<int>> moves = getAllowedMovesFromParameterServer();
-  pgi::GraphSensing::set_locations(locations);
-  pgi::GraphSensing::set_allowed_moves(moves);
+  //pgi::GraphSensing::set_locations(locations);
+  //pgi::GraphSensing::set_allowed_moves(moves);
   ROS_INFO_STREAM("Graphsensing locations and moves initialised");
-  pgi::GraphSensing::set_joint_action_space(locations);
+  //pgi::GraphSensing::set_joint_action_space(locations);
   pgi::JointActionSpace jas = pgi::GraphSensing::joint_action_space;
   ROS_INFO_STREAM("Graphsensing action space set with len " << jas.num_local_spaces());
   pgi::GraphSensing::StateTransitionModel t;
@@ -256,12 +256,12 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
 
 
 
-dec_pomdp_msgs::Policy policyToMsg(pgi::PolicyGraph policy, std::string robot_name, int agent_start){
+dec_pomdp_msgs::Policy policyToMsg(pgi::PolicyGraph policy, std::string robot_name){
   dec_pomdp_msgs::Policy result;
   result.robot_name = robot_name;
   pgi::vertex_t start = pgi::find_root(policy);
   ROS_INFO_STREAM("Starting node: " << start);
-  result.starting_node = agent_start;
+  result.starting_node = start;
   // Log the action space
   pgi::JointActionSpace jas = pgi::GraphSensing::joint_action_space;
   std::vector<std::string> actions = pgi::element_names(jas.get(0));
@@ -314,7 +314,7 @@ bool hanleGeneratePolicies(dec_pomdp_msgs::GeneratePolicies::Request &req,
     if(i < req.agents.size()){
       robot_name = req.agents[i];
     }
-    dec_pomdp_msgs::Policy policyMsg = policyToMsg(policy, robot_name, 0);
+    dec_pomdp_msgs::Policy policyMsg = policyToMsg(policy, robot_name);
     result.push_back(policyMsg);
     decPomdpPub.publish(policyMsg);
     ROS_WARN_STREAM("Done: " << policyMsg.robot_name);

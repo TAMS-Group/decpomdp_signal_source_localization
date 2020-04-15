@@ -114,13 +114,10 @@ double estimate_value(int num_rollouts, const std::vector<State>& states,
                       const StateTransitionModel& t, const ObservationModel& o,
                       const RewardModel& r, const JointActionSpace& jas,
                       const JointObservationSpace& jos, PRNG& rng) {
-  ROS_INFO_STREAM("Estimate Value gets called with num rollouts" << num_rollouts);
   double avg_value = 0.0;
   for (int n = 0; n < num_rollouts; ++n) {
-    ROS_INFO_STREAM("Iteration" << n << " autobots rollout");
     const double value =
         rollout(states, weights, jp, q_start, t, o, r, jas, jos, rng);
-    ROS_INFO_STREAM("successfully rolled out");  
     avg_value = (value + static_cast<double>(n) * avg_value) /
                 static_cast<double>(n + 1);
   }
@@ -135,34 +132,23 @@ double rollout(std::vector<State> states,
                const StateTransitionModel& t, const ObservationModel& o,
                const RewardModel& r, const JointActionSpace& jas,
                const JointObservationSpace& jos, PRNG& rng) {
-  ROS_INFO_STREAM("Rollout started");  
   double v = 0.0;
   JointPolicyGraphTraversal tv(q_start, jp);
-  ROS_INFO_STREAM("JointPolicyGraphTraversal created");    
   for (unsigned int s = jp.steps_remaining(q_start); s > 0; --s)
   {
-    ROS_INFO_STREAM("Iteration " << s);
     const std::size_t j_act = tv.current_action(jas);
-    ROS_INFO_STREAM("r get");
     v += r.get(states, weights, j_act);
-    ROS_INFO_STREAM("starting sampling");
     // sample an observation according to one of the states
     boost::random::discrete_distribution<> dist(weights.begin(), weights.end());
-    ROS_INFO_STREAM("Sample states");
     State s_next = t.sample_next_state(states[rng(dist)], j_act, rng);
-    ROS_INFO_STREAM("Sample sample_observation");
     const std::size_t j_obs = o.sample_observation(s_next, j_act, rng);
-    ROS_INFO_STREAM("Sampled obsevation according to states");
     if (tv.can_traverse())
     {
-      ROS_INFO_STREAM("Traverse");
       tv.traverse(j_obs, jos);
     }
-    ROS_INFO_STREAM("Update Particles");
     // update particles
     SIR_step(states, weights, j_act, j_obs, t, o,
              0.1 * static_cast<double>(weights.size()), rng);
-    ROS_INFO_STREAM("Updated Particles");
   }
 
   v += r.final_reward(states, weights);

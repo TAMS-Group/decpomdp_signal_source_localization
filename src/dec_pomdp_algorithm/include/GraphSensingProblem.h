@@ -52,8 +52,8 @@ void sample_initial_states_gaussian(std::vector<state_t>& states, int num,
                                     double stdev_x, double stdev_y, PRNG& rng);
 
 //Default locations and allowed moves. Should be replaced during execution time
-std::map<int, location_t> index_to_loc{};
-std::map<int, std::vector<int>> allowed_moves{{0, {0, 1}}, {1, {0, 1}}};
+static std::map<int, location_t> index_to_loc{{0, {5.8, 7.0}}, {1, {7.9, 1.7}}, {2, {-0.1, -1.0}}, {3, {-2.0, 4.9}}, {4, {2.8, 2.7}}};
+static std::map<int, std::vector<int>> allowed_moves{{0, {1, 2, 4}}, {1, {0, 3, 4}}, {2, {0, 3, 4}},{3, {1,2,4}}, {4, {0,1,2,3}}};
 
 static void set_locations(std::map<int, location_t> locations){
   index_to_loc = locations;
@@ -66,7 +66,13 @@ static void set_allowed_moves(std::map<int, std::vector<int>> moves){
 
 //initialize Joint action space as empty
 static JointActionSpace joint_action_space = []() {
+  std::vector<DiscreteAction> local_actions;
+  for (std::size_t i = 0; i < index_to_loc.size(); ++i) {
+    local_actions.emplace_back(DiscreteAction("goto" + std::to_string(i)));
+  }
   std::vector<ActionSpace> a;
+  a.emplace_back(ActionSpace(local_actions));
+  a.emplace_back(ActionSpace(local_actions));
   return JointActionSpace(a);
 }();
 
