@@ -18,6 +18,9 @@
 #include <boost/random/discrete_distribution.hpp>
 #include <boost/random/normal_distribution.hpp>
 #include <map>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 #include "DiscreteAbstractions.hpp"
 #include "ObservationModel.hpp"
 #include "PRNG.h"
@@ -52,12 +55,50 @@ void sample_initial_states_gaussian(std::vector<state_t>& states, int num,
                                     double stdev_x, double stdev_y, PRNG& rng);
 
 //Default locations and allowed moves. Should be replaced during execution time
-static std::map<int, location_t> index_to_loc{{0, {5.8, 7.0}}, {1, {7.9, 1.7}}, {2, {-0.1, -1.0}}, {3, {-2.0, 4.9}}, {4, {2.8, 2.7}}};
-static std::map<int, std::vector<int>> allowed_moves{{0, {1, 2, 4}}, {1, {0, 3, 4}}, {2, {0, 3, 4}},{3, {1,2,4}}, {4, {0,1,2,3}}};
+static std::map<int, location_t> index_to_loc = []() {
+  std::map<int, location_t> loc_map;
+
+  std::ifstream inputfile("/home/tobias/Documents/Bachelor_Thesis_Code/src/dec_pomdp_algorithm/config/locations.txt");
+  std::string line;
+  if(!inputfile.is_open()){
+    ROS_ERROR_STREAM("locations.txt file could not be opened");
+  }
+  while (std::getline(inputfile, line)) {
+    std::istringstream ss(line);
+
+    int id;
+    double x, y;
+    ss >> id >> x >> y;
+    ROS_INFO_STREAM("Got location id:"<< id << " x:"<< x << " y:"<< y);
+    loc_map.emplace(id, location_t{x, y});
+  }
+  return loc_map;
+}();
+static std::map<int, std::vector<int>> allowed_moves= []() {
+  std::map<int, std::vector<int>> allowed_moves_map;
+
+  std::ifstream inputfile("/home/tobias/Documents/Bachelor_Thesis_Code/src/dec_pomdp_algorithm/config/allowed_moves.txt");
+  std::string line;
+  if(!inputfile.is_open()){
+    ROS_ERROR_STREAM("allowed_moves.txt file could not be opened");
+  }
+  while (std::getline(inputfile, line)) {
+    std::istringstream ss(line);
+    int id;
+    ss >> id;
+    std::vector<int> possible_destinations;
+    int number;
+    while(ss >> number){
+      possible_destinations.push_back(number);
+      ROS_INFO_STREAM("Got possible move id:"<< id << " destination:"<< number);
+    }
+    allowed_moves_map.emplace(id, possible_destinations);
+  }
+  return allowed_moves_map;
+}();
 
 static void set_locations(std::map<int, location_t> locations){
   index_to_loc = locations;
-  ROS_INFO_STREAM("locations have been set with location 5 beeing x= " << index_to_loc.at(5).x << " And y= " << index_to_loc.at(5).y);
 }
 
 static void set_allowed_moves(std::map<int, std::vector<int>> moves){
