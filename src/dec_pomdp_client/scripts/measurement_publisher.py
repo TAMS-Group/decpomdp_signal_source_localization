@@ -75,7 +75,7 @@ class MeasurementPublisher:
             rospy.logwarn("currently got (%d / %d)" % (len(self.previous_measurements.measurements)- starting_len, starting_len + srv_msg.number))
         result = Measurements()
         result.measurements = self.previous_measurements.measurements[starting_len : starting_len + srv_msg.number]
-        self.publish_measurements(self.previous_measurements)
+        self.publish_measurements(result)
         return result
 
 
