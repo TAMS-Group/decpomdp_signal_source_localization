@@ -30,7 +30,7 @@ unsigned int WIDTH = 3;
 int IMPROVEMENT_STEPS = 9;
 
 ros::Publisher decPomdpPub;
-
+// The following two functions could be used to get allowed moves and Locations from a Parameter Server
 std::map<int, pgi::GraphSensing::location_t> getLocationsFromParameterServer(){
   std::map<int, pgi::GraphSensing::location_t> result;
   XmlRpc::XmlRpcValue tmp_locations;
