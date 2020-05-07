@@ -13,7 +13,7 @@ class SourceLocationVisualizer:
         type = Marker.CUBE,
         ns = "SignalSource",
         id = SOURCE_LOCATION_ID,
-        lifetime = rospy.Duration(secs=10),
+        lifetime = rospy.Duration(secs=20),
         scale = Vector3(0.1, 0.1, 0.1),
         color = ColorRGBA(0.9, 0.3, 0.0, 1.0)
     )
@@ -21,14 +21,13 @@ class SourceLocationVisualizer:
         type = Marker.TEXT_VIEW_FACING,
         ns = "SignalSource",
         id = SOURCE_LOCATION_DESC_ID,
-        lifetime = rospy.Duration(secs=10),
+        lifetime = rospy.Duration(secs=20),
         scale = Vector3(0.5, 0.5, 0.5),
         color = ColorRGBA(1.0, 0.0, 0.0, 1.0),
         text= "Signal Source Location"
     )
     pose = Pose()
     def visualize(self):
-        rospy.logwarn("visualization of source is called with x= %f and y= %f" % (self.pose.position.x, self.pose.position.y))
         self.source_location.header.stamp = rospy.get_rostime()
         self.source_location_description.header.stamp = rospy.get_rostime()
         self.markerPublisher.publish(self.source_location)
@@ -55,4 +54,4 @@ if __name__ == '__main__':
     visualizer = SourceLocationVisualizer('map')
     while not rospy.is_shutdown():
         visualizer.visualize()
-        rospy.sleep(rospy.Duration(secs=10)) 
+        rospy.sleep(rospy.Duration(secs=20)) 

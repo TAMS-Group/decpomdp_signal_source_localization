@@ -5,6 +5,7 @@
   	<node name="measurement_visualization" pkg="dec_pomdp_server" type="measurement_visualization.py"/>
   	<node name="measurements_evaluation" pkg="dec_pomdp_server" type="measurement_evaluation.py"/>
   	<node name="localization_manager" pkg="dec_pomdp_server" type="localization_manager.py"/>
+	<node name="graph_visualization" pkg="dec_pomdp_server" type="movement_graph_visualisation.py" output="screen"/>
 	<!--<node name="measurement_collector" pkg="dec_pomdp_server" type="measurement_collector.py"/>-->
 
 	<!--Only relevant for simulation-->
