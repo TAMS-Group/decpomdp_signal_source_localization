@@ -1,0 +1,12 @@
+seed: 987654321
+horizon: 5
+width: 3
+improvement_steps: 3
+num_particles: 1000
+num_rollouts: 100
+num_particles_rollout: 100
+gaussian: false
+mx: 0.1
+my: 0.1
+sx: 0.1
+sy: 0.1

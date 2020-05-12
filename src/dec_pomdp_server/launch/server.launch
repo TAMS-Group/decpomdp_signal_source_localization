@@ -1,5 +1,6 @@
 <launch>
 	<rosparam file="$(find dec_pomdp_server)/config/simulation.yaml" />
+	<rosparam param="experiment_parameters" file="$(find dec_pomdp_server)/config/experiment_parameters.yaml" />
 	<node name="source_location_visualization" pkg="dec_pomdp_server" type="source_location_visualization.py" />
   	<node name="heartbeat_visualization" pkg="dec_pomdp_server" type="heartbeat_visualization.py"/>
   	<node name="measurement_visualization" pkg="dec_pomdp_server" type="measurement_visualization.py"/>

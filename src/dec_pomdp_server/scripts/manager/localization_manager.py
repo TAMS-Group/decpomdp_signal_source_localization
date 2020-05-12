@@ -19,9 +19,10 @@ class LocalizationManager:
 		rospy.logwarn("Experiment has been started, waiting for generate Policy Service to come online")
 		rospy.wait_for_service('generate_policies')
 		try:
+			ex_param = rospy.get_param("/experiment_parameters")
 			generate_policies = rospy.ServiceProxy('generate_policies', GeneratePolicies)
 			rospy.logwarn("Waiting for algorithm to generate policies")
-			result = generate_policies(987654321, 8, 3, 3, 1000, 100, 100, False, 0.1, 0.1, 0.1, 0.1, self.robots.keys())
+			result = generate_policies(ex_param['seed'], ex_param['horizon'], ex_param['width'], ex_param['improvement_steps'], ex_param['num_particles'], ex_param['num_rollouts'], ex_param['num_particles_rollout'], ex_param['gaussian'], ex_param['mx'], ex_param['my'], ex_param['sx'], ex_param['sy'], self.robots.keys())
 			rospy.logwarn("Generation succcessful")
 			for policy in result.policies:
 				if policy.robot_name in self.robots.keys():
