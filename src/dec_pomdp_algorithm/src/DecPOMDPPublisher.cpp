@@ -164,7 +164,7 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
   ROS_INFO_STREAM("Policy value: " << best_value);
 
 
-  // TODO Where should the initial best policy and value be written to
+  // Writes the initial best policy and value
   for (std::size_t agent = 0; agent < jas.num_local_spaces(); ++agent) {
     std::ofstream fs(output_prefix +
                      "best_policy_agent" + std::to_string(agent) + ".dot");
