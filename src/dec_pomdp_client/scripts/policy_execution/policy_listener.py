@@ -14,5 +14,6 @@ class PolicyListener:
 if __name__ == "__main__":
     rospy.init_node('policy_execution')
     policy_executioner = PolicyExecutioner()
-    policy_listener = PolicyListener('TestTurtleBot/policy', policy_executioner)
+    robot_name = rospy.get_param('robot_name')
+    policy_listener = PolicyListener(robot_name + '/policy', policy_executioner)
     rospy.spin()
