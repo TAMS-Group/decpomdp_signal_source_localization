@@ -51,7 +51,7 @@ class MeasurementPublisher:
                 (router_location['y'] - measurement_msg.position.y)**2 + 
                 (router_location['z'] - measurement_msg.position.z)**2
             )
-            rospy.logwarn('Distance is %f', distance)
+            rospy.loginfo('Distance is %f', distance)
             signal_level = self.measurer.takeSimulatedMeasurement('TurtleTest', distance)
             measurement_msg.signal_strength = int(signal_level)
         else:
@@ -69,10 +69,10 @@ class MeasurementPublisher:
     def handleGetMeasurment(self, srv_msg):
         rospy.loginfo('Getting %d measurements'% srv_msg.number)
         starting_len = len(self.previous_measurements.measurements)
-        rospy.logwarn('starting with %d measurements stored' % starting_len)
+        rospy.loginfo('starting with %d measurements stored' % starting_len)
         while ((len(self.previous_measurements.measurements) < (starting_len + srv_msg.number)) & (not rospy.is_shutdown())):
             measurement_node.collectMeasurement()
-            rospy.logwarn("currently got (%d / %d)" % (len(self.previous_measurements.measurements)- starting_len, starting_len + srv_msg.number))
+            rospy.loginfo("currently got (%d / %d)" % (len(self.previous_measurements.measurements)- starting_len, srv_msg.number))
         result = Measurements()
         result.measurements = self.previous_measurements.measurements[starting_len : starting_len + srv_msg.number]
         self.publish_measurements(result)

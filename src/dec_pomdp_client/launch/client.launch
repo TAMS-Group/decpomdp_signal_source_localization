@@ -7,7 +7,7 @@
 	<node name="measurement" pkg="dec_pomdp_client" type="measurement_publisher.py"></node>
 	
 	<!--This part starts up the policy execution node -->
-	<node name="policy_execution" pkg="dec_pomdp_client" type="policy_listener.py"></node>
+	<node name="policy_execution" pkg="dec_pomdp_client" type="policy_listener.py" output="screen"></node>
 
 	<!--This part starts the policy visualization-->
 	<node name="policy_visualization" pkg="dec_pomdp_client" type="policy_visualizer.py"></node>
