@@ -9,17 +9,18 @@ def resample(x, weights):
 
 # Add small Gaussian noise to particles to reinvigorate them
 def particle_reinvigoration(x):
-	sd = 0.25
+	sd = 0.05
 	return x + np.random.normal(scale=sd, size=x.shape)
 
 
-def SIR_step(x, weights, observation_likelihoods, ess_threshold_fraction=0.1):
+def SIR_step(x, weights, observation_likelihoods, ess_threshold_fraction=0.5):
 	num_particles = weights.size
 	weights = weights * observation_likelihoods
 	weights = weights / weights.sum()
 	ess = 1.0 / weights.dot(weights)
-	if ess < ess_threshold_fraction * float(num_particles):
-		x, weights = resample(x, weights)
-		x = particle_reinvigoration(x)
+	# TODO Original code asks for resampling/reinvigoration here but that doesn't make sense does it?
+	#if ess < ess_threshold_fraction * float(num_particles):
+		#x, weights = resample(x, weights)
+		#x = particle_reinvigoration(x)
 	return x, weights
 
