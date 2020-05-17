@@ -20,7 +20,7 @@ def main():
 	pub = rospy.Publisher('heartbeat', ExecutionState, queue_size=1)
 	rate = rospy.Rate(1)
 	msg = ExecutionState()
-	msg.robot_name = rospy.get_param('~robot_name')
+	msg.robot_name = rospy.get_param('robot_name')
 	while not rospy.is_shutdown():
 		# msg.pose.header.stamp = rospy.get_rostime()
 		msg.status = ExecutionState.IDLE

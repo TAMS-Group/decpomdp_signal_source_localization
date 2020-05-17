@@ -1,14 +1,16 @@
 <launch>
 	<rosparam file="$(find dec_pomdp_server)/config/simulation.yaml" />
 	<rosparam file="$(find dec_pomdp_client)/config/client_config.yaml" />
+	<rosparam param="robot_name">TestTurtleBot</rosparam>
 	<!-- <arg name="server" default="tams95"/> -->
-	<node name="heartbeat" pkg="dec_pomdp_client" type="heartbeat_publisher.py">
-		<param name="robot_name" value="TestTurtleBot"/> 
-	</node>
+	<node name="heartbeat" pkg="dec_pomdp_client" type="heartbeat_publisher.py"></node>
 	<node name="measurement" pkg="dec_pomdp_client" type="measurement_publisher.py"></node>
 	
 	<!--This part starts up the policy execution node -->
 	<node name="policy_execution" pkg="dec_pomdp_client" type="policy_listener.py"></node>
+
+	<!--This part starts the policy visualization-->
+	<node name="policy_visualization" pkg="dec_pomdp_client" type="policy_visualizer.py"></node>
 
 	<!--Only relevant for simulation-->
 	<arg name="map" value="$(find tams_turtlebot_navigation)/maps/tams_localization.yaml" />
