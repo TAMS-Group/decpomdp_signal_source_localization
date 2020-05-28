@@ -8,6 +8,7 @@
 #include <ros/console.h>
 #include "dec_pomdp_msgs/Policy.h"
 #include "dec_pomdp_msgs/GeneratePolicies.h"
+#include "dec_pomdp_msgs/ExecutionState.h"
 #include <XmlRpcValue.h>
 #include <string>
 /*Dec POMDP Algorithm imports*/
@@ -78,7 +79,8 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
   double mx,
   double my,
   double sx,
-  double sy
+  double sy,
+  std::vector<pgi::GraphSensing::location_t> initial_positions
 )
 {
   ROS_INFO("Generating Policies...");
@@ -134,12 +136,12 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
   if (gaussian) {
     pgi::GraphSensing::sample_initial_states_gaussian(
         init_particles.states_, num_particles_fwd,
-        pgi::GraphSensing::location_t{mx, my}, sx, sy, rng);
+        pgi::GraphSensing::location_t{mx, my}, sx, sy, rng, initial_positions);
     ROS_INFO("Particle Filter initialized with gaussian distributed particles");
   } else {
     // creates an initial state for two agents and certain bounds
     pgi::GraphSensing::sample_initial_states(init_particles.states_,
-                                             num_particles_fwd, rng);
+                                             num_particles_fwd, rng, initial_positions);
     ROS_INFO("Particle Filter initialized with random particle locations");
   }
   init_particles.nodes_ =
@@ -186,10 +188,10 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
     if (gaussian) {
       pgi::GraphSensing::sample_initial_states_gaussian(
           init_particles.states_, num_particles_fwd,
-          pgi::GraphSensing::location_t{mx, my}, sx, sy, rng);
+          pgi::GraphSensing::location_t{mx, my}, sx, sy, rng, initial_positions);
     } else {
       pgi::GraphSensing::sample_initial_states(init_particles.states_,
-                                               num_particles_fwd, rng);
+                                               num_particles_fwd, rng, initial_positions);
     }
     init_particles.nodes_ =
         std::vector<pgi::JointPolicy::joint_vertex_t>(num_particles_fwd, jp.root());
@@ -199,7 +201,7 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
     std::chrono::high_resolution_clock::time_point t1 =
         std::chrono::high_resolution_clock::now();
     auto bp = pgi::backpass::improve_particle(num_rollouts, num_particle_rollout, init_particles, jp, t, o, r, jas,
-                                              jos, rng, props);
+                                              jos, rng, props, initial_positions);
     std::chrono::high_resolution_clock::time_point t3 =
         std::chrono::high_resolution_clock::now();
     long duration =
@@ -310,15 +312,25 @@ dec_pomdp_msgs::Policy policyToMsg(pgi::PolicyGraph policy, std::string robot_na
 bool hanleGeneratePolicies(dec_pomdp_msgs::GeneratePolicies::Request &req,
                 dec_pomdp_msgs::GeneratePolicies::Response &res)
 {
+  std::vector<pgi::GraphSensing::location_t> initial_locations;
+  for(const dec_pomdp_msgs::ExecutionState &state : req.agent_states  ){
+    const pgi::GraphSensing::location_t new_location{state.pose.pose.position.x, state.pose.pose.position.y};
+    initial_locations.push_back(new_location);
+  }
+  /*Filling up the starting locations to atleast 2 at all times */
+  while(initial_locations.size() < 2){
+    const pgi::GraphSensing::location_t standard_location{0.0, 0.0};
+    initial_locations.push_back(standard_location);
+  }
   /* Insert Code to generate policy and transform it to fit policy msg */
-  std::vector<pgi::PolicyGraph> policyGraphs = generatePolicies(req.seed, req.horizon, req.width, req.improvement_steps, req.num_particles, req.num_rollouts, req.num_particles_rollout, 0, pgi::PolicyInitialization::random, req.gaussian, req.mx, req.my, req.sx, req.sy);
+  std::vector<pgi::PolicyGraph> policyGraphs = generatePolicies(req.seed, req.horizon, req.width, req.improvement_steps, req.num_particles, req.num_rollouts, req.num_particles_rollout, 0, pgi::PolicyInitialization::random, req.gaussian, req.mx, req.my, req.sx, req.sy, initial_locations);
   /* Finish publishing policies and give response to service request */
   std::vector<dec_pomdp_msgs::Policy> result;
   for (uint i = 0; i < policyGraphs.size(); i++){
     pgi::PolicyGraph policy = policyGraphs[i];
     std::string robot_name = "TestName";
-    if(i < req.agents.size()){
-      robot_name = req.agents[i];
+    if(i < req.agent_states.size()){
+      robot_name = req.agent_states[i].robot_name;
     }
     dec_pomdp_msgs::Policy policyMsg = policyToMsg(policy, robot_name);
     result.push_back(policyMsg);

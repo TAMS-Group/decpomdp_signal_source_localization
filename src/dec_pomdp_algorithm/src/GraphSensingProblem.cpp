@@ -29,6 +29,20 @@ double distance(const location_t& a, const location_t& b)
 {
   return std::hypot(a.x - b.x, a.y - b.y);
 }
+int get_nearest_location(location_t location)
+{
+  int nearest_node = 0;
+  double current_shortest_distance = DBL_MAX;
+  for (auto const& index_loc_pair: index_to_loc){
+    double new_distance = distance(location, index_loc_pair.second);
+    if (new_distance < current_shortest_distance){
+      current_shortest_distance = new_distance;
+      nearest_node = index_loc_pair.first;
+    }
+  }
+  //ROS_INFO_STREAM("closest location to x: " << location.x << " y: "<< location.y <<" is node "<< nearest_node << " x: "<< index_to_loc.at(nearest_node).x << " y: "<< index_to_loc.at(nearest_node).y);
+  return nearest_node;
+}
 
 void state_t::reinvigorate(PRNG& rng) {
   // add tiny noise to the source location to reinvigorate particle
@@ -39,19 +53,19 @@ void state_t::reinvigorate(PRNG& rng) {
   source_location_.y += rng(nd);
 }
 
-void sample_initial_states(std::vector<state_t>& states, int num, PRNG& rng) {
+void sample_initial_states(std::vector<state_t>& states, int num, PRNG& rng, std::vector<location_t>& starting_locations) {
   states.resize(num);
   for (int i = 0; i < num; ++i)
-    states[i] = sample_initial_state(rng);
+    states[i] = sample_initial_state(rng, starting_locations);
 }
 
 // TODO For this sampling of the initial state i need more input parameters,
 // to specifiy the size of the map and the given starting positions of the robots
-state_t sample_initial_state(PRNG& rng)
+state_t sample_initial_state(PRNG& rng, std::vector<location_t>& starting_locations)
 {
   state_t s;
-  s.agent_0_location_ = 0;
-  s.agent_1_location_ = 0;
+  s.agent_0_location_ = get_nearest_location(starting_locations[0]);
+  s.agent_1_location_ = get_nearest_location(starting_locations[1]);
   boost::random::uniform_01<double> ud;
   s.source_location_.x = -0.5 + 7.0 * rng(ud);
   s.source_location_.y = -1.5 + 9.5 * rng(ud);
@@ -60,13 +74,14 @@ state_t sample_initial_state(PRNG& rng)
 
 void sample_initial_states_gaussian(std::vector<state_t>& states, int num,
                                     const location_t& source_mean_location,
-                                    double stdev_x, double stdev_y, PRNG& rng) {
+                                    double stdev_x, double stdev_y, PRNG& rng, 
+                                    std::vector<location_t>& starting_locations) {
   states.resize(num);
   boost::random::normal_distribution<> xdist(source_mean_location.x, stdev_x);
   boost::random::normal_distribution<> ydist(source_mean_location.y, stdev_y);
   for (auto& s : states) {
-    s.agent_0_location_ = 0;
-    s.agent_1_location_ = 0;
+    s.agent_0_location_ = get_nearest_location(starting_locations[0]);
+    s.agent_1_location_ = get_nearest_location(starting_locations[1]);
     s.source_location_.x = rng(xdist);
     s.source_location_.y = rng(ydist);
   }

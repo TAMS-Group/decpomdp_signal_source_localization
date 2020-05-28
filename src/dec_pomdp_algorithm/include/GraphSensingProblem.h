@@ -39,6 +39,7 @@ struct location_t {
 };
 
 double distance(const location_t& a, const location_t& b);
+int get_nearest_location(location_t location);
 
 struct state_t {
   location_t source_location_;
@@ -48,11 +49,12 @@ struct state_t {
   void reinvigorate(PRNG& rng);
 };
 
-void sample_initial_states(std::vector<state_t>& states, int num, PRNG& rng);
-state_t sample_initial_state(PRNG& rng);
+void sample_initial_states(std::vector<state_t>& states, int num, PRNG& rng, std::vector<location_t>& starting_locations);
+state_t sample_initial_state(PRNG& rng, std::vector<location_t>& starting_locations);
 void sample_initial_states_gaussian(std::vector<state_t>& states, int num,
                                     const location_t& source_mean_location,
-                                    double stdev_x, double stdev_y, PRNG& rng);
+                                    double stdev_x, double stdev_y, PRNG& rng, 
+                                    std::vector<location_t>& starting_locations);
 
 //Default locations and allowed moves. Should be replaced during execution time
 static std::map<int, location_t> index_to_loc = []() {

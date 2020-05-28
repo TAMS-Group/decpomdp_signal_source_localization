@@ -36,7 +36,8 @@ ImprovementResult improve_particle(int num_rollouts, int num_particle_rollout,
                                    const RewardModel& r,
                                    const JointActionSpace& jas,
                                    const JointObservationSpace& jos, PRNG& rng,
-                                   const BackPassProperties& props) {
+                                   const BackPassProperties& props,
+                                   std::vector<pgi::GraphSensing::location_t>& starting_locations) {
   static_assert(std::is_base_of<pgi::StateTransitionModel<State>,
                                 StateTransitionModel>::value,
                 "StateTransitionModel must inherit from "
@@ -59,7 +60,7 @@ ImprovementResult improve_particle(int num_rollouts, int num_particle_rollout,
                vertices_with_steps_remaining(steps, local))) {
         value_map_t vm = estimate_local_policy_values(
             num_rollouts, num_particle_rollout, jp, agent, qlocal, fwd, t, o, r,
-            jas, jos, rng, props);
+            jas, jos, rng, props, starting_locations);
 
         auto imax = std::max_element(
             vm.begin(), vm.end(), [](const std::pair<std::size_t, stats_t>& a,
@@ -132,17 +133,17 @@ value_map_t local_policy_values_heuristic(
     const std::size_t agent_idx, const vertex_t agent_vertex,
     const pgi::ForwardPassParticle<State>& fwd, const StateTransitionModel& t,
     const ObservationModel& o, const RewardModel& r,
-    const JointActionSpace& jas, const JointObservationSpace& jos, PRNG& rng) {
+    const JointActionSpace& jas, const JointObservationSpace& jos, PRNG& rng, std::vector<pgi::GraphSensing::location_t>& starting_locations) {
   value_map_t vm;
   PolicyGraph& local = jp.local_policy(agent_idx);
 
   // create required number of particles for rollout
   std::vector<double> w_rollout(num_particle_rollout, 1.0/static_cast<double>(num_particle_rollout));
   std::vector<State> s_rollout(num_particle_rollout);
-  GraphSensing::sample_initial_states(s_rollout, num_particle_rollout, rng);
+  GraphSensing::sample_initial_states(s_rollout, num_particle_rollout, rng, starting_locations);
 
   // now draw a random history and update belief
-  State s = GraphSensing::sample_initial_state(rng);
+  State s = GraphSensing::sample_initial_state(rng, starting_locations);
   std::pair<History, bool> hs = sample_random_history(s, jp.root(), jp, t, o, jas, rng);
   SIR(s_rollout, w_rollout, hs.first, t, o, rng);
 
@@ -175,7 +176,7 @@ value_map_t estimate_local_policy_values(
     const pgi::ForwardPassParticle<State>& fwd, const StateTransitionModel& t,
     const ObservationModel& o, const RewardModel& r,
     const JointActionSpace& jas, const JointObservationSpace& jos, PRNG& rng,
-    const BackPassProperties& props) {
+    const BackPassProperties& props, std::vector<pgi::GraphSensing::location_t>& starting_locations) {
 
   value_map_t local_policy_values = local_policy_values_regular(
       num_rollouts, num_particle_rollout, jp, agent_idx, agent_vertex, fwd, t,
@@ -184,7 +185,7 @@ value_map_t estimate_local_policy_values(
     // probably this node is uncreachable, do a heuristic update in it instead
     local_policy_values = local_policy_values_heuristic(
         num_rollouts, num_particle_rollout, jp, agent_idx, agent_vertex, fwd, t,
-        o, r, jas, jos, rng);
+        o, r, jas, jos, rng, starting_locations);
 
   }
 
