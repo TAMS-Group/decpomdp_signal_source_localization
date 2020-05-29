@@ -10,7 +10,7 @@ from dec_pomdp_msgs.srv import GetMeasurement
 
 
 class MeasurementPublisher:
-    SIMULATE_MEASUREMENT = True
+    SIMULATE_MEASUREMENT = False
     def __init__(self):
         self.publisher = rospy.Publisher("measurements", Measurements, queue_size=1)
         self.previous_measurements = Measurements()
@@ -47,8 +47,8 @@ class MeasurementPublisher:
         if(simulation):
             router_location = rospy.get_param("/access_point_location")
             distance = np.sqrt(
-                (router_location['x'] - measurement_msg.position.x)**2 + 
-                (router_location['y'] - measurement_msg.position.y)**2 + 
+                (router_location['x'] - measurement_msg.position.x)**2 +
+                (router_location['y'] - measurement_msg.position.y)**2 +
                 (router_location['z'] - measurement_msg.position.z)**2
             )
             rospy.loginfo('Distance is %f', distance)
