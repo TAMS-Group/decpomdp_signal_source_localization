@@ -150,7 +150,7 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
       num_particles_fwd, 1.0 / static_cast<double>(num_particles_fwd));
 
   // TODO Where to go with this output
-  std::string output_prefix = "/home/tobias/Documents/policies/";
+  std::string output_prefix = "/informatik2/students/home/6tkruege/Documents/Bachelor/policies";
   std::ofstream fvalue(output_prefix +
                         "policy_values.txt");
   std::ofstream ftime(output_prefix +

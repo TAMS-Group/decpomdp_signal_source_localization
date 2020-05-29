@@ -27,7 +27,7 @@
 	<node name="move_base_simulation" pkg="move_base_stub" type="move_base_stub.py"/>
 	-->
 <!-- Only relevant for production -->
-	<arg name="server" default="tams95"/>
+	<arg name="server" default="tams92"/>
 	<node name="$(anon master_discovery)" pkg="master_discovery_fkie" type="master_discovery" output="log">
 			<rosparam param="robot_hosts" subst_value="True">[$(env TURTLEBOT_NAME),$(arg server)]</rosparam>
 	</node>
@@ -38,7 +38,7 @@
 - /measurements
 - /map
 - /tf
-- $(env TURTLEBOT_NAME)/policy
+- /$(env TURTLEBOT_NAME)/policy
 </rosparam>
 	</node>
 </launch>

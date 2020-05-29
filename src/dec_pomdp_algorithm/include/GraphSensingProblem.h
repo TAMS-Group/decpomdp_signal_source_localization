@@ -53,14 +53,14 @@ void sample_initial_states(std::vector<state_t>& states, int num, PRNG& rng, std
 state_t sample_initial_state(PRNG& rng, std::vector<location_t>& starting_locations);
 void sample_initial_states_gaussian(std::vector<state_t>& states, int num,
                                     const location_t& source_mean_location,
-                                    double stdev_x, double stdev_y, PRNG& rng, 
+                                    double stdev_x, double stdev_y, PRNG& rng,
                                     std::vector<location_t>& starting_locations);
 
 //Default locations and allowed moves. Should be replaced during execution time
 static std::map<int, location_t> index_to_loc = []() {
   std::map<int, location_t> loc_map;
 
-  std::ifstream inputfile("/home/tobias/Documents/Bachelor_Thesis_Code/src/dec_pomdp_algorithm/config/locations.txt");
+  std::ifstream inputfile("/informatik2/students/home/6tkruege/bachelor/src/dec_pomdp_algorithm/config/locations.txt");
   std::string line;
   if(!inputfile.is_open()){
     ROS_ERROR_STREAM("locations.txt file could not be opened");
@@ -79,7 +79,7 @@ static std::map<int, location_t> index_to_loc = []() {
 static std::map<int, std::vector<int>> allowed_moves= []() {
   std::map<int, std::vector<int>> allowed_moves_map;
 
-  std::ifstream inputfile("/home/tobias/Documents/Bachelor_Thesis_Code/src/dec_pomdp_algorithm/config/allowed_moves.txt");
+  std::ifstream inputfile("/informatik2/students/home/6tkruege/bachelor/src/dec_pomdp_algorithm/config/allowed_moves.txt");
   std::string line;
   if(!inputfile.is_open()){
     ROS_ERROR_STREAM("allowed_moves.txt file could not be opened");
@@ -177,7 +177,7 @@ class RSSObservationModel : public pgi::ObservationModel<state_t> {
   std::array<double, 3> get_observation_prob(const location_t& source,
                                              const location_t& agent) const;
   static dec_pomdp_msgs::Interval getIntervalForObservation(std::string observation) {
-    dec_pomdp_msgs::Interval result; 
+    dec_pomdp_msgs::Interval result;
     std::vector<std::string> observations = pgi::element_names(rss_joint_observation_space.get(0));
     if(observation == observations[0]){
       result.upper_bound = top_threshold;
