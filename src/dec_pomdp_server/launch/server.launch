@@ -9,14 +9,15 @@
 	<node name="graph_visualization" pkg="dec_pomdp_server" type="movement_graph_visualisation.py" output="screen"/>
 	<!--<node name="measurement_collector" pkg="dec_pomdp_server" type="measurement_collector.py"/>-->
 
-	<!--Only relevant for simulation-->
+	<!--Only relevant for simulation
 	<arg name="map" value="$(find tams_turtlebot_navigation)/maps/tams_localization.yaml" />
     <arg name="map_navigation" value="$(find tams_turtlebot_navigation)/maps/tams_navigation.yaml" />
 	<node name="map_localization" pkg="map_server" type="map_server" args="$(arg map)" />
  	<node name="map_navigation" pkg="map_server" type="map_server" args="$(arg map_navigation)" >
     	<remap from="map" to="map_navigation"/>
   	</node>
-<!-- Only relevant for production use
+-->
+<!-- Only relevant for production use -->
 	<node name="$(anon master_discovery)" pkg="master_discovery_fkie" type="master_discovery" output="log">
 			<rosparam param="robot_hosts">[donny,mikey,leo,raph,tams92]</rosparam>
 	</node>
@@ -31,5 +32,4 @@
 </rosparam>
 	</node>
 
--->
 </launch>

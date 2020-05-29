@@ -21,7 +21,7 @@ class MovementGraphVisualizer:
     edge_list = Marker(
         type=Marker.LINE_LIST,
         ns=NAMESPACE,
-        id=EDGE_LIST_ID,			
+        id=EDGE_LIST_ID,
         lifetime=rospy.Duration(0),
         scale=Vector3(0.05,0.0,0.0),
         color=ColorRGBA(0.0,0.0,1.0,1.0)
@@ -51,7 +51,7 @@ if __name__ == '__main__':
     visualizer = MovementGraphVisualizer('map')
 
     #Read nodes
-    node_file = open("/home/tobias/Documents/Bachelor_Thesis_Code/src/dec_pomdp_algorithm/config/locations.txt", "r")
+    node_file = open("/informatik2/students/home/6tkruege/bachelor/src/dec_pomdp_algorithm/config/locations.txt", "r")
     nodes = dict()
     for line in node_file.readlines():
         line_content = [float(x) for x in line.split(" ")]
@@ -59,7 +59,7 @@ if __name__ == '__main__':
     node_file.close()
 
     #Read Allowed moves
-    allowed_moves_file = open("/home/tobias/Documents/Bachelor_Thesis_Code/src/dec_pomdp_algorithm/config/allowed_moves.txt", "r")
+    allowed_moves_file = open("/informatik2/students/home/6tkruege/bachelor/src/dec_pomdp_algorithm/config/allowed_moves.txt", "r")
     allowed_moves = dict()
     for line in allowed_moves_file.readlines():
         line_content = [int(x) for x in line.split(" ")]
@@ -69,7 +69,7 @@ if __name__ == '__main__':
     #Log nodes and moves
     for node in nodes:
         rospy.loginfo("Found node %d with position x=%f and y=%f", node, nodes[node].x, nodes[node].y)
-    for key in allowed_moves: 
+    for key in allowed_moves:
         rospy.loginfo("allowed moves for node %d are %s", key, ''.join(str(x) for x in allowed_moves[key]))
 
     #visualize nodes and moves
