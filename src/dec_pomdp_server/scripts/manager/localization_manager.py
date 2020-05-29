@@ -10,13 +10,15 @@ from dec_pomdp_msgs.msg import Policy
 class LocalizationManager:
 	robot_publishers = {}
 	robot_states = {}
+	robot_subscribers = {}
 
 	def handle_heartbeat(self, state):
 		if state.robot_name not in self.robot_publishers.keys():
 			rospy.logwarn("Registered new Robot: " + state.robot_name)
 			self.robot_publishers[state.robot_name] = rospy.Publisher(state.robot_name + '/policy', Policy, queue_size=1)
 		self.robot_states[state.robot_name] = state
-		
+		self.heartbeat_publisher.publish(state)
+
 
 	def handle_start(self, start_msg):
 		rospy.logwarn("Experiment has been started, waiting for generate Policy Service to come online")
@@ -37,9 +39,19 @@ class LocalizationManager:
 			return False
 		return True
 
+	def handle_measurements(self, measurements):
+		self.measurement_publisher.publish(measurements)
+
+
 	def __init__(self):
 		rospy.init_node('localization_manager')
-		rospy.Subscriber('heartbeat', ExecutionState, self.handle_heartbeat)
+		possible_agents = rospy.get_param('/possible_agents')
+		for agent in possible_agents:
+			self.robot_subscribers[agent + 'heartbeat'] = rospy.Subscriber(agent + '/heartbeat', ExecutionState, self.handle_heartbeat)
+		for agent in possible_agents:
+			self.robot_subscribers[agent + 'measurements'] = rospy.Subscriber(agent +'/measurements', Measurements, self.handle_measurements)
+		self.measurement_publisher = rospy.Publisher('/measurements', Measurements, queue_size=10)
+		self.heartbeat_publisher = rospy.Publisher('/heartbeat', ExecutionState, queue_size=10)
 		self.start_service = rospy.Service('start_experiment', StartExperiment, self.handle_start)
 
 

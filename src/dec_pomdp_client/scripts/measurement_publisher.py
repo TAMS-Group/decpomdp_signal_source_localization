@@ -10,9 +10,9 @@ from dec_pomdp_msgs.srv import GetMeasurement
 
 
 class MeasurementPublisher:
-    SIMULATE_MEASUREMENT = False
-    def __init__(self):
-        self.publisher = rospy.Publisher("measurements", Measurements, queue_size=1)
+    SIMULATE_MEASUREMENT = True
+    def __init__(self, robot_name):
+        self.publisher = rospy.Publisher(robot_name + "/measurements", Measurements, queue_size=1)
         self.previous_measurements = Measurements()
         self.transformer = tf.TransformListener()
         try:
@@ -86,5 +86,6 @@ class MeasurementPublisher:
 
 if __name__ == '__main__':
     rospy.init_node('measurements')
-    measurement_node = MeasurementPublisher()
+    robot_name = rospy.get_param('robot_name')
+    measurement_node = MeasurementPublisher(robot_name)
     rospy.spin()

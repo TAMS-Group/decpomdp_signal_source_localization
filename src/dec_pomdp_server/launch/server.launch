@@ -1,35 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <launch>
-	<rosparam file="$(find dec_pomdp_server)/config/simulation.yaml" />
-	<rosparam param="experiment_parameters" file="$(find dec_pomdp_server)/config/experiment_parameters.yaml" />
-	<node name="source_location_visualization" pkg="dec_pomdp_server" type="source_location_visualization.py" />
-  	<node name="heartbeat_visualization" pkg="dec_pomdp_server" type="heartbeat_visualization.py"/>
-  	<node name="measurement_visualization" pkg="dec_pomdp_server" type="measurement_visualization.py"/>
-  	<node name="measurements_evaluation" pkg="dec_pomdp_server" type="measurement_evaluation.py"/>
-  	<node name="localization_manager" pkg="dec_pomdp_server" type="localization_manager.py"/>
-	<node name="graph_visualization" pkg="dec_pomdp_server" type="movement_graph_visualisation.py" output="screen"/>
-	<!--<node name="measurement_collector" pkg="dec_pomdp_server" type="measurement_collector.py"/>-->
+  <rosparam file="$(find dec_pomdp_server)/config/simulation.yaml" />
+  <rosparam param="experiment_parameters" file="$(find dec_pomdp_server)/config/experiment_parameters.yaml" />
+  <rosparam param="possible_agents">[donny,mikey,leo,raph]</rosparam>
+  <node name="source_location_visualization" pkg="dec_pomdp_server" type="source_location_visualization.py" />
+    <node name="heartbeat_visualization" pkg="dec_pomdp_server" type="heartbeat_visualization.py"/>
+    <node name="measurement_visualization" pkg="dec_pomdp_server" type="measurement_visualization.py"/>
+    <node name="measurements_evaluation" pkg="dec_pomdp_server" type="measurement_evaluation.py"/>
+    <node name="localization_manager" pkg="dec_pomdp_server" type="localization_manager.py"/>
+  <node name="graph_visualization" pkg="dec_pomdp_server" type="movement_graph_visualisation.py" output="screen"/>
+  <!--<node name="measurement_collector" pkg="dec_pomdp_server" type="measurement_collector.py"/>-->
 
-	<!--Only relevant for simulation
-	<arg name="map" value="$(find tams_turtlebot_navigation)/maps/tams_localization.yaml" />
+  <!--Only relevant for simulation -->
+  <arg name="map" value="$(find tams_turtlebot_navigation)/maps/tams_localization.yaml" />
     <arg name="map_navigation" value="$(find tams_turtlebot_navigation)/maps/tams_navigation.yaml" />
-	<node name="map_localization" pkg="map_server" type="map_server" args="$(arg map)" />
- 	<node name="map_navigation" pkg="map_server" type="map_server" args="$(arg map_navigation)" >
-    	<remap from="map" to="map_navigation"/>
-  	</node>
--->
-<!-- Only relevant for production use -->
-	<node name="$(anon master_discovery)" pkg="master_discovery_fkie" type="master_discovery" output="log">
-			<rosparam param="robot_hosts">[donny,mikey,leo,raph,tams92]</rosparam>
-	</node>
+  <node name="map_localization" pkg="map_server" type="map_server" args="$(arg map)" />
+   <node name="map_navigation" pkg="map_server" type="map_server" args="$(arg map_navigation)" >
+      <remap from="map" to="map_navigation"/>
+    </node>
 
-	<node name="$(anon master_sync)" pkg="master_sync_fkie" type="master_sync">
+<!-- Only relevant for production use -->
+<arg name="local" default="false"/>
+  <group unless="$(arg local)">
+
+    <node name="$(anon master_discovery)" pkg="master_discovery_fkie" type="master_discovery" output="log">
+      <rosparam param="robot_hosts">[donny,mikey,leo,raph,tams92]</rosparam>
+    </node>
+
+  <node name="$(anon master_sync)" pkg="master_sync_fkie" type="master_sync">
+	  <rosparam param="ignore_services">[/*]</rosparam>
 <rosparam param="sync_topics">
-- /heartbeat
-- /measurements
-- /map
-- /tf
+- /leo/heartbeat
+- /leo/measurements
 - /leo/policy
+- /donny/heartbeat
+- /donny/measurements
+- /donny/policy
 </rosparam>
-	</node>
+  </node>
+  </group>
 
 </launch>

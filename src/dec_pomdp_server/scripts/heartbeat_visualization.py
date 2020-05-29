@@ -30,7 +30,7 @@ class Visualizer:
 		self.marker.color.b = 0.0
 		self.marker.color.a = 1.0
 		rospy.init_node('heartbeat_visualization')
-		self.markerPublisher= rospy.Publisher('robotState', Marker, queue_size=1)
+		self.markerPublisher= rospy.Publisher('robotState', Marker, queue_size=4)
 		rospy.Subscriber('heartbeat', ExecutionState, self.visualize)
 
 

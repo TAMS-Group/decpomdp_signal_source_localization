@@ -1,44 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <launch>
-	<rosparam file="$(find dec_pomdp_server)/config/simulation.yaml" />
-	<rosparam file="$(find dec_pomdp_client)/config/client_config.yaml" />
-	<node name="heartbeat" pkg="dec_pomdp_client" type="heartbeat_publisher.py"></node>
-	<node name="measurement" pkg="dec_pomdp_client" type="measurement_publisher.py"></node>
-	<rosparam param="robot_name" subst_value="True">$(env TURTLEBOT_NAME)</rosparam>
-	<!--This part starts up the policy execution node -->
-	<node name="policy_execution" pkg="dec_pomdp_client" type="policy_listener.py" output="screen"></node>
+  <rosparam file="$(find dec_pomdp_server)/config/simulation.yaml" />
+  <rosparam file="$(find dec_pomdp_client)/config/client_config.yaml" />
+  <rosparam param="robot_name" subst_value="True">$(env TURTLEBOT_NAME)</rosparam>
 
-	<!--This part starts the policy visualization-->
-	<node name="policy_visualization" pkg="dec_pomdp_client" type="policy_visualizer.py"></node>
+  <node name="$(env TURTLEBOT_NAME)_heartbeat" pkg="dec_pomdp_client" type="heartbeat_publisher.py"></node>
+  <node name="$(env TURTLEBOT_NAME)_measurement" pkg="dec_pomdp_client" type="measurement_publisher.py"></node>
+  <!--This part starts up the policy execution node -->
+  <node name="$(env TURTLEBOT_NAME)_policy_execution" pkg="dec_pomdp_client" type="policy_listener.py" output="screen"></node>
+  <!--This part starts the policy visualization-->
+  <node name="$(env TURTLEBOT_NAME)_policy_visualization" pkg="dec_pomdp_client" type="policy_visualizer.py"></node>
 
 <!--Only relevant for simulation
-	<arg name="map" value="$(find tams_turtlebot_navigation)/maps/tams_localization.yaml" />
+  <arg name="map" value="$(find tams_turtlebot_navigation)/maps/tams_localization.yaml" />
     <arg name="map_navigation" value="$(find tams_turtlebot_navigation)/maps/tams_navigation.yaml" />
-	<node name="map_localization" pkg="map_server" type="map_server" args="$(arg map)" />
- 	<node name="map_navigation" pkg="map_server" type="map_server" args="$(arg map_navigation)" >
-    	<remap from="map" to="map_navigation"/>
-  	</node>
+  <node name="map_localization" pkg="map_server" type="map_server" args="$(arg map)" />
+   <node name="map_navigation" pkg="map_server" type="map_server" args="$(arg map_navigation)" >
+      <remap from="map" to="map_navigation"/>
+    </node>
 
-	<param name="robot_description" command="$(find xacro)/xacro '$(find turtlebot_description)/robots/kobuki_hexagons_kinect.urdf.xacro'"/>
-	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
-	<node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
-		<param name="publish_frequency" type="double" value="10.0"/>
-	</node>
+  <param name="robot_description" command="$(find xacro)/xacro '$(find turtlebot_description)/robots/kobuki_hexagons_kinect.urdf.xacro'"/>
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="10.0"/>
+  </node>
 
-	<node name="move_base_simulation" pkg="move_base_stub" type="move_base_stub.py"/>
-	-->
+  <node name="move_base_simulation" pkg="move_base_stub" type="move_base_stub.py"/>
+  -->
 <!-- Only relevant for production -->
-	<arg name="server" default="tams92"/>
-	<node name="$(anon master_discovery)" pkg="master_discovery_fkie" type="master_discovery" output="log">
-			<rosparam param="robot_hosts" subst_value="True">[$(env TURTLEBOT_NAME),$(arg server)]</rosparam>
-	</node>
-
-	<node name="$(anon master_sync)" pkg="master_sync_fkie" type="master_sync">
+  <arg name="local" default="false"/>
+  <group unless="$(arg local)">
+  <arg name="server" default="tams92"/>
+    <node name="$(anon master_discovery)" pkg="master_discovery_fkie" type="master_discovery" output="log">
+      <rosparam param="robot_hosts" subst_value="True">[donny,mikey,leo,raph,tams92]</rosparam>
+      <!--[$(env TURTLEBOT_NAME),$(arg server)]-->
+    </node>
+    <node name="$(anon master_sync)" pkg="master_sync_fkie" type="master_sync">
+      <rosparam param="ignore_services">[/*]</rosparam>
 <rosparam param="sync_topics">
-- /heartbeat
-- /measurements
-- /map
-- /tf
+- /$(env TURTLEBOT_NAME)/heartbeat
+- /$(env TURTLEBOT_NAME)/measurements
 - /$(env TURTLEBOT_NAME)/policy
 </rosparam>
-	</node>
+    </node>
+  </group>
 </launch>
