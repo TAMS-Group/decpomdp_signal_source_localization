@@ -18,6 +18,7 @@ class SignalStrengthServer:
         self.publisher = rospy.Publisher(robot_name + "/measurements", Measurements, queue_size=1)
         self.previous_measurements = Measurements()
         self.transformer = tf.TransformListener()
+        rospy.loginfo("Waiting for Transform to become available")
         try:
             self.transformer.waitForTransform('map',
                                     'base_footprint',
@@ -27,6 +28,7 @@ class SignalStrengthServer:
         except:
             e = sys.exc_info()[0]
             rospy.logwarn(str(e))
+        rospy.loginfo("Transform available")
         self.base_footprint_msg = PoseStamped()
         self.base_footprint_msg.header.frame_id = 'base_footprint'
         self.base_footprint_msg.pose.orientation.w = 1
@@ -35,6 +37,7 @@ class SignalStrengthServer:
         self.action_name = action_name
         self.action_server = actionlib.SimpleActionServer(self.action_name, TakeMeasurementsAction, execute_cb=self.handleGetMeasurment, auto_start=False)
         self.action_server.start()
+        rospy.loginfo("Signal strength server has been started: " + self.action_name)
 
     
     def takeMeasurement(self, simulation=False):
@@ -89,5 +92,5 @@ class SignalStrengthServer:
 if __name__ == '__main__':
     rospy.init_node('measurements')
     robot_name = rospy.get_param('robot_name')
-    measurement_node = SignalStrengthServer(rospy.get_name(), robot_name)
+    measurement_node = SignalStrengthServer('measurements', robot_name)
     rospy.spin()

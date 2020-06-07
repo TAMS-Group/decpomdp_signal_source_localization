@@ -61,7 +61,7 @@ class PolicyExecutioner:
             rospy.sleep(rospy.Duration(0.5))
 
     def move_to_goal(self, goal):
-        rospy.logwarn('Moving to goal')
+        rospy.loginfo('Moving to goal')
         self.move_base_client.send_goal(goal)
         while not rospy.is_shutdown():
             current_state = self.move_base_client.get_state()
@@ -70,7 +70,7 @@ class PolicyExecutioner:
                 break
             elif(current_state == GoalStatus.LOST or current_state == GoalStatus.REJECTED):
                 rospy.logerr('Goal with coordinates x = %f and y = %f couldnt be reached' % (goal.target_pose.pose.position.x, goal.target_pose.pose.position.y))
-            rospy.logwarn('Sleeping until arrival current state is %d' % current_state)
+            rospy.loginfo('Sleeping until arrival current state is %d' % current_state)
             rospy.sleep(rospy.Duration(0.5))
 
     def find(self, l_function, array):
