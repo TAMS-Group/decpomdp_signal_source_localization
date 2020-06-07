@@ -5,9 +5,8 @@ import numpy as np
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from dec_pomdp_msgs.msg import Policy
 from actionlib_msgs.msg import GoalStatus
-from dec_pomdp_msgs.msg import Measurements
+from dec_pomdp_msgs.msg import Measurements, TakeMeasurementsAction, TakeMeasurementsGoal
 from dec_pomdp_msgs.srv import GetMeasurement
-
 
 
 
@@ -45,15 +44,21 @@ class PolicyExecutioner:
 
 
     def take_measurement(self):
-        try:
-            result = self.take_measurements(self.measurements_per_step)
-            signal_strengths = []
-            for measurement in result.measurements.measurements:
-                self.measurements.measurements.append(measurement)
-                signal_strengths.append(measurement.signal_strength)
-            return np.mean(signal_strengths)
-        except rospy.ServiceException, e:
-            rospy.logerr("Service failed to take measurements")
+        goal = TakeMeasurementsGoal(number=self.measurements_per_step)
+        self.measurement_client.send_goal(goal)
+        while not rospy.is_shutdown():
+            current_state = self.measurement_client.get_state()
+            if (current_state == GoalStatus.SUCCEEDED):
+                result = self.measurement_client.get_result()
+                signal_strengths = []
+                for measurement in result.measurements.measurements:
+                    self.measurements.measurements.append(measurement)
+                    signal_strengths.append(measurement.signal_strength)
+                return np.mean(signal_strengths)
+            elif(current_state == GoalStatus.LOST or current_state == GoalStatus.REJECTED):
+                rospy.logerr("Action client failed to take measurements")
+                break
+            rospy.sleep(rospy.Duration(0.5))
 
     def move_to_goal(self, goal):
         rospy.logwarn('Moving to goal')
@@ -61,7 +66,7 @@ class PolicyExecutioner:
         while not rospy.is_shutdown():
             current_state = self.move_base_client.get_state()
             if (current_state == GoalStatus.SUCCEEDED):
-                rospy.logwarn('Goal has been reached')
+                rospy.loginfo('Goal has been reached')
                 break
             elif(current_state == GoalStatus.LOST or current_state == GoalStatus.REJECTED):
                 rospy.logerr('Goal with coordinates x = %f and y = %f couldnt be reached' % (goal.target_pose.pose.position.x, goal.target_pose.pose.position.y))
@@ -76,11 +81,8 @@ class PolicyExecutioner:
     def __init__(self):
         self.measurements_per_step = rospy.get_param("/measurements_per_step")
         self.measurements = Measurements()
-        rospy.wait_for_service('collect_measurements')
-        try:
-            self.take_measurements = rospy.ServiceProxy('collect_measurements', GetMeasurement)
-        except rospy.ServiceException, e:
-            rospy.logerr("The collect measurements service couldn't be initialised properly")
+        self.measurement_client = actionlib.SimpleActionClient('measurements', TakeMeasurementsAction)
+        self.measurement_client.wait_for_server()
         self.move_base_client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
         self.move_base_client.wait_for_server()
         

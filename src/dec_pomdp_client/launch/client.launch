@@ -5,7 +5,7 @@
   <rosparam param="robot_name" subst_value="True">$(env TURTLEBOT_NAME)</rosparam>
 
   <node name="$(env TURTLEBOT_NAME)_heartbeat" pkg="dec_pomdp_client" type="heartbeat_publisher.py"></node>
-  <node name="$(env TURTLEBOT_NAME)_measurement" pkg="dec_pomdp_client" type="measurement_publisher.py"></node>
+  <node name="$(env TURTLEBOT_NAME)_measurement" pkg="dec_pomdp_client" type="signal_strength_server.py"></node>
   <!--This part starts up the policy execution node -->
   <node name="$(env TURTLEBOT_NAME)_policy_execution" pkg="dec_pomdp_client" type="policy_listener.py" output="screen"></node>
   <!--This part starts the policy visualization-->
