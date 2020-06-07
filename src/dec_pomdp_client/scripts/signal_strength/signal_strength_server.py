@@ -33,7 +33,7 @@ class SignalStrengthServer:
         self.base_footprint_msg.header.stamp = rospy.Time(0)
         self.measurer = SignalStrengthMeasurer()
         self.action_name = action_name
-        self.action_server = actionlib.SimpleActionServer(self.action_name, TakeMeasurementsAction, execute_cb=self.handleGetMeasurement, auto_start=False)
+        self.action_server = actionlib.SimpleActionServer(self.action_name, TakeMeasurementsAction, execute_cb=self.handleGetMeasurment, auto_start=False)
         self.action_server.start()
 
     
@@ -89,5 +89,5 @@ class SignalStrengthServer:
 if __name__ == '__main__':
     rospy.init_node('measurements')
     robot_name = rospy.get_param('robot_name')
-    measurement_node = MeasurementPublisher(rospy.get_name(), robot_name)
+    measurement_node = SignalStrengthServer(rospy.get_name(), robot_name)
     rospy.spin()
