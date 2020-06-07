@@ -2,6 +2,7 @@
 import actionlib
 import rospy
 import numpy as np 
+from geometry_msgs.msg import Twist
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from dec_pomdp_msgs.msg import Policy
 from actionlib_msgs.msg import GoalStatus
@@ -49,6 +50,8 @@ class PolicyExecutioner:
         while not rospy.is_shutdown():
             current_state = self.measurement_client.get_state()
             if (current_state == GoalStatus.SUCCEEDED):
+                # self.rotation_msg.angular.z = 0.0
+                # self.rotation_publisher.publish(self.rotation_msg)
                 result = self.measurement_client.get_result()
                 signal_strengths = []
                 for measurement in result.measurements.measurements:
@@ -58,6 +61,8 @@ class PolicyExecutioner:
             elif(current_state == GoalStatus.LOST or current_state == GoalStatus.REJECTED):
                 rospy.logerr("Action client failed to take measurements")
                 break
+            # self.rotation_msg.angular.z = self.rotation_speed
+            # self.rotation_publisher.publish(self.rotation_msg)
             rospy.sleep(rospy.Duration(0.5))
 
     def move_to_goal(self, goal):
@@ -80,6 +85,9 @@ class PolicyExecutioner:
 
     def __init__(self):
         self.measurements_per_step = rospy.get_param("/measurements_per_step")
+        self.rotation_speed = rospy.get_param("/rotation_speed")
+        self.rotation_publisher = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
+        self.rotation_msg = Twist()
         self.measurements = Measurements()
         self.measurement_client = actionlib.SimpleActionClient('measurements', TakeMeasurementsAction)
         self.measurement_client.wait_for_server()

@@ -5,13 +5,13 @@
   <rosparam param="robot_name" subst_value="True">$(env TURTLEBOT_NAME)</rosparam>
 
   <node name="$(env TURTLEBOT_NAME)_heartbeat" pkg="dec_pomdp_client" type="heartbeat_publisher.py"></node>
-  <node name="$(env TURTLEBOT_NAME)_measurement" pkg="dec_pomdp_client" type="signal_strength_server.py"></node>
+  <node name="$(env TURTLEBOT_NAME)_measurement" pkg="dec_pomdp_client" type="signal_strength_server.py" output="screen"></node>
   <!--This part starts up the policy execution node -->
   <node name="$(env TURTLEBOT_NAME)_policy_execution" pkg="dec_pomdp_client" type="policy_listener.py" output="screen"></node>
   <!--This part starts the policy visualization-->
   <node name="$(env TURTLEBOT_NAME)_policy_visualization" pkg="dec_pomdp_client" type="policy_visualizer.py"></node>
 
-<!--Only relevant for simulation
+<!--Only relevant for simulation -->
   <arg name="map" value="$(find tams_turtlebot_navigation)/maps/tams_localization.yaml" />
     <arg name="map_navigation" value="$(find tams_turtlebot_navigation)/maps/tams_navigation.yaml" />
   <node name="map_localization" pkg="map_server" type="map_server" args="$(arg map)" />
@@ -26,14 +26,14 @@
   </node>
 
   <node name="move_base_simulation" pkg="move_base_stub" type="move_base_stub.py"/>
-  -->
-<!-- Only relevant for production -->
+  
+<!-- Only relevant for production
   <arg name="local" default="false"/>
   <group unless="$(arg local)">
   <arg name="server" default="tams92"/>
     <node name="$(anon master_discovery)" pkg="master_discovery_fkie" type="master_discovery" output="log">
       <rosparam param="robot_hosts" subst_value="True">[donny,mikey,leo,raph,tams92]</rosparam>
-      <!--[$(env TURTLEBOT_NAME),$(arg server)]-->
+      TODO comment this out [$(env TURTLEBOT_NAME),$(arg server)]
     </node>
     <node name="$(anon master_sync)" pkg="master_sync_fkie" type="master_sync">
       <rosparam param="ignore_services">[/*]</rosparam>
@@ -44,4 +44,5 @@
 </rosparam>
     </node>
   </group>
+   -->
 </launch>
