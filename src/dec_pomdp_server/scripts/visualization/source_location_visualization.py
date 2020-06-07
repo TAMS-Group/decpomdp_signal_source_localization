@@ -22,7 +22,7 @@ class SourceLocationVisualizer:
         ns = "SignalSource",
         id = SOURCE_LOCATION_DESC_ID,
         lifetime = rospy.Duration(secs=20),
-        scale = Vector3(0.5, 0.5, 0.5),
+        scale = Vector3(0.2, 0.2, 0.2),
         color = ColorRGBA(1.0, 0.0, 0.0, 1.0),
         text= "Signal Source Location"
     )
@@ -43,7 +43,7 @@ class SourceLocationVisualizer:
         self.pose.position.y = router_location['y']
         self.pose.position.z = router_location['z']
         self.pose.orientation.w = 1
-        rospy.logwarn("Pose z is %f" % self.pose.position.z)
+        rospy.loginfo("Pose z is %f" % self.pose.position.z)
         self.source_location.pose = self.pose
         self.source_location.action = Marker.ADD
         self.source_location_description.pose = self.pose
