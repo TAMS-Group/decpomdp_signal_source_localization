@@ -30,4 +30,9 @@ rosbag record \
   /source_location \
   /source_location_array \
   /tf \
-  /tf_static
+  /tf_static \
+  /measurements/cancel \
+  /measurements/feedback \
+  /measurements/goal \
+  /measurements/result \
+  /measurements/status

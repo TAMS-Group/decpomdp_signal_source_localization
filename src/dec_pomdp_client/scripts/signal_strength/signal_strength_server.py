@@ -39,7 +39,7 @@ class SignalStrengthServer:
         self.action_server.start()
         rospy.loginfo("Signal strength server has been started: " + self.action_name)
 
-    
+
     def takeMeasurement(self, simulation=False):
         measurement_msg = Measurement()
         signal_level = None
@@ -49,7 +49,7 @@ class SignalStrengthServer:
             self.base_footprint_msg.header.stamp = now
             pose = self.transformer.transformPose('map', self.base_footprint_msg)
             measurement_msg.header = pose.header
-            measurement_msg.position = pose.pose.position
+            measurement_msg.pose = pose.pose
         except: # (tf.LookupException, tf.ConnectivityException,tf.ExtrapolationException, tf.TransformException) as ex
             e = sys.exc_info()[0]
             rospy.logwarn(str(e))
@@ -74,8 +74,10 @@ class SignalStrengthServer:
         starting_len = len(self.previous_measurements.measurements)
         rospy.loginfo('starting with %d measurements stored' % starting_len)
         while ((len(self.previous_measurements.measurements) < (starting_len + goal.number)) & (not rospy.is_shutdown())):
-            self.previous_measurements.measurements.append(self.takeMeasurement(simulation=self.SIMULATE_MEASUREMENT))
+            measurement = self.takeMeasurement(simulation=self.SIMULATE_MEASUREMENT)
+            self.previous_measurements.measurements.append(measurement)
             self._feedback.collected_measurments = len(self.previous_measurements.measurements) - starting_len
+            self._feedback.measurement = measurement
             self.action_server.publish_feedback(self._feedback)
             rospy.loginfo("currently got (%d / %d)" % (len(self.previous_measurements.measurements)- starting_len, goal.number))
         result = Measurements()

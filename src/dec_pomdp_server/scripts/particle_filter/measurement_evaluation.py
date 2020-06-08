@@ -52,7 +52,7 @@ class MeasurementEvaluator:
 				if (measurement.signal_strength == 0):
 					rospy.logerr("Skipping invalid measurement")
 					return
-				position = [measurement.position.x, measurement.position.y]
+				position = [measurement.pose.position.x, measurement.pose.position.y]
 
 				#Testing this out
 				self.particles, self.weights = resample(self.particles, self.weights)
@@ -62,7 +62,7 @@ class MeasurementEvaluator:
 				#rospy.logwarn("probablity is: " + str(sum(l)))
 				self.particles, self.weights = SIR_step(self.particles, self.weights, l)
 				self.visualizer.visualize(self.particles, self.weights)
-				#rospy.logwarn("Number of particles is %d" % len(self.particles)) 
+				#rospy.logwarn("Number of particles is %d" % len(self.particles))
 
 if __name__ == '__main__':
 	problem = WLANLocalization([],[])

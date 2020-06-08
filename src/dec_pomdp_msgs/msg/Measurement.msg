@@ -1,3 +1,3 @@
 Header header
-geometry_msgs/Point position
+geometry_msgs/Pose pose
 int64 signal_strength
