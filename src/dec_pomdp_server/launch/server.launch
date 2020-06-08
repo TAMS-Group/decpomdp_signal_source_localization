@@ -36,6 +36,7 @@
 - /donny/heartbeat
 - /donny/measurements
 - /donny/policy
+- /measurements/feedback
 </rosparam>
   </node>
   </group>

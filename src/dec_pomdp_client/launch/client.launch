@@ -41,6 +41,7 @@
 - /$(env TURTLEBOT_NAME)/heartbeat
 - /$(env TURTLEBOT_NAME)/measurements
 - /$(env TURTLEBOT_NAME)/policy
+- /measurements/feedback
 </rosparam>
     </node>
   </group>

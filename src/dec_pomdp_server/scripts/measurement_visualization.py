@@ -17,7 +17,7 @@ class MeasurementVisualizer:
 	def visualize(self, measurements):
 		for measurement in measurements.measurements:
 			self.marker.header.stamp = rospy.get_rostime()
-			self.marker.points.append(measurement.position)
+			self.marker.points.append(measurement.pose.position)
 			self.marker.colors.append(self.get_color(measurement.signal_strength))
 
 		self.markerPublisher.publish(self.marker)

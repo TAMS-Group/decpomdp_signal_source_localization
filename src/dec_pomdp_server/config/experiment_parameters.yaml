@@ -1,7 +1,7 @@
 seed: 123456789
-horizon: 6
+horizon: 5
 width: 3
-improvement_steps: 2
+improvement_steps: 3
 num_particles: 1000
 num_rollouts: 100
 num_particles_rollout: 100
