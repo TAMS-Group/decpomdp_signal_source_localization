@@ -8,7 +8,7 @@ from std_msgs.msg import ColorRGBA
 class SourceLocationVisualizer:
     SOURCE_LOCATION_ID = 0
     SOURCE_LOCATION_DESC_ID =1
-     
+
     source_location = Marker(
         type = Marker.CUBE,
         ns = "SignalSource",
@@ -22,7 +22,7 @@ class SourceLocationVisualizer:
         ns = "SignalSource",
         id = SOURCE_LOCATION_DESC_ID,
         lifetime = rospy.Duration(secs=20),
-        scale = Vector3(0.2, 0.2, 0.2),
+        scale = Vector3(0.1, 0.1, 0.1),
         color = ColorRGBA(1.0, 0.0, 0.0, 1.0),
         text= "Signal Source Location"
     )
@@ -54,4 +54,4 @@ if __name__ == '__main__':
     visualizer = SourceLocationVisualizer('map')
     while not rospy.is_shutdown():
         visualizer.visualize()
-        rospy.sleep(rospy.Duration(secs=20)) 
+        rospy.sleep(rospy.Duration(secs=20))

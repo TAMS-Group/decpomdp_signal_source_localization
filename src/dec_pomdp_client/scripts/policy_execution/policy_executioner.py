@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import actionlib
 import rospy
-import numpy as np 
+import numpy as np
 from geometry_msgs.msg import Twist
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from dec_pomdp_msgs.msg import Policy
@@ -15,10 +15,10 @@ class PolicyExecutioner:
     """
     This class can be used to execute a predefined Policy
     It will make the robot move to the defined positions (NodeActions),
-    take signal strength measurements in those places 
+    take signal strength measurements in those places
     and determine according to the result where to move next
     """
-    
+
     def execute_policy(self, policy):
         """ Executes a given policy of type dec_pomdp_msgs.msg.Policy"""
         goal = MoveBaseGoal()
@@ -50,8 +50,8 @@ class PolicyExecutioner:
         while not rospy.is_shutdown():
             current_state = self.measurement_client.get_state()
             if (current_state == GoalStatus.SUCCEEDED):
-                # self.rotation_msg.angular.z = 0.0
-                # self.rotation_publisher.publish(self.rotation_msg)
+                self.rotation_msg.angular.z = 0.0
+                self.rotation_publisher.publish(self.rotation_msg)
                 result = self.measurement_client.get_result()
                 signal_strengths = []
                 for measurement in result.measurements.measurements:
@@ -61,22 +61,21 @@ class PolicyExecutioner:
             elif(current_state == GoalStatus.LOST or current_state == GoalStatus.REJECTED):
                 rospy.logerr("Action client failed to take measurements")
                 break
-            # self.rotation_msg.angular.z = self.rotation_speed
-            # self.rotation_publisher.publish(self.rotation_msg)
+            self.rotation_msg.angular.z = self.rotation_speed
+            self.rotation_publisher.publish(self.rotation_msg)
             rospy.sleep(rospy.Duration(0.5))
 
     def move_to_goal(self, goal):
         rospy.loginfo('Moving to goal')
-        self.move_base_client.send_goal(goal)
-        while not rospy.is_shutdown():
-            current_state = self.move_base_client.get_state()
-            if (current_state == GoalStatus.SUCCEEDED):
-                rospy.loginfo('Goal has been reached')
-                break
-            elif(current_state == GoalStatus.LOST or current_state == GoalStatus.REJECTED):
-                rospy.logerr('Goal with coordinates x = %f and y = %f couldnt be reached' % (goal.target_pose.pose.position.x, goal.target_pose.pose.position.y))
-            rospy.loginfo('Sleeping until arrival current state is %d' % current_state)
-            rospy.sleep(rospy.Duration(0.5))
+        self.move_base_client.send_goal_and_wait(goal)
+        current_state = self.move_base_client.get_state()
+        if (current_state == GoalStatus.SUCCEEDED):
+            rospy.loginfo('Goal has been reached')
+        elif(current_state == GoalStatus.RECALLED or current_state == GoalStatus.PREEMPTED):
+            rospy.logerr('Goal has been Recalled or Preempted')
+        else:
+            rospy.logwarn('Goal with coordinates x = %f and y = %f couldnt be reached will try again' % (goal.target_pose.pose.position.x, goal.target_pose.pose.position.y))
+            self.move_to_goal(goal)
 
     def find(self, l_function, array):
         for item in array:
@@ -86,11 +85,10 @@ class PolicyExecutioner:
     def __init__(self):
         self.measurements_per_step = rospy.get_param("/measurements_per_step")
         self.rotation_speed = rospy.get_param("/rotation_speed")
-        self.rotation_publisher = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
+        self.rotation_publisher = rospy.Publisher('/cmd_vel_mux/input/navi', Twist, queue_size=10)
         self.rotation_msg = Twist()
         self.measurements = Measurements()
         self.measurement_client = actionlib.SimpleActionClient('measurements', TakeMeasurementsAction)
         self.measurement_client.wait_for_server()
         self.move_base_client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
         self.move_base_client.wait_for_server()
-        
