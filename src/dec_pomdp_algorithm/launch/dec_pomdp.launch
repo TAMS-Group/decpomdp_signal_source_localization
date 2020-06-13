@@ -1,4 +1,4 @@
 <launch>
-  <rosparam file="$(find dec_pomdp_algorithm)/config/location.yaml" />
+  <rosparam file="$(find dec_pomdp_algorithm)/config/algorithm_config.yaml" />
   <node name="policy_generator" pkg="dec_pomdp_algorithm" type="dec_pomdp_algorithm" output="screen"/>
 </launch>

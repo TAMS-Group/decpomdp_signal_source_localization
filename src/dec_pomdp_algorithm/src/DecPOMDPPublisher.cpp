@@ -88,8 +88,8 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
 
   // Create the GraphSensing Dec-POMDP problem
   // Get all locations and allowed_moves from Parameter Server
-  std::map<int, pgi::GraphSensing::location_t> locations = getLocationsFromParameterServer();
-  std::map<int, std::vector<int>> moves = getAllowedMovesFromParameterServer();
+  // std::map<int, pgi::GraphSensing::location_t> locations = getLocationsFromParameterServer();
+  // std::map<int, std::vector<int>> moves = getAllowedMovesFromParameterServer();
   //pgi::GraphSensing::set_locations(locations);
   //pgi::GraphSensing::set_allowed_moves(moves);
   ROS_INFO_STREAM("Graphsensing locations and moves initialised");
@@ -150,11 +150,12 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
       num_particles_fwd, 1.0 / static_cast<double>(num_particles_fwd));
 
   // TODO Where to go with this output
-  std::string output_prefix = "/informatik2/students/home/6tkruege/Documents/Bachelor/policies";
+  std::string output_prefix;
+  ros::param::get("policy_save_path", output_prefix);
   std::ofstream fvalue(output_prefix +
-                        "policy_values.txt");
+                        "/policy_values.txt");
   std::ofstream ftime(output_prefix +
-                     "duration_microseconds.txt");
+                     "/duration_microseconds.txt");
 
   // Get value of initial policy and write it to a log Document (The logging part could potentially be replaced by ROS Logging)
   // Also keep it to compare later created policies to this.<
@@ -169,12 +170,12 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
   // Writes the initial best policy and value
   for (std::size_t agent = 0; agent < jas.num_local_spaces(); ++agent) {
     std::ofstream fs(output_prefix +
-                     "best_policy_agent" + std::to_string(agent) + ".dot");
+                     "/best_policy_agent" + std::to_string(agent) + ".dot");
     print(fs, jp.local_policy(agent), pgi::element_names(jas.get(agent)),
           pgi::element_names(jos.get(agent)));
   }
 
-  std::ofstream fs(output_prefix + "best_value.txt");
+  std::ofstream fs(output_prefix + "/best_value.txt");
   fs << best_value << std::endl;
 
   // Backward pass setup
@@ -321,6 +322,7 @@ bool hanleGeneratePolicies(dec_pomdp_msgs::GeneratePolicies::Request &req,
   while(initial_locations.size() < 2){
     const pgi::GraphSensing::location_t standard_location{0.0, 0.0};
     initial_locations.push_back(standard_location);
+    ROS_INFO_STREAM("Added one filler Robot with location 0.0 0.0");
   }
   /* Insert Code to generate policy and transform it to fit policy msg */
   std::vector<pgi::PolicyGraph> policyGraphs = generatePolicies(req.seed, req.horizon, req.width, req.improvement_steps, req.num_particles, req.num_rollouts, req.num_particles_rollout, 0, pgi::PolicyInitialization::random, req.gaussian, req.mx, req.my, req.sx, req.sy, initial_locations);
