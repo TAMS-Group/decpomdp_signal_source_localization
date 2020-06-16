@@ -1,0 +1,3 @@
+<launch>
+	<node name="signal_strength_to_file" pkg="dec_pomdp_server" type="signal_strength_to_file.py" output="screen"/>
+</launch>
