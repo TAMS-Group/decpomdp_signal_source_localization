@@ -1,1 +1,2 @@
 access_point_location: {x: 1.26, y: 1.98, z: 1.0}
+movement_graph_file_path: "/home/tobias/Documents/Bachelor_Thesis_Code/src/dec_pomdp_algorithm/config/"

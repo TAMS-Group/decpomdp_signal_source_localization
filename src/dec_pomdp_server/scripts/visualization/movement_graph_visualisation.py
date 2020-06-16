@@ -49,9 +49,9 @@ class MovementGraphVisualizer:
 if __name__ == '__main__':
     rospy.init_node('graph_visualization', log_level=rospy.INFO)
     visualizer = MovementGraphVisualizer('map')
-
+    movement_graph_file_path = rospy.get_param('movement_graph_file_path')
     #Read nodes
-    node_file = open("/informatik2/students/home/6tkruege/bachelor/src/dec_pomdp_algorithm/config/locations.txt", "r")
+    node_file = open(movement_graph_file_path + "locations.txt", "r")
     nodes = dict()
     for line in node_file.readlines():
         line_content = [float(x) for x in line.split(" ")]
@@ -59,7 +59,7 @@ if __name__ == '__main__':
     node_file.close()
 
     #Read Allowed moves
-    allowed_moves_file = open("/informatik2/students/home/6tkruege/bachelor/src/dec_pomdp_algorithm/config/allowed_moves.txt", "r")
+    allowed_moves_file = open(movement_graph_file_path + "allowed_moves.txt", "r")
     allowed_moves = dict()
     for line in allowed_moves_file.readlines():
         line_content = [int(x) for x in line.split(" ")]
