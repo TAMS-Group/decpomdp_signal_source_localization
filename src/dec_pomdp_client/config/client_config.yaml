@@ -1,3 +1,4 @@
 measurements_per_step: 40
 rotation_speed: 0.8
 min_clearing_distance: 3.0
+movement_graph_file_path: "/home/tobias/Documents/Bachelor_Thesis_Code/src/dec_pomdp_algorithm/config/"

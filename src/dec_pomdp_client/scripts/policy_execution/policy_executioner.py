@@ -98,7 +98,6 @@ class PolicyExecutioner:
                         rospy.loginfo('Clearing costmaps')
                         self.clear_costmaps()
                     rospy.logwarn('Goal with coordinates x = %f and y = %f couldnt be reached will try again' % (goal.target_pose.pose.position.x, goal.target_pose.pose.position.y))
-                    self.move_to_goal(goal)
                 except: # (tf.LookupException, tf.ConnectivityException,tf.ExtrapolationException, tf.TransformException) as ex
                     e = sys.exc_info()[0]
                     rospy.logerr(str(e))

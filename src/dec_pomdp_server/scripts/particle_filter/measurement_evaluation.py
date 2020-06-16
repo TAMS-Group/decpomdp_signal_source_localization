@@ -51,12 +51,12 @@ class MeasurementEvaluator:
 				#measurement = latest_observations[len(latest_observations) -1]
 				if (measurement.signal_strength == 0):
 					rospy.logerr("Skipping invalid measurement")
-					return
+					continue
 				position = [measurement.pose.position.x, measurement.pose.position.y]
 
 				#Testing this out
-				self.particles, self.weights = resample(self.particles, self.weights)
-				self.particles = particle_reinvigoration(self.particles)
+				# self.particles, self.weights = resample(self.particles, self.weights)
+				# self.particles = particle_reinvigoration(self.particles)
 				#rospy.logwarn("position is: " + str(position) + " measurement is: " + str([measurement.signal_strength]))
 				l = problem.likelihood(self.particles, position, [measurement.signal_strength])
 				#rospy.logwarn("probablity is: " + str(sum(l)))

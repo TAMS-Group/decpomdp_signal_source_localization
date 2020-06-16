@@ -11,7 +11,7 @@ from dec_pomdp_msgs.msg import TakeMeasurementsAction, TakeMeasurementsFeedback,
 
 
 class SignalStrengthServer:
-    SIMULATE_MEASUREMENT = False
+    SIMULATE_MEASUREMENT = True
     _feedback = TakeMeasurementsFeedback()
     _result = TakeMeasurementsResult()
     def __init__(self, action_name, robot_name):
@@ -56,9 +56,9 @@ class SignalStrengthServer:
         if(simulation):
             router_location = rospy.get_param("/access_point_location")
             distance = np.sqrt(
-                (router_location['x'] - measurement_msg.position.x)**2 +
-                (router_location['y'] - measurement_msg.position.y)**2 +
-                (router_location['z'] - measurement_msg.position.z)**2
+                (router_location['x'] - measurement_msg.pose.position.x)**2 +
+                (router_location['y'] - measurement_msg.pose.position.y)**2 +
+                (router_location['z'] - measurement_msg.pose.position.z)**2
             )
             rospy.loginfo('Distance is %f', distance)
             signal_level = self.measurer.takeSimulatedMeasurement('TurtleTest', distance)

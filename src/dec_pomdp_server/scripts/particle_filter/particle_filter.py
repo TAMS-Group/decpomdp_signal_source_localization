@@ -19,8 +19,8 @@ def SIR_step(x, weights, observation_likelihoods, ess_threshold_fraction=0.5):
 	weights = weights / weights.sum()
 	ess = 1.0 / weights.dot(weights)
 	# TODO Original code asks for resampling/reinvigoration here but that doesn't make sense does it?
-	#if ess < ess_threshold_fraction * float(num_particles):
-		#x, weights = resample(x, weights)
-		#x = particle_reinvigoration(x)
+	if ess < ess_threshold_fraction * float(num_particles):
+		x, weights = resample(x, weights)
+		x = particle_reinvigoration(x)
 	return x, weights
 
