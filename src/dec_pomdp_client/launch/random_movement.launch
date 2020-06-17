@@ -2,6 +2,7 @@
 <launch>
   <rosparam file="$(find dec_pomdp_server)/config/simulation.yaml" />
   <rosparam file="$(find dec_pomdp_client)/config/client_config.yaml" />
+  <rosparam param="movement_graph_file_path" subst_value="True">$(find dec_pomdp_algorithm)/config</rosparam>
   <rosparam param="robot_name" subst_value="True">$(env TURTLEBOT_NAME)</rosparam>
 
   <node name="$(env TURTLEBOT_NAME)_heartbeat" pkg="dec_pomdp_client" type="heartbeat_publisher.py"></node>
@@ -11,7 +12,7 @@
   <!--This part starts the policy visualization-->
   <node name="$(env TURTLEBOT_NAME)_policy_visualization" pkg="dec_pomdp_client" type="policy_visualizer.py"></node>
 
-<!--Only relevant for simulation -->
+<!--Only relevant for simulation
   <arg name="map" value="$(find tams_turtlebot_navigation)/maps/tams_localization.yaml" />
     <arg name="map_navigation" value="$(find tams_turtlebot_navigation)/maps/tams_navigation.yaml" />
   <node name="map_localization" pkg="map_server" type="map_server" args="$(arg map)" />
@@ -26,8 +27,8 @@
   </node>
 
   <node name="move_base_simulation" pkg="move_base_stub" type="move_base_stub.py"/>
-
-<!-- Only relevant for production
+-->
+<!-- Only relevant for production -->
   <arg name="local" default="false"/>
   <group unless="$(arg local)">
   <arg name="server" default="tams92"/>
@@ -45,5 +46,4 @@
 </rosparam>
     </node>
   </group>
--->
 </launch>

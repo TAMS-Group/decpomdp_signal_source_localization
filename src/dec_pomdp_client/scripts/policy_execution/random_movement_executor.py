@@ -8,9 +8,9 @@ from geometry_msgs.msg import Point
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 
 
-class RandomMovement(Executor): 
+class RandomMovement(Executor):
     """
-    This class will make the 
+    This class will make the
     """
     def execute_random_movement(self, number_of_steps):
         goal = MoveBaseGoal()
@@ -41,7 +41,7 @@ class RandomMovement(Executor):
 
         movement_graph_file_path = rospy.get_param('movement_graph_file_path')
         #Read nodes
-        location_file = open(movement_graph_file_path + "locations.txt", "r")
+        location_file = open(movement_graph_file_path + "/locations.txt", "r")
         self.locations = dict()
         for line in location_file.readlines():
             line_content = [float(x) for x in line.split(" ")]
@@ -49,7 +49,7 @@ class RandomMovement(Executor):
         location_file.close()
 
         #Read Allowed moves
-        allowed_moves_file = open(movement_graph_file_path + "allowed_moves.txt", "r")
+        allowed_moves_file = open(movement_graph_file_path + "/allowed_moves.txt", "r")
         self.allowed_moves = dict()
         for line in allowed_moves_file.readlines():
             line_content = [int(x) for x in line.split(" ")]
