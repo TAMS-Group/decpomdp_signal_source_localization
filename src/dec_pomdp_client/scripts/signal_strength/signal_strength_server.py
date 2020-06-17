@@ -11,7 +11,7 @@ from dec_pomdp_msgs.msg import TakeMeasurementsAction, TakeMeasurementsFeedback,
 
 
 class SignalStrengthServer:
-    SIMULATE_MEASUREMENT = True
+    SIMULATE_MEASUREMENT = False
     _feedback = TakeMeasurementsFeedback()
     _result = TakeMeasurementsResult()
     def __init__(self, action_name, robot_name):

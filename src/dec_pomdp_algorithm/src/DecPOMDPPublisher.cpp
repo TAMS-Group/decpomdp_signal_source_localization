@@ -226,11 +226,11 @@ std::vector<pgi::PolicyGraph> generatePolicies(unsigned int rng_seed,
       // Update best value and policy!
       for (std::size_t agent = 0; agent < jas.num_local_spaces(); ++agent) {
         std::ofstream fs(output_prefix +
-                         "best_policy_agent" + std::to_string(agent) + ".dot");
+                         "/best_policy_agent" + std::to_string(agent) + ".dot");
         print(fs, jp.local_policy(agent), pgi::element_names(jas.get(agent)),
               pgi::element_names(jos.get(agent)));
       }
-      std::ofstream fs(output_prefix + "best_value.txt");
+      std::ofstream fs(output_prefix + "/best_value.txt");
       fs << best_value << std::endl;
     }
 

@@ -16,6 +16,7 @@ class RandomMovement(Executor):
         goal = MoveBaseGoal()
         goal.target_pose.header.frame_id = "map"
         starting_pose = self.get_current_loc()
+        rospy.loginfo("starting pose is x = %f and y = %f", starting_pose.pose.position.x, starting_pose.pose.position.y)
         current_location = min(self.locations, key=lambda loc: np.sqrt(
                                                         (self.locations[loc].x - starting_pose.pose.position.x)**2 +
                                                         (self.locations[loc].y - starting_pose.pose.position.y)**2

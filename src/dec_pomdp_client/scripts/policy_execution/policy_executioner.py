@@ -28,6 +28,10 @@ class PolicyExecutioner:
         current_node = policy.starting_node
         while not rospy.is_shutdown():
             node_action = self.find(lambda node_action: node_action.node_number == current_node, policy.actions)
+            node_transition = self.find(lambda node_transition: node_transition.node_number == current_node, policy.transitions)
+            if (len(node_transition.edges) == 0):
+                rospy.loginfo('Current Node number is %d and the action is end' % ( current_node ))
+                break
             rospy.loginfo('Current node number is %d and node action is x = %f and y = %f' % (current_node, node_action.pose.position.x, node_action.pose.position.y))
             goal.target_pose.pose = node_action.pose
             goal.target_pose.header.stamp = rospy.get_rostime()
@@ -35,9 +39,6 @@ class PolicyExecutioner:
             rospy.loginfo('Taking measurement')
             measurement_value = self.take_measurement()
             rospy.loginfo('measurement taken %d' % measurement_value)
-            node_transition = self.find(lambda node_transition: node_transition.node_number == current_node, policy.transitions)
-            if (len(node_transition.edges) == 0):
-                break
             for edge in node_transition.edges:
                 if (measurement_value > edge.measurement_interval.lower_bound and measurement_value <= edge.measurement_interval.upper_bound):
                     current_node = edge.node_number

@@ -2,6 +2,7 @@
 <launch>
   <rosparam file="$(find dec_pomdp_server)/config/simulation.yaml" />
   <rosparam param="experiment_parameters" file="$(find dec_pomdp_server)/config/experiment_parameters.yaml" />
+  <rosparam param="movement_graph_file_path" subst_value="True">$(find dec_pomdp_algorithm)/config</rosparam>
   <rosparam param="possible_agents">[donny,mikey,leo,raph]</rosparam>
   <node name="source_location_visualization" pkg="dec_pomdp_server" type="source_location_visualization.py" />
     <node name="heartbeat_visualization" pkg="dec_pomdp_server" type="heartbeat_visualization.py"/>
@@ -18,7 +19,6 @@
    <node name="map_navigation" pkg="map_server" type="map_server" args="$(arg map_navigation)" >
       <remap from="map" to="map_navigation"/>
     </node>
-
 <!-- Only relevant for production use -->
 <arg name="local" default="false"/>
   <group unless="$(arg local)">

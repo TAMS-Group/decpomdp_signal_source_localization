@@ -63,10 +63,9 @@ class Executor(object):
             self.base_footprint_msg.header.stamp = now
             pose = self.transformer.transformPose('map', self.base_footprint_msg)
             return pose
-        except: 
+        except:
             e = sys.exc_info()[0]
             rospy.logerr(str(e))
-        finally: 
             return PoseStamped()
 
     def __init__(self):
