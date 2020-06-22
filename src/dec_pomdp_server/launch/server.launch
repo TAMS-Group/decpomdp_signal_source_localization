@@ -3,11 +3,12 @@
   <rosparam file="$(find dec_pomdp_server)/config/simulation.yaml" />
   <rosparam param="experiment_parameters" file="$(find dec_pomdp_server)/config/experiment_parameters.yaml" />
   <rosparam param="movement_graph_file_path" subst_value="True">$(find dec_pomdp_algorithm)/config</rosparam>
+  <rosparam param="result_folder_path" subst_value="True">$(find dec_pomdp_server)/results/</rosparam>
   <rosparam param="possible_agents">[donny,mikey,leo,raph]</rosparam>
   <node name="source_location_visualization" pkg="dec_pomdp_server" type="source_location_visualization.py" />
     <node name="heartbeat_visualization" pkg="dec_pomdp_server" type="heartbeat_visualization.py"/>
     <node name="measurement_visualization" pkg="dec_pomdp_server" type="measurement_visualization.py"/>
-    <node name="measurements_evaluation" pkg="dec_pomdp_server" type="measurement_evaluation.py"/>
+    <node name="measurements_evaluation" pkg="dec_pomdp_server" type="measurement_evaluation.py" output="screen"/>
     <node name="localization_manager" pkg="dec_pomdp_server" type="localization_manager.py"/>
   <node name="graph_visualization" pkg="dec_pomdp_server" type="movement_graph_visualisation.py" output="screen"/>
   <!--<node name="measurement_collector" pkg="dec_pomdp_server" type="measurement_collector.py"/>-->

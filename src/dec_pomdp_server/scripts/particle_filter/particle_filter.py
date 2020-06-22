@@ -9,16 +9,16 @@ def resample(x, weights):
 
 # Add small Gaussian noise to particles to reinvigorate them
 def particle_reinvigoration(x):
-	sd = 0.05
+	sd = 0.1
 	return x + np.random.normal(scale=sd, size=x.shape)
 
 
-def SIR_step(x, weights, observation_likelihoods, ess_threshold_fraction=0.5):
+def SIR_step(x, weights, observation_likelihoods, ess_threshold_fraction=0.8):
 	num_particles = weights.size
 	weights = weights * observation_likelihoods
 	weights = weights / weights.sum()
 	ess = 1.0 / weights.dot(weights)
-	# TODO Original code asks for resampling/reinvigoration here but that doesn't make sense does it?
+	# TODO Original code asks for resampling/reinvigoration here but shouldn't that happen before weight calculation?
 	if ess < ess_threshold_fraction * float(num_particles):
 		x, weights = resample(x, weights)
 		x = particle_reinvigoration(x)
