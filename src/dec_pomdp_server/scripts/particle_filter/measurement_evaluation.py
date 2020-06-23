@@ -2,7 +2,7 @@
 import rospy
 import numpy as np
 from dec_pomdp_msgs.msg import Measurements
-from particle_filter import *
+from particle_grid_filter import *
 from wlan_localization import WLANLocalization
 from particle_filter_visualization import ParticleFilterVisualizer
 from std_srvs.srv import Empty
@@ -44,8 +44,11 @@ class MeasurementEvaluator:
 
 
 	def initialize_measurement_evaluation(self, request=Empty()):
-		self.particles = -1.5 + 9.5 * np.random.uniform(size=(self.num_particles,2))
-		self.weights = np.repeat(1.0/float(self.num_particles), self.num_particles)
+		#self.particles = -1.5 + 9.5 * np.random.uniform(size=(self.num_particles,2))
+		#self.weights = np.repeat(1.0/float(self.num_particles), self.num_particles)
+		self.particles, self.weights = initialize(self.num_particles, -1.5, -1.5, 7.0, 8.0)
+		rospy.loginfo(len(self.particles))
+		rospy.loginfo(len(self.weights))
 		self.num_of_measurements = 0
 		self.logging_code = str(rospy.get_time())
 		data = None
