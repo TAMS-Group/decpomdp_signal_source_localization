@@ -13,7 +13,7 @@ def particle_reinvigoration(x):
 	return x + np.random.normal(scale=sd, size=x.shape)
 
 
-def SIR_step(x, weights, observation_likelihoods, ess_threshold_fraction=0.8):
+def SIR_step(x, weights, observation_likelihoods, ess_threshold_fraction=0.3):
 	num_particles = weights.size
 	weights = weights * observation_likelihoods
 	weights = weights / weights.sum()

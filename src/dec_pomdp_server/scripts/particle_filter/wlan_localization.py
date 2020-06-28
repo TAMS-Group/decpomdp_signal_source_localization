@@ -5,9 +5,9 @@ import numpy as np
 from scipy.stats import rice
 from scipy.special import jv as besseli
 from tools import compute_distance
-
+#  sigma=12.551, rice_b=0.009, rice_loc=-7.001
 class WLANLocalization(Problem):
-    def __init__(self, locations, neighbours, Ptx=12.0, Gtx=1.5, Ltx=0.0, Grx=1.5, Lrx=0.0, v=2.4e9, mu=4.0, sigma=12.551, rice_b=0.009, rice_loc=-7.001):
+    def __init__(self, locations, neighbours, Ptx=12.0, Gtx=1.5, Ltx=0.0, Grx=1.5, Lrx=0.0, v=2.4e9, mu=4.0, sigma=9.0, rice_b=0.009, rice_loc=-7.001):
         super(WLANLocalization, self).__init__(locations, neighbours)
         self.RSS_base = 147.55 - 20*np.log10(v)
         self.sigma = sigma

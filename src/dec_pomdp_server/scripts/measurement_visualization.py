@@ -37,7 +37,7 @@ class MeasurementVisualizer:
 			locations_y.append(measurement.pose.position.y)
 			signal_strength_values.append(measurement.signal_strength)
 			self.marker.colors.append(self.get_color(measurement.signal_strength))
-		self.average_marker.color = self.get_color(np.mean(signal_strength_values))
+		self.average_marker.color = self.get_color_discrete(np.mean(signal_strength_values))
 		self.average_marker.pose.position.x = np.mean(locations_x)
 		self.average_marker.pose.position.y = np.mean(locations_y)
 		self.average_marker.pose.orientation.w = 1.0
@@ -49,6 +49,19 @@ class MeasurementVisualizer:
 		normalized_signal_strength = (signal_strength + 80.0)/(-40 + 80.0)
 		color.r = 1 - normalized_signal_strength
 		color.g = normalized_signal_strength
+		return color
+
+	def get_color_discrete(self, signal_strength):
+		color = ColorRGBA(0, 0, 0, 1)
+		high_threshold = -55.0
+  		low_threshold = -65.0
+		if signal_strength > high_threshold:
+			color.g = 1
+		elif signal_strength < high_threshold and signal_strength > low_threshold:
+			color.g = 0.5
+			color.r = 0.5
+		elif signal_strength < low_threshold:
+			color.r = 1.0
 		return color
 
 	def __init__(self, frame_id):

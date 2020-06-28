@@ -1,125 +1,124 @@
 {
-    "1592931433.35": [], 
-    "1592931589.81": [
+    "1593357731.87": [
         {
             "num_measurements": 1, 
-            "error": 4.451262760267775
+            "error": 4.476663534248296
         }, 
         {
             "num_measurements": 2, 
-            "error": 4.56842885045839
+            "error": 4.621462705923203
         }, 
         {
             "num_measurements": 3, 
-            "error": 4.241821068646872
+            "error": 4.434253669242409
         }, 
         {
             "num_measurements": 4, 
-            "error": 4.2987668713066585
+            "error": 4.463685300776807
         }, 
         {
             "num_measurements": 5, 
-            "error": 4.310184831188409
+            "error": 4.471786143621382
         }, 
         {
             "num_measurements": 6, 
-            "error": 4.299268317962288
+            "error": 4.45534566632581
         }, 
         {
             "num_measurements": 7, 
-            "error": 4.250267298232962
+            "error": 4.261457048926516
         }, 
         {
             "num_measurements": 8, 
-            "error": 4.296132252685506
+            "error": 4.289527530363291
         }, 
         {
             "num_measurements": 9, 
-            "error": 4.234575949621897
+            "error": 4.068779065207838
         }, 
         {
             "num_measurements": 10, 
-            "error": 4.237413027086488
+            "error": 4.025892909639534
         }, 
         {
             "num_measurements": 11, 
-            "error": 4.325736787315931
+            "error": 4.290885237811668
         }, 
         {
             "num_measurements": 12, 
-            "error": 3.3911252564141376
+            "error": 2.5685420586527794
         }, 
         {
             "num_measurements": 13, 
-            "error": 3.1176538737960726
+            "error": 2.2551122769601957
         }, 
         {
             "num_measurements": 14, 
-            "error": 2.747850302383693
+            "error": 1.808280937759095
         }, 
         {
             "num_measurements": 15, 
-            "error": 2.8008198786517307
+            "error": 1.8379522376039863
         }, 
         {
             "num_measurements": 16, 
-            "error": 2.5452011242342385
+            "error": 1.719486685346224
         }, 
         {
             "num_measurements": 17, 
-            "error": 2.7022474233085405
+            "error": 1.682455717907072
         }, 
         {
             "num_measurements": 18, 
-            "error": 2.6581682735861234
+            "error": 1.636763340312957
         }, 
         {
             "num_measurements": 19, 
-            "error": 2.712106103605827
+            "error": 1.6290327703608098
         }, 
         {
             "num_measurements": 20, 
-            "error": 2.6023640095050236
+            "error": 1.567841281106123
         }, 
         {
             "num_measurements": 21, 
-            "error": 1.7450254794910616
+            "error": 1.3302261031514753
         }, 
         {
             "num_measurements": 22, 
-            "error": 1.5411650708961793
+            "error": 1.2461180615930985
         }, 
         {
             "num_measurements": 23, 
-            "error": 1.5529055679020778
+            "error": 1.2849159670623524
         }, 
         {
             "num_measurements": 24, 
-            "error": 1.5516007792269657
+            "error": 1.3042619419366832
         }, 
         {
             "num_measurements": 25, 
-            "error": 1.5581111026919177
+            "error": 1.327093696676453
         }, 
         {
             "num_measurements": 26, 
-            "error": 1.554677811001588
+            "error": 1.3657652731178351
         }, 
         {
             "num_measurements": 27, 
-            "error": 1.5555360364292585
+            "error": 1.3257003910906271
         }, 
         {
             "num_measurements": 28, 
-            "error": 1.5494065830285844
+            "error": 1.4134489911204779
         }, 
         {
             "num_measurements": 29, 
-            "error": 1.5482649956760801
+            "error": 1.4099772210269517
         }, 
         {
             "num_measurements": 30, 
-            "error": 1.5474064479297254
+            "error": 1.4064956149339398
         }
     ]
 }

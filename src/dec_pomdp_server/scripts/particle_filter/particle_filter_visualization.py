@@ -27,9 +27,12 @@ class ParticleFilterVisualizer:
 
 	def get_color(self, weight, weights):
 		color = ColorRGBA(0, 0, 0, 1)
-		normalized_weight = (weight - min(weights)) / (max(weights) - min(weights))
-		color.r = 1 - normalized_weight
-		color.g = normalized_weight
+		if max(weights) != min(weights):
+			normalized_weight = round((weight - min(weights)) / (max(weights) - min(weights)), 5)
+			color.r = 1 - normalized_weight
+			color.g = normalized_weight
+		else: 
+			color.g = 1.0
 		#rospy.logwarn("normalized_weight is:{} - {} / {} - {} = {}".format(weight, min(weights), max(weights), min(weights), normalized_weight))
 		return color
 

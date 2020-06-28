@@ -9,14 +9,14 @@ class Visualizer:
 			type= Marker.TEXT_VIEW_FACING,
 			ns="heartbeat",
 			id=0,
-			lifetime=rospy.Duration(1.5),
+			lifetime=rospy.Duration(5),
 			scale=Vector3(0, 0, 0.1),
 		)
 	robot_position = Marker(
 		type= Marker.ARROW,
 		ns="heartbeat_position",
 		id=0,
-		lifetime=rospy.Duration(1.5),
+		lifetime=rospy.Duration(5),
 		scale=Vector3(0.2,0.2, 0.2)
 	)
 	robots = []

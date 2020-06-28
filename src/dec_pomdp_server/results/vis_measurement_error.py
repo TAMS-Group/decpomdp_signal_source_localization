@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
     data={}
-    colors=['b', 'g', 'r', 'y']
-    rand_colors = ['m', 'y', 'k', 'c']
+    colors=['b', 'g', 'r', 'y', 'b', 'g', 'r', 'y', 'b', 'g', 'r']
+    rand_colors = ['m', 'y', 'k', 'c', 'm', 'y', 'k', 'c', 'm', 'y', 'k', 'c']
     with open('/home/tobias/Documents/Bachelor_Thesis_Code/src/dec_pomdp_server/results/measurement_results.json') as json_file:
         data = json.load(json_file)
     for measurements in data:
@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
         plt.plot(num_of_measurements, error, line_type, label=measurements)
     plt.xlabel('number of measurements evaluated')
-    plt.xticks(np.arange(0, 401, 40))
+    #plt.xticks(np.arange(0, 401, 40))
     plt.ylabel('Root mean squared error in m')
     plt.legend()
     plt.show()
