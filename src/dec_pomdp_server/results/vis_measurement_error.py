@@ -1,4 +1,4 @@
-import numpy as np 
+import numpy as np
 import json
 import matplotlib.pyplot as plt
 
@@ -6,7 +6,7 @@ if __name__ == "__main__":
     data={}
     colors=['b', 'g', 'r', 'y', 'b', 'g', 'r', 'y', 'b', 'g', 'r']
     rand_colors = ['m', 'y', 'k', 'c', 'm', 'y', 'k', 'c', 'm', 'y', 'k', 'c']
-    with open('/home/tobias/Documents/Bachelor_Thesis_Code/src/dec_pomdp_server/results/measurement_results.json') as json_file:
+    with open('/informatik2/students/home/6tkruege/bachelor/src/dec_pomdp_server/results/measurement_results.json') as json_file:
         data = json.load(json_file)
     for measurements in data:
         num_of_measurements = []
