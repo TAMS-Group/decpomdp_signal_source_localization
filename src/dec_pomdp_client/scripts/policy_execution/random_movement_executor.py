@@ -2,17 +2,20 @@
 import rospy
 import random
 import numpy as np
+import actionlib
 from executor import Executor
 from std_msgs.msg import Int64
 from geometry_msgs.msg import Point
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
+from dec_pomdp_msgs.msg import ExecuteRandomMovementAction, ExecuteRandomMovementFeedback, ExecuteRandomMovementResult, ExecuteRandomMovementGoal
 
 
 class RandomMovement(Executor):
     """
     This class will make the
     """
-    def execute_random_movement(self, number_of_steps):
+    def execute_random_movement(self, random_movement_goal):
+        number_of_steps = random_movement_goal.number_of_steps
         goal = MoveBaseGoal()
         goal.target_pose.header.frame_id = "map"
         starting_pose = self.get_current_loc()
@@ -57,7 +60,8 @@ class RandomMovement(Executor):
             self.allowed_moves[line_content.pop(0)] = line_content
         allowed_moves_file.close()
         robot_name = rospy.get_param("robot_name")
-        self.random_movement_subscriber =  rospy.Subscriber("randomMovement", Int64, self.execute_random_movement)
+        self.random_movement_action_server = actionlib.SimpleActionServer('execute_random_movement', ExecuteRandomMovementAction, execute_cb=self.execute_random_movement, auto_start=False)
+        self.random_movement_action_server.start()
 
 if __name__ == "__main__":
     rospy.init_node("random_movement")

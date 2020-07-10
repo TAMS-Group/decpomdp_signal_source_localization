@@ -1,4 +1,4 @@
-Policy policy
+int64 number_of_steps
 bool simulate_measurements
 ---
 Measurements measurements

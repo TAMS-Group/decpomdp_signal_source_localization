@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import rospy
 import actionlib
+from actionlib_msgs.msg import GoalStatus
 from dec_pomdp_msgs.msg import Measurements
 from dec_pomdp_msgs.msg import ExecutionState
 from dec_pomdp_msgs.srv import StartExperiment
@@ -20,6 +21,7 @@ class LocalizationManager:
 			rospy.logwarn("Registered new Robot: " + state.robot_name)
 			self.robot_action_clients[state.robot_name] = actionlib.SimpleActionClient(state.robot_name + '/execute_policy', ExecutePolicyAction)
 			self.robot_action_clients[state.robot_name].wait_for_server()
+			rospy.logwarn("Registered Action Client for robot %s", state.robot_name)
 		if state.robot_name not in self.robot_random_publishers.keys():
 			self.robot_random_publishers[state.robot_name] = rospy.Publisher(state.robot_name + '/randomMovement', Int64, queue_size=1)
 		self.robot_states[state.robot_name] = state
@@ -36,12 +38,12 @@ class LocalizationManager:
 			rospy.wait_for_service('generate_policies')
 			try:
 				generate_policies = rospy.ServiceProxy('generate_policies', GeneratePolicies)
-				rospy.logwarn("Waiting for algorithm to generate policies")
+				rospy.logwarn("Waiting for algorithm to generate policies for %d robots", len(self.robot_states.values()))
 				result = generate_policies(ex_param['seed'], ex_param['horizon'], ex_param['width'], ex_param['improvement_steps'], ex_param['num_particles'], ex_param['num_rollouts'], ex_param['num_particles_rollout'], ex_param['gaussian'], ex_param['mx'], ex_param['my'], ex_param['sx'], ex_param['sy'], self.robot_states.values())
 				rospy.logwarn("Generation succcessful")
 				for policy in result.policies:
 					if policy.robot_name in self.robot_action_clients.keys():
-						goal = ExecutePolicyAction()
+						goal = ExecutePolicyGoal()
 						goal.policy = policy
 						goal.simulate_measurements = start_msg.simulate_measurements
 						self.robot_action_clients[policy.robot_name].send_goal(goal)
@@ -49,11 +51,14 @@ class LocalizationManager:
 						rospy.logwarn("The following robot is not online anymore %s", policy.robot_name)
 				while not rospy.is_shutdown():
 					rospy.sleep(rospy.Duration(5.0))
-					rospy.loginfo("Wait for Policy Execution to finish")
-					global_state_finished = False
+					rospy.logwarn("Wait for Policy Execution to finish")
+					global_state_finished = True
 					for action_client in self.robot_action_clients.values():
 						global_state_finished = global_state_finished & (action_client.get_state() == GoalStatus.SUCCEEDED)
 					if global_state_finished:
+						for action_client in self.robot_action_clients.values():
+							result = action_client.get_result()
+							rospy.logwarn("Got %d results", len(result.measurements.measurements))
 						break
 			except rospy.ServiceException, e:
 				rospy.logerr("Service call to generate Policies failed: %s", e)

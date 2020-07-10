@@ -49,9 +49,10 @@ class PolicyExecutioner:
                     rospy.loginfo('next node has been found')
                     break
             self._feedback.step = step
+            self._feedback.current_measurements = self.measurements
             self.policy_action_server.publish_feedback(self._feedback)
         rospy.loginfo("Finished policy execution")
-        self.result.completed_steps = step
+        self._result.measurements = self.measurements
         self.policy_action_server.set_succeeded(self._result)
 
 
@@ -146,6 +147,7 @@ class PolicyExecutioner:
         self.base_footprint_msg.header.stamp = rospy.Time(0)
         self.clear_costmaps = rospy.ServiceProxy('/move_base/clear_costmaps', Empty)
         self.policy_action_server = actionlib.SimpleActionServer('execute_policy', ExecutePolicyAction, execute_cb=self.execute_policy, auto_start=False)
+        self.policy_action_server.start()
 
 if __name__ == "__main__":
     rospy.init_node('policy_execution')
