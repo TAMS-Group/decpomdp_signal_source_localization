@@ -1,6 +1,488 @@
 {
     "1594390348.85": [], 
     "1594385078.76": [], 
+    "1594392753.35": [
+        {
+            "num_measurements": 1, 
+            "error": 6.545326394504447
+        }, 
+        {
+            "num_measurements": 2, 
+            "error": 6.266279722823107
+        }, 
+        {
+            "num_measurements": 3, 
+            "error": 6.575808120874754
+        }, 
+        {
+            "num_measurements": 4, 
+            "error": 5.649711647237518
+        }, 
+        {
+            "num_measurements": 5, 
+            "error": 5.623833988655239
+        }, 
+        {
+            "num_measurements": 6, 
+            "error": 5.768843766053752
+        }, 
+        {
+            "num_measurements": 7, 
+            "error": 5.7542207479679215
+        }, 
+        {
+            "num_measurements": 8, 
+            "error": 5.893208450922662
+        }, 
+        {
+            "num_measurements": 9, 
+            "error": 5.873477598371265
+        }, 
+        {
+            "num_measurements": 10, 
+            "error": 5.909222779260847
+        }, 
+        {
+            "num_measurements": 11, 
+            "error": 5.831901047512417
+        }, 
+        {
+            "num_measurements": 12, 
+            "error": 5.924667103358409
+        }, 
+        {
+            "num_measurements": 13, 
+            "error": 5.931542188026988
+        }, 
+        {
+            "num_measurements": 14, 
+            "error": 5.991089057122056
+        }, 
+        {
+            "num_measurements": 15, 
+            "error": 5.9690825146704904
+        }, 
+        {
+            "num_measurements": 16, 
+            "error": 5.006083012243271
+        }, 
+        {
+            "num_measurements": 17, 
+            "error": 3.967749606882038
+        }, 
+        {
+            "num_measurements": 18, 
+            "error": 3.9813594904380736
+        }, 
+        {
+            "num_measurements": 19, 
+            "error": 3.4955752332796823
+        }, 
+        {
+            "num_measurements": 20, 
+            "error": 3.269173048830417
+        }, 
+        {
+            "num_measurements": 21, 
+            "error": 3.21683801149374
+        }, 
+        {
+            "num_measurements": 22, 
+            "error": 3.055077140396039
+        }, 
+        {
+            "num_measurements": 23, 
+            "error": 3.00865726678263
+        }, 
+        {
+            "num_measurements": 24, 
+            "error": 3.0297949736404934
+        }, 
+        {
+            "num_measurements": 25, 
+            "error": 3.022401962677052
+        }, 
+        {
+            "num_measurements": 26, 
+            "error": 2.996082221607345
+        }, 
+        {
+            "num_measurements": 27, 
+            "error": 2.950806495384834
+        }, 
+        {
+            "num_measurements": 28, 
+            "error": 2.9469811697225547
+        }, 
+        {
+            "num_measurements": 29, 
+            "error": 2.913525340540963
+        }, 
+        {
+            "num_measurements": 30, 
+            "error": 2.899459065146809
+        }, 
+        {
+            "num_measurements": 31, 
+            "error": 2.9743792541847656
+        }, 
+        {
+            "num_measurements": 32, 
+            "error": 2.995799694107129
+        }, 
+        {
+            "num_measurements": 33, 
+            "error": 2.9240185847119045
+        }, 
+        {
+            "num_measurements": 34, 
+            "error": 2.8228458077846588
+        }, 
+        {
+            "num_measurements": 35, 
+            "error": 2.8249109189178063
+        }, 
+        {
+            "num_measurements": 36, 
+            "error": 2.7816254804047045
+        }, 
+        {
+            "num_measurements": 37, 
+            "error": 2.7251854576127643
+        }, 
+        {
+            "num_measurements": 38, 
+            "error": 2.6647806551881326
+        }, 
+        {
+            "num_measurements": 39, 
+            "error": 2.6408661285574997
+        }, 
+        {
+            "num_measurements": 40, 
+            "error": 2.6238164716003305
+        }, 
+        {
+            "num_measurements": 41, 
+            "error": 2.6080772079970416
+        }, 
+        {
+            "num_measurements": 42, 
+            "error": 2.54584281646124
+        }, 
+        {
+            "num_measurements": 43, 
+            "error": 2.541107821271777
+        }, 
+        {
+            "num_measurements": 44, 
+            "error": 2.5350460343274555
+        }, 
+        {
+            "num_measurements": 45, 
+            "error": 2.563766859110253
+        }, 
+        {
+            "num_measurements": 46, 
+            "error": 2.6253067769934035
+        }, 
+        {
+            "num_measurements": 47, 
+            "error": 2.6202204754488045
+        }, 
+        {
+            "num_measurements": 48, 
+            "error": 2.6077774390338853
+        }, 
+        {
+            "num_measurements": 49, 
+            "error": 2.642176914746388
+        }, 
+        {
+            "num_measurements": 50, 
+            "error": 2.621501955370343
+        }, 
+        {
+            "num_measurements": 51, 
+            "error": 2.7089404248654922
+        }, 
+        {
+            "num_measurements": 52, 
+            "error": 2.771641304925602
+        }, 
+        {
+            "num_measurements": 53, 
+            "error": 2.8037285364583155
+        }, 
+        {
+            "num_measurements": 54, 
+            "error": 2.798171160306072
+        }, 
+        {
+            "num_measurements": 55, 
+            "error": 2.7989981820110086
+        }, 
+        {
+            "num_measurements": 56, 
+            "error": 2.778680937507502
+        }, 
+        {
+            "num_measurements": 57, 
+            "error": 2.834276580026782
+        }, 
+        {
+            "num_measurements": 58, 
+            "error": 2.782767531691733
+        }, 
+        {
+            "num_measurements": 59, 
+            "error": 2.794803602091212
+        }, 
+        {
+            "num_measurements": 60, 
+            "error": 2.8117092711568787
+        }, 
+        {
+            "num_measurements": 61, 
+            "error": 2.122955271537274
+        }, 
+        {
+            "num_measurements": 62, 
+            "error": 2.204155331756137
+        }, 
+        {
+            "num_measurements": 63, 
+            "error": 2.255089036658733
+        }, 
+        {
+            "num_measurements": 64, 
+            "error": 2.281016185756695
+        }, 
+        {
+            "num_measurements": 65, 
+            "error": 2.2329479570131654
+        }, 
+        {
+            "num_measurements": 66, 
+            "error": 2.202375578215834
+        }, 
+        {
+            "num_measurements": 67, 
+            "error": 2.159472480578026
+        }, 
+        {
+            "num_measurements": 68, 
+            "error": 2.119424211587268
+        }, 
+        {
+            "num_measurements": 69, 
+            "error": 2.2290974199783946
+        }, 
+        {
+            "num_measurements": 70, 
+            "error": 2.171962424649195
+        }, 
+        {
+            "num_measurements": 71, 
+            "error": 2.133657291967019
+        }, 
+        {
+            "num_measurements": 72, 
+            "error": 2.048481842302752
+        }, 
+        {
+            "num_measurements": 73, 
+            "error": 2.0283618677746573
+        }, 
+        {
+            "num_measurements": 74, 
+            "error": 2.0952055804901586
+        }, 
+        {
+            "num_measurements": 75, 
+            "error": 1.9965508733517636
+        }, 
+        {
+            "num_measurements": 76, 
+            "error": 2.0087583998374354
+        }, 
+        {
+            "num_measurements": 77, 
+            "error": 2.008668023773052
+        }, 
+        {
+            "num_measurements": 78, 
+            "error": 1.9691260257364958
+        }, 
+        {
+            "num_measurements": 79, 
+            "error": 1.9859400535062095
+        }, 
+        {
+            "num_measurements": 80, 
+            "error": 1.9115274999947987
+        }, 
+        {
+            "num_measurements": 81, 
+            "error": 1.8877926790115558
+        }, 
+        {
+            "num_measurements": 82, 
+            "error": 1.8988007332424577
+        }, 
+        {
+            "num_measurements": 83, 
+            "error": 1.8626986842600877
+        }, 
+        {
+            "num_measurements": 84, 
+            "error": 1.8783361629095616
+        }, 
+        {
+            "num_measurements": 85, 
+            "error": 1.8506789550175817
+        }, 
+        {
+            "num_measurements": 86, 
+            "error": 1.8498332801724484
+        }, 
+        {
+            "num_measurements": 87, 
+            "error": 1.8172313146709445
+        }, 
+        {
+            "num_measurements": 88, 
+            "error": 1.8100564200572737
+        }, 
+        {
+            "num_measurements": 89, 
+            "error": 1.7921593405036504
+        }, 
+        {
+            "num_measurements": 90, 
+            "error": 1.773406712055943
+        }, 
+        {
+            "num_measurements": 91, 
+            "error": 1.805165813438397
+        }, 
+        {
+            "num_measurements": 92, 
+            "error": 1.76021423110702
+        }, 
+        {
+            "num_measurements": 93, 
+            "error": 1.818517187393666
+        }, 
+        {
+            "num_measurements": 94, 
+            "error": 1.6887247850738705
+        }, 
+        {
+            "num_measurements": 95, 
+            "error": 1.7052110281139743
+        }, 
+        {
+            "num_measurements": 96, 
+            "error": 1.6586766157263295
+        }, 
+        {
+            "num_measurements": 97, 
+            "error": 1.693766369499569
+        }, 
+        {
+            "num_measurements": 98, 
+            "error": 1.649383371083107
+        }, 
+        {
+            "num_measurements": 99, 
+            "error": 1.654057385351058
+        }, 
+        {
+            "num_measurements": 100, 
+            "error": 1.652909790067171
+        }, 
+        {
+            "num_measurements": 101, 
+            "error": 1.652909790067171
+        }, 
+        {
+            "num_measurements": 102, 
+            "error": 1.565329855236049
+        }, 
+        {
+            "num_measurements": 103, 
+            "error": 1.5744532671299898
+        }, 
+        {
+            "num_measurements": 104, 
+            "error": 1.5835722659199358
+        }, 
+        {
+            "num_measurements": 105, 
+            "error": 1.5661332523899152
+        }, 
+        {
+            "num_measurements": 106, 
+            "error": 1.5646478917888673
+        }, 
+        {
+            "num_measurements": 107, 
+            "error": 1.5628924877419224
+        }, 
+        {
+            "num_measurements": 108, 
+            "error": 1.5618374592055122
+        }, 
+        {
+            "num_measurements": 109, 
+            "error": 1.5606605359777768
+        }, 
+        {
+            "num_measurements": 110, 
+            "error": 1.5598477255770349
+        }, 
+        {
+            "num_measurements": 111, 
+            "error": 1.5590580950249362
+        }, 
+        {
+            "num_measurements": 112, 
+            "error": 1.5590580950249362
+        }, 
+        {
+            "num_measurements": 113, 
+            "error": 1.558660906598981
+        }, 
+        {
+            "num_measurements": 114, 
+            "error": 1.5592681078920654
+        }, 
+        {
+            "num_measurements": 115, 
+            "error": 1.5587378454123415
+        }, 
+        {
+            "num_measurements": 116, 
+            "error": 1.5595665142040775
+        }, 
+        {
+            "num_measurements": 117, 
+            "error": 1.559478649466716
+        }, 
+        {
+            "num_measurements": 118, 
+            "error": 1.5618480649862332
+        }, 
+        {
+            "num_measurements": 119, 
+            "error": 1.5604308183749902
+        }, 
+        {
+            "num_measurements": 120, 
+            "error": 1.5614208472280504
+        }
+    ], 
     "1594386753.52": [
         {
             "num_measurements": 1, 
@@ -124,7 +606,42 @@
         }
     ], 
     "1594389201.56": [], 
+    "1594392676.72": [
+        {
+            "num_measurements": 1, 
+            "error": 6.615631771048285
+        }, 
+        {
+            "num_measurements": 2, 
+            "error": 6.299518712003717
+        }, 
+        {
+            "num_measurements": 3, 
+            "error": 6.271804779142211
+        }, 
+        {
+            "num_measurements": 4, 
+            "error": 6.277289078000558
+        }, 
+        {
+            "num_measurements": 5, 
+            "error": 6.659502601421364
+        }, 
+        {
+            "num_measurements": 6, 
+            "error": 6.783316774375478
+        }, 
+        {
+            "num_measurements": 7, 
+            "error": 6.859911792839328
+        }, 
+        {
+            "num_measurements": 8, 
+            "error": 6.928830193714798
+        }
+    ], 
     "1594386339.3": [], 
+    "1594392595.66": [], 
     "1594390400.89": [], 
     "1594389157.72": [], 
     "1594386984.42": [
@@ -609,487 +1126,488 @@
             "error": 2.3477975443283965
         }
     ], 
+    "1594390155.15": [], 
     "1594390263.69": [], 
-    "1594387911.11": [
+    "1594387397.3": [
         {
             "num_measurements": 1, 
-            "error": 6.158300248934112
+            "error": 5.890804112760828
         }, 
         {
             "num_measurements": 2, 
-            "error": 6.257196616265423
+            "error": 6.2267661429458325
         }, 
         {
             "num_measurements": 3, 
-            "error": 6.433926600806062
+            "error": 6.400048111355873
         }, 
         {
             "num_measurements": 4, 
-            "error": 5.978356577933523
+            "error": 6.503609605341005
         }, 
         {
             "num_measurements": 5, 
-            "error": 6.255522096735969
+            "error": 6.472842486616507
         }, 
         {
             "num_measurements": 6, 
-            "error": 6.419359594327484
+            "error": 6.694658260807772
         }, 
         {
             "num_measurements": 7, 
-            "error": 6.572923530666895
+            "error": 6.632281543923756
         }, 
         {
             "num_measurements": 8, 
-            "error": 6.709714472120292
+            "error": 6.6664352155712825
         }, 
         {
             "num_measurements": 9, 
-            "error": 6.739960708811346
+            "error": 6.2091091566940975
         }, 
         {
             "num_measurements": 10, 
-            "error": 6.794398894554445
+            "error": 6.238239865700794
         }, 
         {
             "num_measurements": 11, 
-            "error": 6.810450196375918
+            "error": 6.353669991653378
         }, 
         {
             "num_measurements": 12, 
-            "error": 6.891843702990537
+            "error": 6.302428865091768
         }, 
         {
             "num_measurements": 13, 
-            "error": 6.868557500572677
+            "error": 6.444901222744522
         }, 
         {
             "num_measurements": 14, 
-            "error": 6.890112383778401
+            "error": 6.398586954769533
         }, 
         {
             "num_measurements": 15, 
-            "error": 6.934831191269012
+            "error": 6.439155157489593
         }, 
         {
             "num_measurements": 16, 
-            "error": 6.929992777933433
+            "error": 6.413237900005271
         }, 
         {
             "num_measurements": 17, 
-            "error": 6.921023727718723
+            "error": 6.415362892854576
         }, 
         {
             "num_measurements": 18, 
-            "error": 6.930731243506965
+            "error": 6.422863613027689
         }, 
         {
             "num_measurements": 19, 
-            "error": 6.911472318104934
+            "error": 6.4286826774672905
         }, 
         {
             "num_measurements": 20, 
-            "error": 6.898280037221382
+            "error": 6.453100086212214
         }, 
         {
             "num_measurements": 21, 
-            "error": 6.91192307646182
+            "error": 6.413115879336746
         }, 
         {
             "num_measurements": 22, 
-            "error": 7.07447466799483
+            "error": 6.442198534629034
         }, 
         {
             "num_measurements": 23, 
-            "error": 7.094052068125047
+            "error": 6.467986273079929
         }, 
         {
             "num_measurements": 24, 
-            "error": 7.091736687425783
+            "error": 6.516875985249328
         }, 
         {
             "num_measurements": 25, 
-            "error": 7.111425874395277
+            "error": 6.532676810350835
         }, 
         {
             "num_measurements": 26, 
-            "error": 7.124568782349421
+            "error": 6.5276339516035
         }, 
         {
             "num_measurements": 27, 
-            "error": 7.104504707943339
+            "error": 6.541496653453576
         }, 
         {
             "num_measurements": 28, 
-            "error": 7.124558208624746
+            "error": 6.53495652349988
         }, 
         {
             "num_measurements": 29, 
-            "error": 7.111213707144177
+            "error": 6.531331493300992
         }, 
         {
             "num_measurements": 30, 
-            "error": 7.276139162220813
+            "error": 6.4872954601293245
         }, 
         {
             "num_measurements": 31, 
-            "error": 7.278492294869739
+            "error": 4.877075733300896
         }, 
         {
             "num_measurements": 32, 
-            "error": 7.280998106305905
+            "error": 5.117988402567799
         }, 
         {
             "num_measurements": 33, 
-            "error": 7.267187573136865
+            "error": 4.729321783367965
         }, 
         {
             "num_measurements": 34, 
-            "error": 7.261104974208921
+            "error": 4.674672715990101
         }, 
         {
             "num_measurements": 35, 
-            "error": 7.241490593713402
+            "error": 3.860867907980544
         }, 
         {
             "num_measurements": 36, 
-            "error": 7.274731620666955
+            "error": 3.526423224795959
         }, 
         {
             "num_measurements": 37, 
-            "error": 7.333393368310116
+            "error": 3.3021277412324066
         }, 
         {
             "num_measurements": 38, 
-            "error": 7.329961456121427
+            "error": 3.27992248583037
         }, 
         {
             "num_measurements": 39, 
-            "error": 7.3513262249125155
+            "error": 3.3015090760898325
         }, 
         {
             "num_measurements": 40, 
-            "error": 7.374173645310591
+            "error": 3.3315292351866193
         }, 
         {
             "num_measurements": 41, 
-            "error": 7.3809819030132955
+            "error": 3.255283927492482
         }, 
         {
             "num_measurements": 42, 
-            "error": 7.388912649234446
+            "error": 3.1711694852540506
         }, 
         {
             "num_measurements": 43, 
-            "error": 7.39543991650654
+            "error": 3.1124062676095097
         }, 
         {
             "num_measurements": 44, 
-            "error": 7.4010239012387125
+            "error": 3.101891413763749
         }, 
         {
             "num_measurements": 45, 
-            "error": 7.408800978852203
+            "error": 3.1056723608509107
         }, 
         {
             "num_measurements": 46, 
-            "error": 7.0769016277882235
+            "error": 3.098645345004899
         }, 
         {
             "num_measurements": 47, 
-            "error": 6.286232819026437
+            "error": 2.990828512736604
         }, 
         {
             "num_measurements": 48, 
-            "error": 5.493471880593322
+            "error": 2.9731016278642852
         }, 
         {
             "num_measurements": 49, 
-            "error": 4.596789049686654
+            "error": 3.164406608060877
         }, 
         {
             "num_measurements": 50, 
-            "error": 4.160041300256701
+            "error": 3.339403052106602
         }, 
         {
             "num_measurements": 51, 
-            "error": 3.7872952939130067
+            "error": 3.285198984212127
         }, 
         {
             "num_measurements": 52, 
-            "error": 3.59911607345748
+            "error": 3.189167810264173
         }, 
         {
             "num_measurements": 53, 
-            "error": 3.4629738713768012
+            "error": 3.1175598292857813
         }, 
         {
             "num_measurements": 54, 
-            "error": 3.3717462643266853
+            "error": 3.1108459690349375
         }, 
         {
             "num_measurements": 55, 
-            "error": 3.40647677127597
+            "error": 3.0197337019035038
         }, 
         {
             "num_measurements": 56, 
-            "error": 3.2354792663409433
+            "error": 3.15154964941182
         }, 
         {
             "num_measurements": 57, 
-            "error": 3.1684169497995143
+            "error": 3.1035539303399124
         }, 
         {
             "num_measurements": 58, 
-            "error": 3.0380642717354447
+            "error": 3.0710661642998227
         }, 
         {
             "num_measurements": 59, 
-            "error": 3.0210754042349586
+            "error": 3.009489302616301
         }, 
         {
             "num_measurements": 60, 
-            "error": 2.9935646164000778
+            "error": 2.9780054878885105
         }, 
         {
             "num_measurements": 61, 
-            "error": 3.036402294211318
+            "error": 2.7734932316986716
         }, 
         {
             "num_measurements": 62, 
-            "error": 3.05776470726475
+            "error": 3.1069493284867455
         }, 
         {
             "num_measurements": 63, 
-            "error": 3.3054714410679544
+            "error": 2.893699514182456
         }, 
         {
             "num_measurements": 64, 
-            "error": 3.2502621767248043
+            "error": 1.754929746686559
         }, 
         {
             "num_measurements": 65, 
-            "error": 3.194883672040686
+            "error": 1.7940136182882132
         }, 
         {
             "num_measurements": 66, 
-            "error": 2.475187000421197
+            "error": 1.8455655231794252
         }, 
         {
             "num_measurements": 67, 
-            "error": 2.2702064241967514
+            "error": 1.8976822793133374
         }, 
         {
             "num_measurements": 68, 
-            "error": 2.042431164811802
+            "error": 1.801163417671033
         }, 
         {
             "num_measurements": 69, 
-            "error": 2.157586354023883
+            "error": 1.71305670234513
         }, 
         {
             "num_measurements": 70, 
-            "error": 1.8265853926592954
+            "error": 1.5800632739160574
         }, 
         {
             "num_measurements": 71, 
-            "error": 1.7938294111328854
+            "error": 1.5478389073568533
         }, 
         {
             "num_measurements": 72, 
-            "error": 1.7683214575313932
+            "error": 1.5437336656916
         }, 
         {
             "num_measurements": 73, 
-            "error": 1.7304996848412588
+            "error": 1.5131878081471364
         }, 
         {
             "num_measurements": 74, 
-            "error": 1.7344334936665518
+            "error": 1.5233889484226855
         }, 
         {
             "num_measurements": 75, 
-            "error": 1.6633985440497905
+            "error": 1.522701191394441
         }, 
         {
             "num_measurements": 76, 
-            "error": 1.6865989137335375
+            "error": 1.485490157237417
         }, 
         {
             "num_measurements": 77, 
-            "error": 1.6893564911570487
+            "error": 1.3784635968769732
         }, 
         {
             "num_measurements": 78, 
-            "error": 1.701436822273866
+            "error": 1.3498538111919431
         }, 
         {
             "num_measurements": 79, 
-            "error": 1.7648281173061815
+            "error": 1.3274243924348677
         }, 
         {
             "num_measurements": 80, 
-            "error": 1.7599350074885647
+            "error": 1.3130507617302476
         }, 
         {
             "num_measurements": 81, 
-            "error": 1.755115340107396
+            "error": 1.300421526635645
         }, 
         {
             "num_measurements": 82, 
-            "error": 1.795332703035375
+            "error": 1.2923224124944066
         }, 
         {
             "num_measurements": 83, 
-            "error": 1.8028733516251174
+            "error": 1.2922045994142375
         }, 
         {
             "num_measurements": 84, 
-            "error": 1.8309713156183047
+            "error": 1.2881845664682836
         }, 
         {
             "num_measurements": 85, 
-            "error": 1.8493744523271245
+            "error": 1.2730282175531682
         }, 
         {
             "num_measurements": 86, 
-            "error": 1.682515820551265
+            "error": 1.2622430693973026
         }, 
         {
             "num_measurements": 87, 
-            "error": 1.7291864583451872
+            "error": 1.2601325747852816
         }, 
         {
             "num_measurements": 88, 
-            "error": 1.6934559775567015
+            "error": 1.269335158116482
         }, 
         {
             "num_measurements": 89, 
-            "error": 1.6759233705629932
+            "error": 1.2521519723407164
         }, 
         {
             "num_measurements": 90, 
-            "error": 1.6759233705629932
+            "error": 1.2361306255868754
         }, 
         {
             "num_measurements": 91, 
-            "error": 1.6321184752900053
+            "error": 1.3114377198643121
         }, 
         {
             "num_measurements": 92, 
-            "error": 1.6278854538459095
+            "error": 1.242463583608348
         }, 
         {
             "num_measurements": 93, 
-            "error": 1.5929315705240226
+            "error": 1.1307551753468685
         }, 
         {
             "num_measurements": 94, 
-            "error": 1.5904935661382975
+            "error": 1.1210707149879329
         }, 
         {
             "num_measurements": 95, 
-            "error": 1.5476860501886587
+            "error": 1.1147857974771285
         }, 
         {
             "num_measurements": 96, 
-            "error": 1.5239074675856628
+            "error": 1.0984454591500032
         }, 
         {
             "num_measurements": 97, 
-            "error": 1.5210889243514543
+            "error": 1.106133786960671
         }, 
         {
             "num_measurements": 98, 
-            "error": 1.5257835687701415
+            "error": 1.0817102630904636
         }, 
         {
             "num_measurements": 99, 
-            "error": 1.51348517195762
+            "error": 1.0614235378726065
         }, 
         {
             "num_measurements": 100, 
-            "error": 1.5048321490347165
+            "error": 1.0536454081489235
         }, 
         {
             "num_measurements": 101, 
-            "error": 1.4759819501276303
+            "error": 1.0467723672524862
         }, 
         {
             "num_measurements": 102, 
-            "error": 1.4548435160701247
+            "error": 1.0440257857865096
         }, 
         {
             "num_measurements": 103, 
-            "error": 1.4593192459279893
+            "error": 1.0403156687405781
         }, 
         {
             "num_measurements": 104, 
-            "error": 1.4534384642534668
+            "error": 1.0310686490734517
         }, 
         {
             "num_measurements": 105, 
-            "error": 1.4461337084002113
+            "error": 1.0384946240706996
         }, 
         {
             "num_measurements": 106, 
-            "error": 1.49378003911496
+            "error": 1.026109039726941
         }, 
         {
             "num_measurements": 107, 
-            "error": 1.5436775166501329
+            "error": 1.0419714544742957
         }, 
         {
             "num_measurements": 108, 
-            "error": 1.6195777508289229
+            "error": 1.0530967446923276
         }, 
         {
             "num_measurements": 109, 
-            "error": 1.6590424604099703
+            "error": 1.0504622631217115
         }, 
         {
             "num_measurements": 110, 
-            "error": 1.6898385471105795
+            "error": 1.0071396252605005
         }, 
         {
             "num_measurements": 111, 
-            "error": 1.7123944223782397
+            "error": 1.0213910078467452
         }, 
         {
             "num_measurements": 112, 
-            "error": 1.7733471039184294
+            "error": 1.0314671460901224
         }, 
         {
             "num_measurements": 113, 
-            "error": 1.8037721155043334
+            "error": 1.0240938566010027
         }, 
         {
             "num_measurements": 114, 
-            "error": 1.8296030205449525
+            "error": 1.0432761317205272
         }, 
         {
             "num_measurements": 115, 
-            "error": 1.83091927976481
+            "error": 1.0643265601996514
         }, 
         {
             "num_measurements": 116, 
-            "error": 1.8004504838608868
+            "error": 1.0589036911234047
         }, 
         {
             "num_measurements": 117, 
-            "error": 1.8019499155151557
+            "error": 1.071016943971197
         }, 
         {
             "num_measurements": 118, 
-            "error": 1.824805511532149
+            "error": 1.071016943971197
         }, 
         {
             "num_measurements": 119, 
-            "error": 1.8136110499367875
+            "error": 1.0232521304424407
         }, 
         {
             "num_measurements": 120, 
-            "error": 1.8356279917495253
+            "error": 1.0321248342849005
         }
     ], 
     "1594389385.94": [], 
@@ -1575,492 +2093,493 @@
             "error": 0.8234803013780493
         }
     ], 
+    "1594390227.16": [], 
     "1594386734.11": [], 
-    "1594387397.3": [
+    "1594387911.11": [
         {
             "num_measurements": 1, 
-            "error": 5.890804112760828
+            "error": 6.158300248934112
         }, 
         {
             "num_measurements": 2, 
-            "error": 6.2267661429458325
+            "error": 6.257196616265423
         }, 
         {
             "num_measurements": 3, 
-            "error": 6.400048111355873
+            "error": 6.433926600806062
         }, 
         {
             "num_measurements": 4, 
-            "error": 6.503609605341005
+            "error": 5.978356577933523
         }, 
         {
             "num_measurements": 5, 
-            "error": 6.472842486616507
+            "error": 6.255522096735969
         }, 
         {
             "num_measurements": 6, 
-            "error": 6.694658260807772
+            "error": 6.419359594327484
         }, 
         {
             "num_measurements": 7, 
-            "error": 6.632281543923756
+            "error": 6.572923530666895
         }, 
         {
             "num_measurements": 8, 
-            "error": 6.6664352155712825
+            "error": 6.709714472120292
         }, 
         {
             "num_measurements": 9, 
-            "error": 6.2091091566940975
+            "error": 6.739960708811346
         }, 
         {
             "num_measurements": 10, 
-            "error": 6.238239865700794
+            "error": 6.794398894554445
         }, 
         {
             "num_measurements": 11, 
-            "error": 6.353669991653378
+            "error": 6.810450196375918
         }, 
         {
             "num_measurements": 12, 
-            "error": 6.302428865091768
+            "error": 6.891843702990537
         }, 
         {
             "num_measurements": 13, 
-            "error": 6.444901222744522
+            "error": 6.868557500572677
         }, 
         {
             "num_measurements": 14, 
-            "error": 6.398586954769533
+            "error": 6.890112383778401
         }, 
         {
             "num_measurements": 15, 
-            "error": 6.439155157489593
+            "error": 6.934831191269012
         }, 
         {
             "num_measurements": 16, 
-            "error": 6.413237900005271
+            "error": 6.929992777933433
         }, 
         {
             "num_measurements": 17, 
-            "error": 6.415362892854576
+            "error": 6.921023727718723
         }, 
         {
             "num_measurements": 18, 
-            "error": 6.422863613027689
+            "error": 6.930731243506965
         }, 
         {
             "num_measurements": 19, 
-            "error": 6.4286826774672905
+            "error": 6.911472318104934
         }, 
         {
             "num_measurements": 20, 
-            "error": 6.453100086212214
+            "error": 6.898280037221382
         }, 
         {
             "num_measurements": 21, 
-            "error": 6.413115879336746
+            "error": 6.91192307646182
         }, 
         {
             "num_measurements": 22, 
-            "error": 6.442198534629034
+            "error": 7.07447466799483
         }, 
         {
             "num_measurements": 23, 
-            "error": 6.467986273079929
+            "error": 7.094052068125047
         }, 
         {
             "num_measurements": 24, 
-            "error": 6.516875985249328
+            "error": 7.091736687425783
         }, 
         {
             "num_measurements": 25, 
-            "error": 6.532676810350835
+            "error": 7.111425874395277
         }, 
         {
             "num_measurements": 26, 
-            "error": 6.5276339516035
+            "error": 7.124568782349421
         }, 
         {
             "num_measurements": 27, 
-            "error": 6.541496653453576
+            "error": 7.104504707943339
         }, 
         {
             "num_measurements": 28, 
-            "error": 6.53495652349988
+            "error": 7.124558208624746
         }, 
         {
             "num_measurements": 29, 
-            "error": 6.531331493300992
+            "error": 7.111213707144177
         }, 
         {
             "num_measurements": 30, 
-            "error": 6.4872954601293245
+            "error": 7.276139162220813
         }, 
         {
             "num_measurements": 31, 
-            "error": 4.877075733300896
+            "error": 7.278492294869739
         }, 
         {
             "num_measurements": 32, 
-            "error": 5.117988402567799
+            "error": 7.280998106305905
         }, 
         {
             "num_measurements": 33, 
-            "error": 4.729321783367965
+            "error": 7.267187573136865
         }, 
         {
             "num_measurements": 34, 
-            "error": 4.674672715990101
+            "error": 7.261104974208921
         }, 
         {
             "num_measurements": 35, 
-            "error": 3.860867907980544
+            "error": 7.241490593713402
         }, 
         {
             "num_measurements": 36, 
-            "error": 3.526423224795959
+            "error": 7.274731620666955
         }, 
         {
             "num_measurements": 37, 
-            "error": 3.3021277412324066
+            "error": 7.333393368310116
         }, 
         {
             "num_measurements": 38, 
-            "error": 3.27992248583037
+            "error": 7.329961456121427
         }, 
         {
             "num_measurements": 39, 
-            "error": 3.3015090760898325
+            "error": 7.3513262249125155
         }, 
         {
             "num_measurements": 40, 
-            "error": 3.3315292351866193
+            "error": 7.374173645310591
         }, 
         {
             "num_measurements": 41, 
-            "error": 3.255283927492482
+            "error": 7.3809819030132955
         }, 
         {
             "num_measurements": 42, 
-            "error": 3.1711694852540506
+            "error": 7.388912649234446
         }, 
         {
             "num_measurements": 43, 
-            "error": 3.1124062676095097
+            "error": 7.39543991650654
         }, 
         {
             "num_measurements": 44, 
-            "error": 3.101891413763749
+            "error": 7.4010239012387125
         }, 
         {
             "num_measurements": 45, 
-            "error": 3.1056723608509107
+            "error": 7.408800978852203
         }, 
         {
             "num_measurements": 46, 
-            "error": 3.098645345004899
+            "error": 7.0769016277882235
         }, 
         {
             "num_measurements": 47, 
-            "error": 2.990828512736604
+            "error": 6.286232819026437
         }, 
         {
             "num_measurements": 48, 
-            "error": 2.9731016278642852
+            "error": 5.493471880593322
         }, 
         {
             "num_measurements": 49, 
-            "error": 3.164406608060877
+            "error": 4.596789049686654
         }, 
         {
             "num_measurements": 50, 
-            "error": 3.339403052106602
+            "error": 4.160041300256701
         }, 
         {
             "num_measurements": 51, 
-            "error": 3.285198984212127
+            "error": 3.7872952939130067
         }, 
         {
             "num_measurements": 52, 
-            "error": 3.189167810264173
+            "error": 3.59911607345748
         }, 
         {
             "num_measurements": 53, 
-            "error": 3.1175598292857813
+            "error": 3.4629738713768012
         }, 
         {
             "num_measurements": 54, 
-            "error": 3.1108459690349375
+            "error": 3.3717462643266853
         }, 
         {
             "num_measurements": 55, 
-            "error": 3.0197337019035038
+            "error": 3.40647677127597
         }, 
         {
             "num_measurements": 56, 
-            "error": 3.15154964941182
+            "error": 3.2354792663409433
         }, 
         {
             "num_measurements": 57, 
-            "error": 3.1035539303399124
+            "error": 3.1684169497995143
         }, 
         {
             "num_measurements": 58, 
-            "error": 3.0710661642998227
+            "error": 3.0380642717354447
         }, 
         {
             "num_measurements": 59, 
-            "error": 3.009489302616301
+            "error": 3.0210754042349586
         }, 
         {
             "num_measurements": 60, 
-            "error": 2.9780054878885105
+            "error": 2.9935646164000778
         }, 
         {
             "num_measurements": 61, 
-            "error": 2.7734932316986716
+            "error": 3.036402294211318
         }, 
         {
             "num_measurements": 62, 
-            "error": 3.1069493284867455
+            "error": 3.05776470726475
         }, 
         {
             "num_measurements": 63, 
-            "error": 2.893699514182456
+            "error": 3.3054714410679544
         }, 
         {
             "num_measurements": 64, 
-            "error": 1.754929746686559
+            "error": 3.2502621767248043
         }, 
         {
             "num_measurements": 65, 
-            "error": 1.7940136182882132
+            "error": 3.194883672040686
         }, 
         {
             "num_measurements": 66, 
-            "error": 1.8455655231794252
+            "error": 2.475187000421197
         }, 
         {
             "num_measurements": 67, 
-            "error": 1.8976822793133374
+            "error": 2.2702064241967514
         }, 
         {
             "num_measurements": 68, 
-            "error": 1.801163417671033
+            "error": 2.042431164811802
         }, 
         {
             "num_measurements": 69, 
-            "error": 1.71305670234513
+            "error": 2.157586354023883
         }, 
         {
             "num_measurements": 70, 
-            "error": 1.5800632739160574
+            "error": 1.8265853926592954
         }, 
         {
             "num_measurements": 71, 
-            "error": 1.5478389073568533
+            "error": 1.7938294111328854
         }, 
         {
             "num_measurements": 72, 
-            "error": 1.5437336656916
+            "error": 1.7683214575313932
         }, 
         {
             "num_measurements": 73, 
-            "error": 1.5131878081471364
+            "error": 1.7304996848412588
         }, 
         {
             "num_measurements": 74, 
-            "error": 1.5233889484226855
+            "error": 1.7344334936665518
         }, 
         {
             "num_measurements": 75, 
-            "error": 1.522701191394441
+            "error": 1.6633985440497905
         }, 
         {
             "num_measurements": 76, 
-            "error": 1.485490157237417
+            "error": 1.6865989137335375
         }, 
         {
             "num_measurements": 77, 
-            "error": 1.3784635968769732
+            "error": 1.6893564911570487
         }, 
         {
             "num_measurements": 78, 
-            "error": 1.3498538111919431
+            "error": 1.701436822273866
         }, 
         {
             "num_measurements": 79, 
-            "error": 1.3274243924348677
+            "error": 1.7648281173061815
         }, 
         {
             "num_measurements": 80, 
-            "error": 1.3130507617302476
+            "error": 1.7599350074885647
         }, 
         {
             "num_measurements": 81, 
-            "error": 1.300421526635645
+            "error": 1.755115340107396
         }, 
         {
             "num_measurements": 82, 
-            "error": 1.2923224124944066
+            "error": 1.795332703035375
         }, 
         {
             "num_measurements": 83, 
-            "error": 1.2922045994142375
+            "error": 1.8028733516251174
         }, 
         {
             "num_measurements": 84, 
-            "error": 1.2881845664682836
+            "error": 1.8309713156183047
         }, 
         {
             "num_measurements": 85, 
-            "error": 1.2730282175531682
+            "error": 1.8493744523271245
         }, 
         {
             "num_measurements": 86, 
-            "error": 1.2622430693973026
+            "error": 1.682515820551265
         }, 
         {
             "num_measurements": 87, 
-            "error": 1.2601325747852816
+            "error": 1.7291864583451872
         }, 
         {
             "num_measurements": 88, 
-            "error": 1.269335158116482
+            "error": 1.6934559775567015
         }, 
         {
             "num_measurements": 89, 
-            "error": 1.2521519723407164
+            "error": 1.6759233705629932
         }, 
         {
             "num_measurements": 90, 
-            "error": 1.2361306255868754
+            "error": 1.6759233705629932
         }, 
         {
             "num_measurements": 91, 
-            "error": 1.3114377198643121
+            "error": 1.6321184752900053
         }, 
         {
             "num_measurements": 92, 
-            "error": 1.242463583608348
+            "error": 1.6278854538459095
         }, 
         {
             "num_measurements": 93, 
-            "error": 1.1307551753468685
+            "error": 1.5929315705240226
         }, 
         {
             "num_measurements": 94, 
-            "error": 1.1210707149879329
+            "error": 1.5904935661382975
         }, 
         {
             "num_measurements": 95, 
-            "error": 1.1147857974771285
+            "error": 1.5476860501886587
         }, 
         {
             "num_measurements": 96, 
-            "error": 1.0984454591500032
+            "error": 1.5239074675856628
         }, 
         {
             "num_measurements": 97, 
-            "error": 1.106133786960671
+            "error": 1.5210889243514543
         }, 
         {
             "num_measurements": 98, 
-            "error": 1.0817102630904636
+            "error": 1.5257835687701415
         }, 
         {
             "num_measurements": 99, 
-            "error": 1.0614235378726065
+            "error": 1.51348517195762
         }, 
         {
             "num_measurements": 100, 
-            "error": 1.0536454081489235
+            "error": 1.5048321490347165
         }, 
         {
             "num_measurements": 101, 
-            "error": 1.0467723672524862
+            "error": 1.4759819501276303
         }, 
         {
             "num_measurements": 102, 
-            "error": 1.0440257857865096
+            "error": 1.4548435160701247
         }, 
         {
             "num_measurements": 103, 
-            "error": 1.0403156687405781
+            "error": 1.4593192459279893
         }, 
         {
             "num_measurements": 104, 
-            "error": 1.0310686490734517
+            "error": 1.4534384642534668
         }, 
         {
             "num_measurements": 105, 
-            "error": 1.0384946240706996
+            "error": 1.4461337084002113
         }, 
         {
             "num_measurements": 106, 
-            "error": 1.026109039726941
+            "error": 1.49378003911496
         }, 
         {
             "num_measurements": 107, 
-            "error": 1.0419714544742957
+            "error": 1.5436775166501329
         }, 
         {
             "num_measurements": 108, 
-            "error": 1.0530967446923276
+            "error": 1.6195777508289229
         }, 
         {
             "num_measurements": 109, 
-            "error": 1.0504622631217115
+            "error": 1.6590424604099703
         }, 
         {
             "num_measurements": 110, 
-            "error": 1.0071396252605005
+            "error": 1.6898385471105795
         }, 
         {
             "num_measurements": 111, 
-            "error": 1.0213910078467452
+            "error": 1.7123944223782397
         }, 
         {
             "num_measurements": 112, 
-            "error": 1.0314671460901224
+            "error": 1.7733471039184294
         }, 
         {
             "num_measurements": 113, 
-            "error": 1.0240938566010027
+            "error": 1.8037721155043334
         }, 
         {
             "num_measurements": 114, 
-            "error": 1.0432761317205272
+            "error": 1.8296030205449525
         }, 
         {
             "num_measurements": 115, 
-            "error": 1.0643265601996514
+            "error": 1.83091927976481
         }, 
         {
             "num_measurements": 116, 
-            "error": 1.0589036911234047
+            "error": 1.8004504838608868
         }, 
         {
             "num_measurements": 117, 
-            "error": 1.071016943971197
+            "error": 1.8019499155151557
         }, 
         {
             "num_measurements": 118, 
-            "error": 1.071016943971197
+            "error": 1.824805511532149
         }, 
         {
             "num_measurements": 119, 
-            "error": 1.0232521304424407
+            "error": 1.8136110499367875
         }, 
         {
             "num_measurements": 120, 
-            "error": 1.0321248342849005
+            "error": 1.8356279917495253
         }
     ], 
-    "1594386018.07": [], 
+    "1594392477.23": [], 
     "1594385410.17": [], 
-    "1594390227.16": [], 
+    "1594392302.0": [], 
     "1594385122.47": [], 
     "1594390480.41": [
         {
@@ -3028,5 +3547,5 @@
         }
     ], 
     "1594386169.08": [], 
-    "1594390155.15": []
+    "1594386018.07": []
 }

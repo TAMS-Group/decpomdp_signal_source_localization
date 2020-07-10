@@ -6,7 +6,7 @@ from dec_pomdp_msgs.msg import Measurements
 from dec_pomdp_msgs.msg import ExecutionState
 from dec_pomdp_msgs.srv import StartExperiment
 from dec_pomdp_msgs.srv import GeneratePolicies
-from dec_pomdp_msgs.msg import Policy, ExecutePolicyAction, ExecutePolicyFeedback, ExecutePolicyGoal, ExecutePolicyResult, ExecuteRandomMovementGoal, ExecuteRandomMovementAction
+from dec_pomdp_msgs.msg import Policy, ExecutePolicyAction, ExecutePolicyFeedback, ExecutePolicyGoal, ExecutePolicyResult, ExecuteRandomMovementGoal, ExecuteRandomMovementAction, EvaluateMeasurementsAction, EvaluateMeasurementsGoal
 from std_msgs.msg import Int64
 
 
@@ -24,12 +24,14 @@ class LocalizationManager:
 			rospy.logwarn("Registered Action Client for robot %s", state.robot_name)
 		if state.robot_name not in self.robot_random_action_clients.keys():
 			self.robot_random_action_clients[state.robot_name] = actionlib.SimpleActionClient(state.robot_name + '/execute_random_movement', ExecuteRandomMovementAction)
+			self.robot_random_action_clients[state.robot_name].wait_for_server()
 		self.robot_states[state.robot_name] = state
 		self.heartbeat_publisher.publish(state)
 
 
 	def handle_start(self, start_msg):
 		ex_param = rospy.get_param("/experiment_parameters")
+		resulting_measurements = []
 		if start_msg.random_movement:
 			for robot_action_client in self.robot_random_action_clients.values():
 				random_movement_goal = ExecuteRandomMovementGoal()
@@ -44,8 +46,9 @@ class LocalizationManager:
 					global_state_finished = global_state_finished & (action_client.get_state() == GoalStatus.SUCCEEDED)
 				if global_state_finished:
 					for action_client in self.robot_random_action_clients.values():
-						result = action_client.get_result()
-						rospy.logwarn("Got %d results", len(result.measurements.measurements))
+						result = action_client.get_result().measurements
+						resulting_measurements.append(result)
+						rospy.logwarn("Got %d results", len(result.measurements))
 					break
 		else:
 			rospy.logwarn("Experiment has been started, waiting for generate Policy Service to come online")
@@ -71,12 +74,18 @@ class LocalizationManager:
 						global_state_finished = global_state_finished & (action_client.get_state() == GoalStatus.SUCCEEDED)
 					if global_state_finished:
 						for action_client in self.robot_action_clients.values():
-							result = action_client.get_result()
-							rospy.logwarn("Got %d results", len(result.measurements.measurements))
+							result = action_client.get_result().measurements
+							resulting_measurements.append(result)
+							rospy.logwarn("Got %d results", len(result.measurements))
 						break
 			except rospy.ServiceException, e:
 				rospy.logerr("Service call to generate Policies failed: %s", e)
 				return False
+		for measurements in resulting_measurements:
+			evaluate_measurements_goal = EvaluateMeasurementsGoal()
+			evaluate_measurements_goal.measurements = measurements
+			self.measurement_action_client.send_goal_and_wait(evaluate_measurements_goal)
+
 		return True
 
 	def handle_measurements(self, measurements):
@@ -92,6 +101,8 @@ class LocalizationManager:
 			self.robot_subscribers[agent + 'measurements'] = rospy.Subscriber(agent +'/measurements', Measurements, self.handle_measurements)
 		self.measurement_publisher = rospy.Publisher('/measurements', Measurements, queue_size=10)
 		self.heartbeat_publisher = rospy.Publisher('/heartbeat', ExecutionState, queue_size=10)
+		self.measurement_action_client = actionlib.SimpleActionClient('measurements_evaluation', EvaluateMeasurementsAction)
+		self.measurement_action_client.wait_for_server()
 		self.start_service = rospy.Service('start_experiment', StartExperiment, self.handle_start)
 
 

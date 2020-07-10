@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import rospy
+import actionlib
 import numpy as np
-from dec_pomdp_msgs.msg import Measurements
+from dec_pomdp_msgs.msg import Measurements, EvaluateMeasurementsAction, EvaluateMeasurementsResult, EvaluateMeasurementsGoal, EvaluateMeasurementsFeedback
 from particle_filter import *
 from wlan_localization import WLANLocalization
 from particle_filter_visualization import ParticleFilterVisualizer
@@ -26,6 +27,9 @@ class MeasurementSubscriber:
 
 
 class MeasurementEvaluator:
+	_feedback = EvaluateMeasurementsFeedback()
+	_result = EvaluateMeasurementsResult()
+
 	def __init__(self, frame_id, problem, num_particles, visualize=True):
 		self.frame_id = frame_id
 		self.problem = problem
@@ -39,7 +43,9 @@ class MeasurementEvaluator:
 		self.logging_code = 0
 		self.log_file_path = rospy.get_param('result_folder_path') + 'measurement_results.json'
 		self.initialize_measurement_evaluation()
-		self.measurement_sub = MeasurementSubscriber(self.frame_id, self.run_measurement_evaluation)
+		# self.measurement_sub = MeasurementSubscriber(self.frame_id, self.run_measurement_evaluation)
+		self.measurements_evaluation_action_server = actionlib.SimpleActionServer('measurements_evaluation', EvaluateMeasurementsAction, execute_cb=self.run_measurement_evaluation, auto_start=False)
+		self.measurements_evaluation_action_server.start()
 		self.start_service = rospy.Service('reset_measurement_evaluation', Empty, self.initialize_measurement_evaluation)
 
 
@@ -60,22 +66,24 @@ class MeasurementEvaluator:
 		self.visualizer.visualize(self.particles, self.weights)
 		rospy.loginfo('Successfully initialized particle filter')
 		return True
-	
+
 	def write_json(self, data, filename):
 		with open(filename, 'w') as file:
 			json.dump(data, file, indent=4)
 
 
-	def run_measurement_evaluation(self, observations):
+	def run_measurement_evaluation(self, request):
 		rospy.loginfo("=======================Next Iteration of Particle filter===============================")
+		latest_observations = request.measurements.measurements
 		json_data = None
 		experiment_json_object = []
 		with open(self.log_file_path) as json_file:
 			json_data = json.load(json_file)
 			experiment_json_object = json_data[self.logging_code]
-		if (len(observations) > 0):
-			latest_observations = observations[len(observations) - 1].measurements
+		if (len(latest_observations) > 0):
+			#latest_observations = observations[len(observations) - 1].measurements
 			#Later it is supposed to work like this:
+			self._feedback.current_measurement = 0
 			for measurement in latest_observations:
 			#if(len(latest_observations) > 0):
 				#measurement = latest_observations[len(latest_observations) -1]
@@ -100,11 +108,16 @@ class MeasurementEvaluator:
 					weighted_distance = self.weights[index] * distance**2
 					weighted_mean_error += weighted_distance
 				weighted_mean_error = np.sqrt(weighted_mean_error / sum(self.weights))
+				self._feedback.current_measurement += 1
+				self._result.error = weighted_mean_error
+				self._feedback.current_error = weighted_mean_error
+				self.measurements_evaluation_action_server.publish_feedback(self._feedback)
 				# rospy.loginfo("Error of current particle filter is %f after evaluation of %d measurements sum of weight is %f", weighted_mean_error, self.num_of_measurements, sum(self.weights))
 				new_value = {"num_measurements": self.num_of_measurements, "error": weighted_mean_error}
 				experiment_json_object.append(new_value)
 				if json_data is not None:
 					self.write_json(json_data, self.log_file_path)
+		self.measurements_evaluation_action_server.set_succeeded(self._result)
 
 if __name__ == '__main__':
 	rospy.init_node('measurements_evaluation')

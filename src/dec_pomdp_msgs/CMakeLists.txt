@@ -35,6 +35,7 @@ add_action_files(
   TakeMeasurements.action
   ExecutePolicy.action
   ExecuteRandomMovement.action
+  EvaluateMeasurements.action
 )
 
 ## Generate added messages and services with any dependencies listed here

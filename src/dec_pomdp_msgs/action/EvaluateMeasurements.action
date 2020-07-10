@@ -1,0 +1,6 @@
+Measurements measurements
+---
+float32 error
+---
+int64 current_measurement
+float32 current_error
