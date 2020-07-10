@@ -26,7 +26,7 @@ class Executor(object):
                 for measurement in result.measurements.measurements:
                     self.measurements.measurements.append(measurement)
                     signal_strengths.append(measurement.signal_strength)
-                    return np.mean(signal_strengths)
+                return np.mean(signal_strengths)
             elif(current_state == GoalStatus.LOST or current_state == GoalStatus.REJECTED):
                 rospy.logerr("Action client failed to take measurements")
                 break
