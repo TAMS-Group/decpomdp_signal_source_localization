@@ -14,6 +14,9 @@ class RandomMovement(Executor):
     """
     This class will make the
     """
+    _feedback = ExecuteRandomMovementFeedback()
+    _result = ExecuteRandomMovementResult()
+
     def execute_random_movement(self, random_movement_goal):
         number_of_steps = random_movement_goal.number_of_steps
         goal = MoveBaseGoal()
@@ -25,7 +28,7 @@ class RandomMovement(Executor):
                                                         (self.locations[loc].y - starting_pose.pose.position.y)**2
                                                     )
         )
-        for step in range(number_of_steps.data):
+        for step in range(number_of_steps):
             rospy.loginfo("Next location is %d with coordinates x = %f and y = %f ", current_location, self.locations[current_location].x, self.locations[current_location].y)
             goal.target_pose.pose.position.x = self.locations[current_location].x
             goal.target_pose.pose.position.y = self.locations[current_location].y
@@ -35,6 +38,11 @@ class RandomMovement(Executor):
             measurement_value = self.take_measurement()
             possible_moves = self.allowed_moves[current_location]
             current_location = random.choice(possible_moves)
+            self._feedback.step = step
+            self._feedback.current_measurements = self.measurements
+            self.random_movement_action_server.publish_feedback(self._feedback)
+        self._result.measurements = self.measurements
+        self.random_movement_action_server.set_succeeded(self._result)
 
 
 

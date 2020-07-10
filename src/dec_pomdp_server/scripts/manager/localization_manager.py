@@ -6,7 +6,7 @@ from dec_pomdp_msgs.msg import Measurements
 from dec_pomdp_msgs.msg import ExecutionState
 from dec_pomdp_msgs.srv import StartExperiment
 from dec_pomdp_msgs.srv import GeneratePolicies
-from dec_pomdp_msgs.msg import Policy, ExecutePolicyAction, ExecutePolicyFeedback, ExecutePolicyGoal, ExecutePolicyResult
+from dec_pomdp_msgs.msg import Policy, ExecutePolicyAction, ExecutePolicyFeedback, ExecutePolicyGoal, ExecutePolicyResult, ExecuteRandomMovementGoal, ExecuteRandomMovementAction
 from std_msgs.msg import Int64
 
 
@@ -14,7 +14,7 @@ class LocalizationManager:
 	robot_action_clients = {}
 	robot_states = {}
 	robot_subscribers = {}
-	robot_random_publishers = {}
+	robot_random_action_clients = {}
 
 	def handle_heartbeat(self, state):
 		if state.robot_name not in self.robot_action_clients.keys():
@@ -22,8 +22,8 @@ class LocalizationManager:
 			self.robot_action_clients[state.robot_name] = actionlib.SimpleActionClient(state.robot_name + '/execute_policy', ExecutePolicyAction)
 			self.robot_action_clients[state.robot_name].wait_for_server()
 			rospy.logwarn("Registered Action Client for robot %s", state.robot_name)
-		if state.robot_name not in self.robot_random_publishers.keys():
-			self.robot_random_publishers[state.robot_name] = rospy.Publisher(state.robot_name + '/randomMovement', Int64, queue_size=1)
+		if state.robot_name not in self.robot_random_action_clients.keys():
+			self.robot_random_action_clients[state.robot_name] = actionlib.SimpleActionClient(state.robot_name + '/execute_random_movement', ExecuteRandomMovementAction)
 		self.robot_states[state.robot_name] = state
 		self.heartbeat_publisher.publish(state)
 
@@ -31,8 +31,22 @@ class LocalizationManager:
 	def handle_start(self, start_msg):
 		ex_param = rospy.get_param("/experiment_parameters")
 		if start_msg.random_movement:
-			for robot_publisher in self.robot_random_publishers.keys():
-				self.robot_random_publishers[robot_publisher].publish(Int64(ex_param['horizon']))
+			for robot_action_client in self.robot_random_action_clients.values():
+				random_movement_goal = ExecuteRandomMovementGoal()
+				random_movement_goal.number_of_steps = ex_param['horizon']
+				random_movement_goal.simulate_measurements = start_msg.simulate_measurements
+				robot_action_client.send_goal(random_movement_goal)
+			while not rospy.is_shutdown():
+				rospy.sleep(rospy.Duration(5.0))
+				rospy.logwarn("Wait for Random Movement Execution to finish")
+				global_state_finished = True
+				for action_client in self.robot_random_action_clients.values():
+					global_state_finished = global_state_finished & (action_client.get_state() == GoalStatus.SUCCEEDED)
+				if global_state_finished:
+					for action_client in self.robot_random_action_clients.values():
+						result = action_client.get_result()
+						rospy.logwarn("Got %d results", len(result.measurements.measurements))
+					break
 		else:
 			rospy.logwarn("Experiment has been started, waiting for generate Policy Service to come online")
 			rospy.wait_for_service('generate_policies')
