@@ -1,0 +1,5 @@
+bool random_movement
+bool simulate_measurements
+int32 number_of_experiments
+---
+bool successful

@@ -7,8 +7,7 @@ from executor import Executor
 from std_msgs.msg import Int64
 from geometry_msgs.msg import Point
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
-from dec_pomdp_msgs.msg import ExecuteRandomMovementAction, ExecuteRandomMovementFeedback, ExecuteRandomMovementResult, ExecuteRandomMovementGoal
-
+from dec_pomdp_msgs.msg import Measurements, ExecuteRandomMovementAction, ExecuteRandomMovementFeedback, ExecuteRandomMovementResult, ExecuteRandomMovementGoal
 
 class RandomMovement(Executor):
     """
@@ -42,6 +41,7 @@ class RandomMovement(Executor):
             self._feedback.current_measurements = self.measurements
             self.random_movement_action_server.publish_feedback(self._feedback)
         self._result.measurements = self.measurements
+        self.measurements = Measurements()
         self.random_movement_action_server.set_succeeded(self._result)
 
 

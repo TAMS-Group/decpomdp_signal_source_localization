@@ -27,6 +27,7 @@ add_service_files(
   GetMeasurement.srv
   GeneratePolicies.srv
   StartExperiment.srv
+  RecordExperiments.srv
 )
 
 ## Generate action in the 'action' folder

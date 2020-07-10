@@ -7,4 +7,5 @@
   <include ns="leo" file="$(find dec_pomdp_client)/launch/client_simulation.launch">
     <arg name="turtlebot_name" value="leo"/>
   </include>
+  <node name="experiment_recorder" pkg="dec_pomdp_simulation" type="record_experiments.py" output="screen"/>
 </launch>

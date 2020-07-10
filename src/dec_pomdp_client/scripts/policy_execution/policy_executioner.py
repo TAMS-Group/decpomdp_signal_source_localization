@@ -53,6 +53,7 @@ class PolicyExecutioner:
             self.policy_action_server.publish_feedback(self._feedback)
         rospy.loginfo("Finished policy execution")
         self._result.measurements = self.measurements
+        self.measurements = Measurements()
         self.policy_action_server.set_succeeded(self._result)
 
 
