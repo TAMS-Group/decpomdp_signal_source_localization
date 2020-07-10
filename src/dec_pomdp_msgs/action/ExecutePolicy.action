@@ -1,0 +1,6 @@
+Policy policy
+bool simulate_measurements
+---
+int64 step
+---
+int64 completed_steps

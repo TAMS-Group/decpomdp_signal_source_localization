@@ -8,7 +8,7 @@ from geometry_msgs.msg import Twist, PoseStamped, Point
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from dec_pomdp_msgs.msg import Policy
 from actionlib_msgs.msg import GoalStatus
-from dec_pomdp_msgs.msg import Measurements, TakeMeasurementsAction, TakeMeasurementsGoal
+from dec_pomdp_msgs.msg import Measurements, TakeMeasurementsAction, TakeMeasurementsGoal, ExecutePolicyAction, ExecutePolicyFeedback, ExecutePolicyGoal, ExecutePolicyResult
 from dec_pomdp_msgs.srv import GetMeasurement
 from std_srvs.srv import Empty
 
@@ -20,11 +20,15 @@ class PolicyExecutioner:
     take signal strength measurements in those places
     and determine according to the result where to move next
     """
+    _feedback = ExecutePolicyFeedback()
+    _result = ExecutePolicyResult()
 
-    def execute_policy(self, policy):
+    def execute_policy(self, goal):
         """ Executes a given policy of type dec_pomdp_msgs.msg.Policy"""
-        goal = MoveBaseGoal()
-        goal.target_pose.header.frame_id = "map"
+        policy = goal.policy
+        step = 0
+        move_base_goal = MoveBaseGoal()
+        move_base_goal.target_pose.header.frame_id = "map"
         current_node = policy.starting_node
         while not rospy.is_shutdown():
             node_action = self.find(lambda node_action: node_action.node_number == current_node, policy.actions)
@@ -33,9 +37,9 @@ class PolicyExecutioner:
                 rospy.loginfo('Current Node number is %d and the action is end' % ( current_node ))
                 break
             rospy.loginfo('Current node number is %d and node action is x = %f and y = %f' % (current_node, node_action.pose.position.x, node_action.pose.position.y))
-            goal.target_pose.pose = node_action.pose
-            goal.target_pose.header.stamp = rospy.get_rostime()
-            self.move_to_goal(goal)
+            move_base_goal.target_pose.pose = node_action.pose
+            move_base_goal.target_pose.header.stamp = rospy.get_rostime()
+            self.move_to_goal(move_base_goal)
             rospy.loginfo('Taking measurement')
             measurement_value = self.take_measurement()
             rospy.loginfo('measurement taken %d' % measurement_value)
@@ -44,7 +48,11 @@ class PolicyExecutioner:
                     current_node = edge.node_number
                     rospy.loginfo('next node has been found')
                     break
+            self._feedback.step = step
+            self.policy_action_server.publish_feedback(self._feedback)
         rospy.loginfo("Finished policy execution")
+        self.result.completed_steps = step
+        self.policy_action_server.set_succeeded(self._result)
 
 
     def take_measurement(self):
@@ -137,3 +145,10 @@ class PolicyExecutioner:
         self.base_footprint_msg.pose.orientation.w = 1
         self.base_footprint_msg.header.stamp = rospy.Time(0)
         self.clear_costmaps = rospy.ServiceProxy('/move_base/clear_costmaps', Empty)
+        self.policy_action_server = actionlib.SimpleActionServer('execute_policy', ExecutePolicyAction, execute_cb=self.execute_policy, auto_start=False)
+
+if __name__ == "__main__":
+    rospy.init_node('policy_execution')
+    policy_executioner = PolicyExecutioner()
+    robot_name = rospy.get_param('robot_name')
+    rospy.spin()
