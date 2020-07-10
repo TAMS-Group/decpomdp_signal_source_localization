@@ -15,7 +15,7 @@ class PolicyVisualizer:
         for item in array:
             if l_function(item):
                 return item
-    
+
     def visualize_next_steps(self, policy, current_node):
         next_steps_marker = MarkerArray()
         node_action = self.find(lambda action: action.node_number == current_node, policy.actions)
@@ -54,12 +54,12 @@ class PolicyVisualizer:
     def __init__(self, frame_id, robot_name):
         self.marker_id = 0
         self.robot_name = robot_name
-        self.marker_publisher = rospy.Publisher(self.robot_name +'/possible_moves', MarkerArray, queue_size=100)
+        self.marker_publisher = rospy.Publisher('possible_moves', MarkerArray, queue_size=100)
         self.frame_id = frame_id
 
 if __name__ == "__main__":
     rospy.init_node('policy_visualization')
     robot_name = rospy.get_param('robot_name')
     visualizer = PolicyVisualizer('map', robot_name)
-    policy_listener = rospy.Subscriber(robot_name + '/policy',Policy, visualizer.visualize_policy)
+    policy_listener = rospy.Subscriber('policy',Policy, visualizer.visualize_policy)
     rospy.spin()

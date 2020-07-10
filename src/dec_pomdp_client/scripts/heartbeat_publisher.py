@@ -5,7 +5,7 @@ import tf
 import sys
 from dec_pomdp_msgs.msg import ExecutionState
 from geometry_msgs.msg import PoseStamped
-from signal_strength_measurer import SignalStrengthMeasurer
+from signal_strength.signal_strength_measurer import SignalStrengthMeasurer
 
 
 
@@ -18,7 +18,7 @@ def main():
 	base_footprint_msg.pose.orientation.w = 1
 	base_footprint_msg.header.stamp = rospy.Time(0)
 	transformer.waitForTransform('map', 'base_footprint', rospy.Time(0), rospy.Duration(3.0))
-	pub = rospy.Publisher(robot_name +'/heartbeat', ExecutionState, queue_size=1)
+	pub = rospy.Publisher('heartbeat', ExecutionState, queue_size=1)
 	rate = rospy.Rate(1)
 	msg = ExecutionState()
 	msg.robot_name = robot_name

@@ -17,6 +17,5 @@ if __name__ == "__main__":
     rospy.init_node('policy_execution')
     policy_executioner = PolicyExecutioner()
     robot_name = rospy.get_param('robot_name')
-    rospy.loginfo(robot_name + '/policy')
-    policy_listener = PolicyListener(robot_name + '/policy', policy_executioner)
+    policy_listener = PolicyListener('policy', policy_executioner)
     rospy.spin()

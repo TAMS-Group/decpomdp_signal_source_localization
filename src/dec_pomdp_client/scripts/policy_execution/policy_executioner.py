@@ -109,10 +109,13 @@ class PolicyExecutioner:
                 return item
 
     def __init__(self):
-        self.measurements_per_step = rospy.get_param("/measurements_per_step")
-        self.rotation_speed = rospy.get_param("/rotation_speed")
-        self.MIN_CLEARING_DISTANCE = rospy.get_param("/min_clearing_distance")
-        self.rotation_publisher = rospy.Publisher('/cmd_vel_mux/input/navi', Twist, queue_size=10)
+        mps_param_name = rospy.search_param('measurements_per_step')
+        self.measurements_per_step = rospy.get_param(mps_param_name)
+        rs_param_name = rospy.search_param('rotation_speed')
+        self.rotation_speed = rospy.get_param(rs_param_name)
+        mci_param_name = rospy.search_param('min_clearing_distance')
+        self.MIN_CLEARING_DISTANCE = rospy.get_param(mci_param_name)
+        self.rotation_publisher = rospy.Publisher('cmd_vel_mux/input/navi', Twist, queue_size=10)
         self.rotation_msg = Twist()
         self.measurements = Measurements()
         self.measurement_client = actionlib.SimpleActionClient('measurements', TakeMeasurementsAction)

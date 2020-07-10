@@ -12,7 +12,7 @@ from dec_pomdp_msgs.srv import GetMeasurement
 class MeasurementPublisher:
     SIMULATE_MEASUREMENT = True
     def __init__(self, robot_name):
-        self.publisher = rospy.Publisher(robot_name + "/measurements", Measurements, queue_size=1)
+        self.publisher = rospy.Publisher("measurements", Measurements, queue_size=1)
         self.previous_measurements = Measurements()
         self.transformer = tf.TransformListener()
         try:

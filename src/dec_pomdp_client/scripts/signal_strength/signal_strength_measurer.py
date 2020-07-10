@@ -37,8 +37,7 @@ class SignalStrengthMeasurer:
 
     def takeSimulatedMeasurement(self, ESSID, distance, v=2.4e9, b=0.009, loc=-7.001, scale=12.551):
         rss_base = 147.55 - 20.0 * np.log10(v) - 20.0 * np.log10(distance)
-        rss = rss_base - rice.rvs(b, loc=loc, scale=scale)[0]
-        self.rate.sleep()
+        rss = rss_base - rice.rvs(b, loc=loc, scale=scale)
         return rss
 
     def getAllSignalStrengths(self):

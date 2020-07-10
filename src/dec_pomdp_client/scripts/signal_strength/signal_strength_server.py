@@ -11,11 +11,11 @@ from dec_pomdp_msgs.msg import TakeMeasurementsAction, TakeMeasurementsFeedback,
 
 
 class SignalStrengthServer:
-    SIMULATE_MEASUREMENT = False
+    SIMULATE_MEASUREMENT = True
     _feedback = TakeMeasurementsFeedback()
     _result = TakeMeasurementsResult()
     def __init__(self, action_name, robot_name):
-        self.publisher = rospy.Publisher(robot_name + "/measurements", Measurements, queue_size=1)
+        self.publisher = rospy.Publisher("measurements", Measurements, queue_size=1)
         self.previous_measurements = Measurements()
         self.transformer = tf.TransformListener()
         rospy.loginfo("Waiting for Transform to become available")

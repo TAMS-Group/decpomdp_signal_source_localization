@@ -20,7 +20,7 @@
    <node name="map_navigation" pkg="map_server" type="map_server" args="$(arg map_navigation)" >
       <remap from="map" to="map_navigation"/>
     </node>
-<!-- Only relevant for production use -->
+<!-- Only relevant for production use
 <arg name="local" default="false"/>
   <group unless="$(arg local)">
 
@@ -41,5 +41,5 @@
 </rosparam>
   </node>
   </group>
-
+-->
 </launch>

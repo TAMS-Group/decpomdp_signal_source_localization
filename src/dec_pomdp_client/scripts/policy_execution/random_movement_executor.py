@@ -39,8 +39,8 @@ class RandomMovement(Executor):
 
     def __init__(self):
         super(RandomMovement, self).__init__()
-
-        movement_graph_file_path = rospy.get_param('movement_graph_file_path')
+        mgfp_param_name = rospy.search_param('movement_graph_file_path')
+        movement_graph_file_path = rospy.get_param(mgfp_param_name)
         #Read nodes
         location_file = open(movement_graph_file_path + "/locations.txt", "r")
         self.locations = dict()
@@ -57,7 +57,7 @@ class RandomMovement(Executor):
             self.allowed_moves[line_content.pop(0)] = line_content
         allowed_moves_file.close()
         robot_name = rospy.get_param("robot_name")
-        self.random_movement_subscriber =  rospy.Subscriber(robot_name + "/randomMovement", Int64, self.execute_random_movement)
+        self.random_movement_subscriber =  rospy.Subscriber("randomMovement", Int64, self.execute_random_movement)
 
 if __name__ == "__main__":
     rospy.init_node("random_movement")

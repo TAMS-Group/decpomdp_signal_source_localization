@@ -1,0 +1,10 @@
+<launch>
+  <include file="$(find dec_pomdp_server)/launch/server.launch"/>
+  <include file="$(find dec_pomdp_algorithm)/launch/dec_pomdp.launch"/>
+  <include ns="donny" file="$(find dec_pomdp_client)/launch/client_simulation.launch">
+    <arg name="turtlebot_name" value="donny"/>
+  </include>
+  <include ns="leo" file="$(find dec_pomdp_client)/launch/client_simulation.launch">
+    <arg name="turtlebot_name" value="leo"/>
+  </include>
+</launch>
