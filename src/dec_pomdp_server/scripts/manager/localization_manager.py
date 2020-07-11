@@ -81,10 +81,15 @@ class LocalizationManager:
 			except rospy.ServiceException, e:
 				rospy.logerr("Service call to generate Policies failed: %s", e)
 				return False
+		evaluate_measurements_goal = EvaluateMeasurementsGoal()
+		combined_measurements = []
 		for measurements in resulting_measurements:
-			evaluate_measurements_goal = EvaluateMeasurementsGoal()
-			evaluate_measurements_goal.measurements = measurements
-			self.measurement_action_client.send_goal_and_wait(evaluate_measurements_goal)
+			combined_measurements += measurements.measurements
+		for idx, measurements in enumerate(resulting_measurements):
+			combined_measurements[idx::len(resulting_measurements)] = measurements.measurements
+		evaluate_measurements_goal.measurements.measurements = combined_measurements
+		rospy.logwarn("Got %d measurements", len(evaluate_measurements_goal.measurements.measurements))
+		self.measurement_action_client.send_goal_and_wait(evaluate_measurements_goal)
 
 		return True
 
