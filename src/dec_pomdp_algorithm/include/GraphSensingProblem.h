@@ -60,7 +60,7 @@ void sample_initial_states_gaussian(std::vector<state_t>& states, int num,
 static std::map<int, location_t> index_to_loc = []() {
   std::map<int, location_t> loc_map;
 
-  std::ifstream inputfile("/informatik2/students/home/6tkruege/bachelor/src/dec_pomdp_algorithm/config/locations.txt");
+  std::ifstream inputfile("/home/tobias/Documents/Bachelor_Thesis_Code/src/dec_pomdp_algorithm/config/locations.txt");
   std::string line;
   if(!inputfile.is_open()){
     ROS_ERROR_STREAM("locations.txt file could not be opened");
@@ -79,7 +79,7 @@ static std::map<int, location_t> index_to_loc = []() {
 static std::map<int, std::vector<int>> allowed_moves= []() {
   std::map<int, std::vector<int>> allowed_moves_map;
 
-  std::ifstream inputfile("/informatik2/students/home/6tkruege/bachelor/src/dec_pomdp_algorithm/config/allowed_moves.txt");
+  std::ifstream inputfile("/home/tobias/Documents/Bachelor_Thesis_Code/src/dec_pomdp_algorithm/config/allowed_moves.txt");
   std::string line;
   if(!inputfile.is_open()){
     ROS_ERROR_STREAM("allowed_moves.txt file could not be opened");

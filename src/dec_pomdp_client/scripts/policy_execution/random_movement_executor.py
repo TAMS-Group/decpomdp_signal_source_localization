@@ -27,6 +27,8 @@ class RandomMovement(Executor):
                                                         (self.locations[loc].y - starting_pose.pose.position.y)**2
                                                     )
         )
+        #start at Random location instead of nearest as above
+        current_location = random.choice(range(len(self.locations)))
         for step in range(number_of_steps):
             rospy.loginfo("Next location is %d with coordinates x = %f and y = %f ", current_location, self.locations[current_location].x, self.locations[current_location].y)
             goal.target_pose.pose.position.x = self.locations[current_location].x

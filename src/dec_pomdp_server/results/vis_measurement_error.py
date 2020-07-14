@@ -1,12 +1,13 @@
 import numpy as np
 import json
+import random
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
     data={}
     colors=['b', 'g', 'r', 'y', 'b', 'g', 'r', 'y', 'b', 'g', 'r']
     rand_colors = ['m', 'y', 'k', 'c', 'm', 'y', 'k', 'c', 'm', 'y', 'k', 'c']
-    with open('/informatik2/students/home/6tkruege/bachelor/src/dec_pomdp_server/results/measurement_results.json') as json_file:
+    with open('/home/tobias/Documents/Bachelor_Thesis_Code/src/dec_pomdp_server/results/measurement_results.json') as json_file:
         data = json.load(json_file)
     for measurements in data:
         num_of_measurements = []
@@ -16,9 +17,9 @@ if __name__ == "__main__":
             error.append(item["error"])
         line_type = '-'
         if "Random" in measurements:
-            line_type = rand_colors.pop() + '--'
+            line_type = random.choice(rand_colors) + '--'
         else:
-            line_type = colors.pop() + '-'
+            line_type = random.choice(colors) + '-'
 
         plt.plot(num_of_measurements, error, line_type, label=measurements)
     plt.xlabel('number of measurements evaluated')

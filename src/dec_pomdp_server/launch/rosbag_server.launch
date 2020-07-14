@@ -1,3 +1,4 @@
 <launch>
-	<node name="model_fitting_collector" pkg="dec_pomdp_server" type="model_fitting_collector.py"/>
+	<!--<node name="model_fitting_collector" pkg="dec_pomdp_server" type="model_fitting_collector.py"/>-->
+	<node name="rosbag_evaluation" pkg="dec_pomdp_server" type="rosbag_evaluation.py" output="screen"/>
 </launch>

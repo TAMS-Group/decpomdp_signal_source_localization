@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-  <arg name="turtlebot_name" default="$(env TURTLEBOT_NAME)"/>
+  <arg name="turtlebot_name" default="TestTurtlebot"/><!--$(env TURTLEBOT_NAME)-->
   <rosparam file="$(find dec_pomdp_server)/config/simulation.yaml" />
   <rosparam file="$(find dec_pomdp_client)/config/client_config.yaml" />
   <rosparam param="robot_name" subst_value="True">$(arg turtlebot_name)</rosparam>

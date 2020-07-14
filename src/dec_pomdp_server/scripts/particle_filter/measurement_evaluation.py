@@ -115,8 +115,8 @@ class MeasurementEvaluator:
 				# rospy.loginfo("Error of current particle filter is %f after evaluation of %d measurements sum of weight is %f", weighted_mean_error, self.num_of_measurements, sum(self.weights))
 				new_value = {"num_measurements": self.num_of_measurements, "error": weighted_mean_error}
 				experiment_json_object.append(new_value)
-				if json_data is not None:
-					self.write_json(json_data, self.log_file_path)
+			if json_data is not None:
+				self.write_json(json_data, self.log_file_path)
 		self.measurements_evaluation_action_server.set_succeeded(self._result)
 
 if __name__ == '__main__':
