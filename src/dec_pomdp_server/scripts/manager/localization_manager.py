@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import rospy
 import actionlib
+import random
 from actionlib_msgs.msg import GoalStatus
 from dec_pomdp_msgs.msg import Measurements
 from dec_pomdp_msgs.msg import ExecutionState
@@ -90,7 +91,7 @@ class LocalizationManager:
 		evaluate_measurements_goal.measurements.measurements = combined_measurements
 		rospy.logwarn("Got %d measurements", len(evaluate_measurements_goal.measurements.measurements))
 		self.measurement_action_client.send_goal_and_wait(evaluate_measurements_goal)
-
+		rospy.set_param('/experiment_parameters/seed', random.randint(0, 2147483647))
 		return True
 
 	def handle_measurements(self, measurements):

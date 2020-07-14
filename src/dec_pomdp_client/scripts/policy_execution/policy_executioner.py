@@ -4,6 +4,7 @@ import actionlib
 import tf
 import sys
 import numpy as np
+import random
 from geometry_msgs.msg import Twist, PoseStamped, Point
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from dec_pomdp_msgs.msg import Policy
@@ -54,6 +55,8 @@ class PolicyExecutioner:
         rospy.loginfo("Finished policy execution")
         self._result.measurements = self.measurements
         self.measurements = Measurements()
+        # Get ready for the next experiment by moving to a random location
+        self.move_to_random_start_location()
         self.policy_action_server.set_succeeded(self._result)
 
 
@@ -117,8 +120,28 @@ class PolicyExecutioner:
         for item in array:
             if l_function(item):
                 return item
+    
+    def move_to_random_start_location():
+        random_location = random.choice(range(len(self.locations)))
+        goal = MoveBaseGoal()
+        goal.target_pose.header.frame_id = "map"
+        goal.target_pose.pose.position.x = self.locations[random_location].x
+        goal.target_pose.pose.position.y = self.locations[random_location].y
+        goal.target_pose.pose.orientation.w = 1
+        goal.target_pose.header.stamp = rospy.get_rostime()
+        self.move_to_goal(goal)
+
 
     def __init__(self):
+        mgfp_param_name = rospy.search_param('movement_graph_file_path')
+        movement_graph_file_path = rospy.get_param(mgfp_param_name)
+        #Read nodes
+        location_file = open(movement_graph_file_path + "/locations.txt", "r")
+        self.locations = dict()
+        for line in location_file.readlines():
+            line_content = [float(x) for x in line.split(" ")]
+            self.locations[int(line_content[0])] = Point(line_content[1],line_content[2], 0.0)
+        location_file.close()
         mps_param_name = rospy.search_param('measurements_per_step')
         self.measurements_per_step = rospy.get_param(mps_param_name)
         rs_param_name = rospy.search_param('rotation_speed')
