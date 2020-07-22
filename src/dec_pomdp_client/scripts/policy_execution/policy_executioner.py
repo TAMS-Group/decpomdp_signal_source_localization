@@ -121,7 +121,7 @@ class PolicyExecutioner:
             if l_function(item):
                 return item
     
-    def move_to_random_start_location():
+    def move_to_random_start_location(self):
         random_location = random.choice(range(len(self.locations)))
         goal = MoveBaseGoal()
         goal.target_pose.header.frame_id = "map"

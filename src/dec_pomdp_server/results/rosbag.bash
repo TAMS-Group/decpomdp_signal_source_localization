@@ -1,6 +1,6 @@
 #!/bin/bash
 rosbag record \
--O testDecPOMDPWithrandseed.bag \
+-O RandomMovementAttempt3-V1.bag \
 /dec_pomdp \
 /donny/amcl_pose \
 /donny/execute_policy/cancel \
