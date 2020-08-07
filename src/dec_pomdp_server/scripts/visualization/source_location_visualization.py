@@ -15,7 +15,7 @@ class SourceLocationVisualizer:
         id = SOURCE_LOCATION_ID,
         lifetime = rospy.Duration(secs=20),
         scale = Vector3(0.1, 0.1, 0.1),
-        color = ColorRGBA(0.0, 0.3, 0.7, 1.0)
+        color = ColorRGBA(0.8, 0.0, 0.8, 1.0)
     )
     source_location_description = Marker(
         type = Marker.TEXT_VIEW_FACING,

@@ -4,3 +4,4 @@ devel/
 build/
 .catkin_tools/
 *.pyc
+*.bag
