@@ -28,6 +28,7 @@ add_service_files(
   GeneratePolicies.srv
   StartExperiment.srv
   RecordExperiments.srv
+  GetExecutionStatus.srv
 )
 
 ## Generate action in the 'action' folder

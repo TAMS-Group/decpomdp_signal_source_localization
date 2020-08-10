@@ -7,7 +7,8 @@ from executor import Executor
 from std_msgs.msg import Int64
 from geometry_msgs.msg import Point
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
-from dec_pomdp_msgs.msg import Measurements, ExecuteRandomMovementAction, ExecuteRandomMovementFeedback, ExecuteRandomMovementResult, ExecuteRandomMovementGoal
+from dec_pomdp_msgs.msg import Measurements, ExecuteRandomMovementAction, ExecuteRandomMovementFeedback, ExecuteRandomMovementResult, ExecuteRandomMovementGoal, ExecutionState
+from dec_pomdp_msgs.srv import GetExecutionStatus
 
 class RandomMovement(Executor):
     """
@@ -44,6 +45,7 @@ class RandomMovement(Executor):
             self.random_movement_action_server.publish_feedback(self._feedback)
         self._result.measurements = self.measurements
         self.measurements = Measurements()
+        self._current_status = ExecutionState.IDLE
         self.random_movement_action_server.set_succeeded(self._result)
 
 
@@ -54,6 +56,8 @@ class RandomMovement(Executor):
         super(RandomMovement, self).__init__()
         mgfp_param_name = rospy.search_param('movement_graph_file_path')
         movement_graph_file_path = rospy.get_param(mgfp_param_name)
+        #initialize Execution status feedback service
+        self.execution_status_service = rospy.Service('get_random_move_execution_status', GetExecutionStatus, self.get_execution_status)
         #Read nodes
         location_file = open(movement_graph_file_path + "/locations.txt", "r")
         self.locations = dict()

@@ -9,8 +9,8 @@ from geometry_msgs.msg import Twist, PoseStamped, Point
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from dec_pomdp_msgs.msg import Policy
 from actionlib_msgs.msg import GoalStatus
-from dec_pomdp_msgs.msg import Measurements, TakeMeasurementsAction, TakeMeasurementsGoal, ExecutePolicyAction, ExecutePolicyFeedback, ExecutePolicyGoal, ExecutePolicyResult
-from dec_pomdp_msgs.srv import GetMeasurement
+from dec_pomdp_msgs.msg import Measurements, TakeMeasurementsAction, TakeMeasurementsGoal, ExecutePolicyAction, ExecutePolicyFeedback, ExecutePolicyGoal, ExecutePolicyResult, ExecutionState
+from dec_pomdp_msgs.srv import GetMeasurement, GetExecutionStatus, GetExecutionStatusResponse
 from std_srvs.srv import Empty
 
 
@@ -23,6 +23,7 @@ class PolicyExecutioner:
     """
     _feedback = ExecutePolicyFeedback()
     _result = ExecutePolicyResult()
+    _current_status = ExecutionState.IDLE
 
     def execute_policy(self, goal):
         """ Executes a given policy of type dec_pomdp_msgs.msg.Policy"""
@@ -57,10 +58,12 @@ class PolicyExecutioner:
         self.measurements = Measurements()
         # Get ready for the next experiment by moving to a random location
         self.move_to_random_start_location()
+        self._current_status = ExecutionState.IDLE
         self.policy_action_server.set_succeeded(self._result)
 
 
     def take_measurement(self):
+        self._current_status = ExecutionState.MEASURING
         goal = TakeMeasurementsGoal(number=self.measurements_per_step)
         self.measurement_client.send_goal(goal)
         while not rospy.is_shutdown():
@@ -82,6 +85,7 @@ class PolicyExecutioner:
             rospy.sleep(rospy.Duration(0.5))
 
     def move_to_goal(self, goal):
+        self._current_status = ExecutionState.MOVING
         while not rospy.is_shutdown():
             rospy.loginfo('Moving to goal')
             self.move_base_client.send_goal_and_wait(goal)
@@ -131,10 +135,14 @@ class PolicyExecutioner:
         goal.target_pose.header.stamp = rospy.get_rostime()
         self.move_to_goal(goal)
 
+    def get_execution_status(self, req):
+        return GetExecutionStatusResponse(self._current_status)
 
     def __init__(self):
         mgfp_param_name = rospy.search_param('movement_graph_file_path')
         movement_graph_file_path = rospy.get_param(mgfp_param_name)
+        #initialize Execution status feedback service
+        self.execution_status_service = rospy.Service('get_execution_status', GetExecutionStatus, self.get_execution_status)
         #Read nodes
         location_file = open(movement_graph_file_path + "/locations.txt", "r")
         self.locations = dict()

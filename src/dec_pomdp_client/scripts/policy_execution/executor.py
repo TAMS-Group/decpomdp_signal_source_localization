@@ -8,12 +8,15 @@ from geometry_msgs.msg import Twist, PoseStamped, Point
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from dec_pomdp_msgs.msg import Policy
 from actionlib_msgs.msg import GoalStatus
-from dec_pomdp_msgs.msg import Measurements, TakeMeasurementsAction, TakeMeasurementsGoal
-from dec_pomdp_msgs.srv import GetMeasurement
+from dec_pomdp_msgs.msg import Measurements, TakeMeasurementsAction, TakeMeasurementsGoal, ExecutionState
+from dec_pomdp_msgs.srv import GetMeasurement, GetExecutionStatus, GetExecutionStatusResponse
 from std_srvs.srv import Empty
 
 class Executor(object):
+    _current_status = ExecutionState.IDLE
+
     def take_measurement(self):
+        self._current_status = ExecutionState.MEASURING
         goal = TakeMeasurementsGoal(number=self.measurements_per_step)
         self.measurement_client.send_goal(goal)
         while not rospy.is_shutdown():
@@ -35,8 +38,10 @@ class Executor(object):
             rospy.sleep(rospy.Duration(0.5))
 
     def move_to_goal(self, goal):
+        self._current_status = ExecutionState.MOVING
         while not rospy.is_shutdown():
             rospy.loginfo('Moving to goal')
+            rospy.sleep(rospy.Duration(10))
             self.move_base_client.send_goal_and_wait(goal)
             current_state = self.move_base_client.get_state()
             if (current_state == GoalStatus.SUCCEEDED):
@@ -67,6 +72,9 @@ class Executor(object):
             e = sys.exc_info()[0]
             rospy.logerr(str(e))
             return PoseStamped()
+    
+    def get_execution_status(self, req):
+        return GetExecutionStatusResponse(self._current_status)
 
     def __init__(self):
         mps_param_name = rospy.search_param('measurements_per_step')
