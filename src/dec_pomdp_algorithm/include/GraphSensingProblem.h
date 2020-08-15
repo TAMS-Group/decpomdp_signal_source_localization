@@ -1,4 +1,5 @@
 // GraphSensingProblem.h
+// Copyright 2020 Tobias Krueger
 // Copyright 2019 Mikko Lauri
 //
 // Licensed under the Apache License, Version 2.0 (the "License");

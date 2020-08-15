@@ -6,7 +6,7 @@
 
   <maintainer email="6tkruege@informatik.uni-hamburg.de">Tobias Krüger</maintainer>
 
-  <license>TODO</license>
+  <license>Apache License, Version 2.0</license>
 
   <!-- Use build_depend for packages you need at compile time: -->
   <build_depend>message_generation</build_depend>
